@@ -131,11 +131,11 @@ function DailyTracker() {
       ),
       prayerValues: { ...prayerValues },
       userInformation,
-      // points: {
-      //   regularPoints,
-      //   prayerPoints,
-      //   totalPoints,
-      // },
+      points: {
+        regularPoints,
+        prayerPoints,
+        totalPoints,
+      },
     };
 
     // Log the combined answers object
