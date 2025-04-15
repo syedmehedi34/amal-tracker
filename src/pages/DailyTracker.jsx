@@ -12,6 +12,8 @@ import {
 import AmalDetailsModal from "../components/AmalDetailsModal";
 import PrayerBreakdown from "../components/PrayerBreakdown";
 import { useAuth } from "../context/AuthProvider";
+import useAxiosPublic from "../hooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
 function DailyTracker() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -95,7 +97,9 @@ function DailyTracker() {
     }
   };
 
-  const handleSubmit = () => {
+  // todo :
+  const axiosPublic = useAxiosPublic();
+  const handleSubmit = async () => {
     const regularPoints = Object.entries(answers).reduce(
       (total, [questionIndex, completed]) => {
         return total + (completed ? amalQuestions[questionIndex].points : 0);
@@ -103,11 +107,19 @@ function DailyTracker() {
       0
     );
 
+    // take the date and user info for storing
+    const answeringDate = format(new Date(), "yyyy-MM-dd");
+    const userInformation = {
+      userEmail: user?.email,
+      name: user?.displayName,
+      date: answeringDate,
+    };
+
     const prayerPoints = calculatePrayerPoints();
     const totalPoints = regularPoints + prayerPoints;
 
     // Create a single object with all answers
-    const allAnswers = {
+    const allAnswerInfo = {
       questions: Object.entries(answers).reduce(
         (acc, [questionIndex, completed]) => {
           const question = amalQuestions[questionIndex];
@@ -118,6 +130,7 @@ function DailyTracker() {
         {}
       ),
       prayerValues: { ...prayerValues },
+      userInformation,
       // points: {
       //   regularPoints,
       //   prayerPoints,
@@ -126,7 +139,31 @@ function DailyTracker() {
     };
 
     // Log the combined answers object
-    console.log(allAnswers);
+    console.log(allAnswerInfo);
+
+    //? send the allAnswerInfo to the server
+    try {
+      const res = await axiosPublic.post("/amal_data", allAnswerInfo);
+      console.log("Response:", res.data);
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "Your daily Amal has been saved!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      console.error("Error:", error.response?.data || error.message);
+      Swal.fire({
+        position: "top-center",
+        icon: "error",
+        title: "Something wrong!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+
+    //?
 
     const today = format(new Date(), "yyyy-MM-dd");
     localStorage.setItem(

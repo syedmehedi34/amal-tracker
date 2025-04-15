@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
+import useAmalData from "../hooks/useAmalData";
 // import { useAuth } from "../context/AuthContext";
 
 const quotes = [
@@ -23,6 +24,9 @@ const quotes = [
 function Home() {
   const { user } = useAuth();
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+
+  const { amalData } = useAmalData();
+  console.log(amalData);
 
   return (
     <div className="max-w-4xl mx-auto">
