@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { useAuth } from "../context/AuthProvider";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -9,32 +9,46 @@ function Register() {
     password: "",
   });
   const [error, setError] = useState("");
+  const { createNewUser, signInWithGoogle, updateUser } = useAuth();
+  const navigate = useNavigate(); // Initialize navigate for redirection
 
-  //
-  const {
-    user,
-    setUser,
-    createNewUser,
-    signInUser,
-    logOut,
-    updateUser,
-    loading,
-    signInWithGoogle,
-    resetPassword,
-    changePassword,
-    setLoading,
-  } = useAuth();
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Log form values
-    console.log("Form submitted:", formData);
+    try {
+      // Create a new user with email and password
+      const userCredential = await createNewUser(
+        formData.email,
+        formData.password
+      );
+      const user = userCredential.user;
 
-    // todo: Implement registration logic
+      // Update user profile with name
+      await updateUser({ displayName: formData.name });
 
-    //
+      console.log("Form submitted:", formData);
+      console.log("User registered:", user);
+
+      // Redirect to a different page after successful registration
+      navigate("/dashboard"); // Adjust the path as needed
+    } catch (err) {
+      console.error("Registration error:", err);
+      // Map Firebase error codes to user-friendly messages
+      switch (err.code) {
+        case "auth/email-already-in-use":
+          setError("This email is already registered.");
+          break;
+        case "auth/invalid-email":
+          setError("Please enter a valid email address.");
+          break;
+        case "auth/weak-password":
+          setError("Password should be at least 6 characters long.");
+          break;
+        default:
+          setError("Registration failed. Please try again.");
+      }
+    }
   };
 
   const handleChange = (e) => {
@@ -44,10 +58,15 @@ function Register() {
     });
   };
 
-  const handleGoogleLogin = () => {
-    // Placeholder for Google OAuth logic
-    console.log("Google login initiated");
-    // Implement your Google OAuth flow here (e.g., Firebase, Auth0)
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithGoogle();
+      console.log("Google login successful");
+      navigate("/dashboard"); // Redirect after Google login
+    } catch (err) {
+      console.error("Google login error:", err);
+      setError("Google sign-in failed. Please try again.");
+    }
   };
 
   return (
@@ -78,6 +97,7 @@ function Register() {
               value={formData.name}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-primary-300 shadow-sm focus:border-islamic focus:ring focus:ring-islamic focus:ring-opacity-50"
+              required // Add required attribute
             />
           </div>
 
@@ -95,6 +115,7 @@ function Register() {
               value={formData.email}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-primary-300 shadow-sm focus:border-islamic focus:ring focus:ring-islamic focus:ring-opacity-50"
+              required
             />
           </div>
 
@@ -112,6 +133,7 @@ function Register() {
               value={formData.password}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-primary-300 shadow-sm focus:border-islamic focus:ring focus:ring-islamic focus:ring-opacity-50"
+              required
             />
           </div>
 
