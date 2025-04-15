@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-
 function AmalDetailsModal({ isOpen, onClose, amal }) {
   if (!isOpen) return null;
 
