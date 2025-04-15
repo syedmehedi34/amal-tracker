@@ -42,6 +42,7 @@ const prayers = {
       congregation: { label: "Prayed in congregation", points: 4 },
       alone: { label: "Prayed alone", points: 1 },
       notPrayed: { label: "Not prayed", points: 0 },
+      sunnah: { label: "Sunnah prayed", points: 1 },
     },
   },
 };
