@@ -1,16 +1,19 @@
+// ["critical", "important", "normal", "low"];
 export const amalQuestions = [
   // Salah Part
   {
     id: 1,
     question: "৫ ওয়াক্ত জামাতে পড়েছি? (আবশ্যক)",
+    importance: "critical",
     points: 20,
     category: "সলাত",
     details:
-      "পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব। পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব। পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব। পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব। পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব। পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব। পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব। পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব। পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব। পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব। পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব। পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব। ",
+      "পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব।",
   },
   {
     id: 2,
     question: "সুন্নাত পড়েছি? (আবশ্যক)",
+    importance: "important",
     points: 6,
     category: "সলাত",
     details:
@@ -19,6 +22,7 @@ export const amalQuestions = [
   {
     id: 3,
     question: "যোহরে ২ রাকাত অতিরিক্ত পড়েছি?",
+    importance: "low",
     points: 1,
     category: "সলাত",
     details: "যোহরের নামাজের পর দুই রাকাত নফল নামাজ আদায় করা মুস্তাহাব।",
@@ -26,6 +30,7 @@ export const amalQuestions = [
   {
     id: 4,
     question: "তাহাজ্জুদ পড়েছি?",
+    importance: "important",
     points: 5,
     category: "সলাত",
     details:
@@ -34,6 +39,7 @@ export const amalQuestions = [
   {
     id: 5,
     question: "সালাতুত দোহা পড়েছি?",
+    importance: "low",
     points: 1,
     category: "সলাত",
     details:
@@ -44,6 +50,7 @@ export const amalQuestions = [
   {
     id: 6,
     question: "৩৩+৩৩+৩৩+১ - জিকির করেছি?",
+    importance: "normal",
     points: 1,
     category: "সলাত শেষে জিকির",
     details:
@@ -52,6 +59,7 @@ export const amalQuestions = [
   {
     id: 7,
     question: "আয়াতুল কুরসি পরেছি? (আবশ্যক)",
+    importance: "critical",
     points: 2,
     category: "সলাত শেষে জিকির",
     details:
@@ -62,6 +70,7 @@ export const amalQuestions = [
   {
     id: 8,
     question: "প্রতিদিন নির্দিষ্ট অংশ নায়েরা করেছি? (আবশ্যক)",
+    importance: "important",
     points: 8,
     category: "কুরআন তেলাওয়াত",
     details:
@@ -70,6 +79,7 @@ export const amalQuestions = [
   {
     id: 9,
     question: "নায়েরা কৃত অংশের ব্যাখ্যা পড়েছি?",
+    importance: "normal",
     points: 2,
     category: "কুরআন তেলাওয়াত",
     details:
@@ -80,6 +90,7 @@ export const amalQuestions = [
   {
     id: 10,
     question: "সকাল সন্ধ্যা জিকির করেছি? (আবশ্যক)",
+    importance: "normal",
     points: 1,
     category: "সকাল সন্ধ্যা জিকির",
     details:
@@ -88,6 +99,7 @@ export const amalQuestions = [
   {
     id: 11,
     question: "১০০ বার সুবহানাল্লাহি ওবি হামদিহি পড়েছি?",
+    importance: "normal",
     points: 1,
     category: "সকাল সন্ধ্যা জিকির",
     details: "এই জিকির করলে সমুদ্রের ফেনা পরিমাণ গুনাহ মাফ হয়ে যায়।",
@@ -95,6 +107,7 @@ export const amalQuestions = [
   {
     id: 12,
     question: "সাইয়েদুল ইস্তেগফার পড়েছি? (আবশ্যক)",
+    importance: "critical",
     points: 2,
     category: "সকাল সন্ধ্যা জিকির",
     details:
@@ -104,6 +117,7 @@ export const amalQuestions = [
     id: 13,
     question:
       "জান্নাতুল ফেরদৌসের জন্য দোয়া করেছি ও জাহান্নাম থেকে মুক্তির দোয়া করেছি? (আবশ্যক)",
+    importance: "low",
     points: 1,
     category: "সকাল সন্ধ্যা জিকির",
     details:
@@ -114,6 +128,7 @@ export const amalQuestions = [
   {
     id: 14,
     question: "কবিরা গুনাহ থেকে বেঁচে থেকেছি? (আবশ্যক)",
+    importance: "critical",
     points: 5,
     category: "অন্যান্য",
     details:
@@ -122,6 +137,7 @@ export const amalQuestions = [
   {
     id: 15,
     question: "রাতে সূরা মূলক তেলাওয়াত করেছি? (আবশ্যক)",
+    importance: "critical",
     points: 5,
     category: "অন্যান্য",
     details: "সূরা মূলক পাঠ করলে কবরের আজাব থেকে মুক্তি পাওয়া যায়।",
@@ -129,6 +145,7 @@ export const amalQuestions = [
   {
     id: 16,
     question: "হালাল খাবার খেয়েছি? (আবশ্যক)",
+    importance: "critical",
     points: 5,
     category: "অন্যান্য",
     details: "হালাল রিযিক খাওয়া ইবাদত কবুল হওয়ার একটি শর্ত।",
@@ -136,6 +153,7 @@ export const amalQuestions = [
   {
     id: 17,
     question: "সর্বক্ষণ জিকির, ইস্তেগফার ও দুরুদ পড়েছি?",
+    importance: "normal",
     points: 5,
     category: "অন্যান্য",
     details:
@@ -144,6 +162,7 @@ export const amalQuestions = [
   {
     id: 18,
     question: "জেনা থেকে বেঁচে থেকেছি? (আবশ্যক)",
+    importance: "important",
     points: 3,
     category: "অন্যান্য",
     details:
@@ -152,6 +171,7 @@ export const amalQuestions = [
   {
     id: 19,
     question: "আমানত ও অঙ্গীকার রক্ষা করেছি? (আবশ্যক)",
+    importance: "important",
     points: 2,
     category: "অন্যান্য",
     details:
@@ -160,6 +180,7 @@ export const amalQuestions = [
   {
     id: 20,
     question: "সারাদিনের কৃতকর্মের জন্য মাফ চেয়েছি? (আবশ্যক)",
+    importance: "normal",
     points: 2,
     category: "অন্যান্য",
     details:
@@ -168,6 +189,7 @@ export const amalQuestions = [
   {
     id: 21,
     question: "গিবত করি নি? (আবশ্যক)",
+    importance: "important",
     points: 2,
     category: "অন্যান্য",
     details: "গিবত করা হারাম। এটি মৃত ভাইয়ের গোশত খাওয়ার সমান।",
@@ -175,6 +197,7 @@ export const amalQuestions = [
   {
     id: 22,
     question: "হিংসা থেকে বেঁচে থেকেছি? (আবশ্যক)",
+    importance: "important",
     points: 2,
     category: "অন্যান্য",
     details: "হিংসা একটি মারাত্মক অন্তরের রোগ। এটি নেক আমল নষ্ট করে দেয়।",
@@ -182,6 +205,7 @@ export const amalQuestions = [
   {
     id: 23,
     question: "মিথ্যা বলি নি? (আবশ্যক)",
+    importance: "important",
     points: 2,
     category: "অন্যান্য",
     details: "মিথ্যা বলা মুনাফিকের লক্ষণ। একজন মুমিন কখনো মিথ্যা বলে না।",
@@ -189,6 +213,7 @@ export const amalQuestions = [
   {
     id: 24,
     question: "দান সাদাকা করেছি?",
+    importance: "normal",
     points: 2,
     category: "অন্যান্য",
     details: "দান-সাদাকা করলে রিযিক বৃদ্ধি পায় এবং বালা-মুসিবত দূর হয়।",
@@ -196,6 +221,7 @@ export const amalQuestions = [
   {
     id: 25,
     question: "নফল রোজা রেখেছি?",
+    importance: "normal",
     points: 2,
     category: "অন্যান্য",
     details: "নফল রোজা রাখলে জাহান্নাম থেকে দূরে থাকা যায়।",
@@ -203,6 +229,7 @@ export const amalQuestions = [
   {
     id: 26,
     question: "কারোর সাথে বাজে আচরণ করি নি? (আবশ্যক)",
+    importance: "important",
     points: 1,
     category: "অন্যান্য",
     details: "সুন্দর আচরণ করা ইসলামের গুরুত্বপূর্ণ শিক্ষা।",
@@ -210,6 +237,7 @@ export const amalQuestions = [
   {
     id: 27,
     question: "অজুর পর কালিমা শাহাদাৎ পাঠ করেছি? (আবশ্যক)",
+    importance: "important",
     points: 1,
     category: "অন্যান্য",
     details: "অজুর পর কালিমা শাহাদাত পাঠ করলে জান্নাতের আটটি দরজা খুলে যায়।",
@@ -217,6 +245,7 @@ export const amalQuestions = [
   {
     id: 28,
     question: "অহেতুক কাজ করি নি?",
+    importance: "important",
     points: 1,
     category: "অন্যান্য",
     details: "অপ্রয়োজনীয় কাজ থেকে দূরে থাকা ইসলামের শিক্ষা।",
@@ -224,6 +253,7 @@ export const amalQuestions = [
   {
     id: 29,
     question: "আজানের উত্তর দিয়েছি?",
+    importance: "normal",
     points: 1,
     category: "অন্যান্য",
     details: "আজানের উত্তর দেওয়া সুন্নাত। এতে বড় সওয়াব রয়েছে।",
@@ -231,6 +261,7 @@ export const amalQuestions = [
   {
     id: 30,
     question: "সর্বদা সতর ঢেকে রেখেছি?",
+    importance: "normal",
     points: 1,
     category: "অন্যান্য",
     details: "সতর ঢেকে রাখা ফরজ। এটি ঈমানের অংশ।",
@@ -238,6 +269,7 @@ export const amalQuestions = [
   {
     id: 31,
     question: "কাউকে সাহায্য করেছি/পানি পান করিয়েছি/মানসিক সাহায্য করেছি?",
+    importance: "normal",
     points: 1,
     category: "অন্যান্য",
     details: "মানুষের সেবা করা আল্লাহর সন্তুষ্টি অর্জনের একটি মাধ্যম।",
@@ -245,6 +277,7 @@ export const amalQuestions = [
   {
     id: 32,
     question: "রাস্তা থেকে ক্ষতিকর বস্তু সরিয়েছি?",
+    importance: "normal",
     points: 1,
     category: "অন্যান্য",
     details: "রাস্তা থেকে কষ্টদায়ক জিনিস সরানো ঈমানের একটি শাখা।",
@@ -252,6 +285,7 @@ export const amalQuestions = [
   {
     id: 33,
     question: "সৎ উপদেশ দিয়েছি/ভালো কথা বলেছি?",
+    importance: "normal",
     points: 1,
     category: "অন্যান্য",
     details: "ভালো কথা বলা সাদকা। এতে বড় সওয়াব রয়েছে।",
@@ -259,6 +293,7 @@ export const amalQuestions = [
   {
     id: 34,
     question: "সালাম দিয়েছি?",
+    importance: "normal",
     points: 1,
     category: "অন্যান্য",
     details: "সালাম দেওয়া সুন্নাত। এটি মুসলিমদের মধ্যে ভালোবাসা বৃদ্ধি করে।",
@@ -266,6 +301,7 @@ export const amalQuestions = [
   {
     id: 35,
     question: "সর্বদা আখিরাতের কথা স্মরণ রেখেছি?",
+    importance: "normal",
     points: 1,
     category: "অন্যান্য",
     details: "আখিরাতের চিন্তা করলে দুনিয়ার প্রতি আসক্তি কমে যায়।",
@@ -273,6 +309,7 @@ export const amalQuestions = [
   {
     id: 36,
     question: "জান্নাতে রাসুলুল্লাহ (সাঃ) এর কাছাকাছি থাকার দোয়া করেছি?",
+    importance: "normal",
     points: 1,
     category: "অন্যান্য",
     details: "রাসূল (সাঃ) এর সাথে জান্নাতে থাকার জন্য দোয়া করা গুরুত্বপূর্ণ।",
@@ -280,6 +317,7 @@ export const amalQuestions = [
   {
     id: 37,
     question: "সর্বদা অজুর সাথে থেকেছি / অজুর সলাত আদায় করেছি?",
+    importance: "normal",
     points: 1,
     category: "অন্যান্য",
     details: "অজু অবস্থায় থাকা একটি গুরুত্বপূর্ণ ইবাদত।",
