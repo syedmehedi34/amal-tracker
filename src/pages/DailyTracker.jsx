@@ -105,6 +105,28 @@ function DailyTracker() {
     const prayerPoints = calculatePrayerPoints();
     const totalPoints = regularPoints + prayerPoints;
 
+    // Create a single object with all answers
+    const allAnswers = {
+      questions: Object.entries(answers).reduce(
+        (acc, [questionIndex, completed]) => {
+          const question = amalQuestions[questionIndex];
+          // todo:need to change the id as questionName
+          acc[question.id] = completed ? "Yes" : "No";
+          return acc;
+        },
+        {}
+      ),
+      prayerValues: { ...prayerValues },
+      points: {
+        regularPoints,
+        prayerPoints,
+        totalPoints,
+      },
+    };
+
+    // Log the combined answers object
+    console.log(allAnswers);
+
     const today = format(new Date(), "yyyy-MM-dd");
     localStorage.setItem(
       `amal_${today}_${user?.email}`,
