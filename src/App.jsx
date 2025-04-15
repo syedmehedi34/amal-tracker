@@ -43,7 +43,6 @@ import { useAuth } from "./context/AuthProvider.jsx";
 // Child component to handle content rendering
 function AppContent() {
   const { loading } = useAuth();
-  console.log(loading);
 
   // Loading spinner component
   const LoadingSpinner = () => (

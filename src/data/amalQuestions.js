@@ -5,27 +5,10 @@ export const amalQuestions = [
     id: 1,
     question: "৫ ওয়াক্ত জামাতে পড়েছি? (আবশ্যক)",
     importance: "critical",
-    points: 20,
+    points: 27,
     category: "সলাত",
     details:
       "পাঁচ ওয়াক্ত নামাজ ইসলামের অন্যতম গুরুত্বপূর্ণ রুকন। জামাতে নামাজ আদায় করলে ২৭ গুণ বেশি সওয়াব।",
-  },
-  {
-    id: 2,
-    question: "সুন্নাত পড়েছি? (আবশ্যক)",
-    importance: "important",
-    points: 6,
-    category: "সলাত",
-    details:
-      "সুন্নাত নামাজ আদায় করা রাসূল (সাঃ) এর সুন্নাত। এটি ফরজ নামাজের পরিপূরক হিসেবে কাজ করে।",
-  },
-  {
-    id: 3,
-    question: "যোহরে ২ রাকাত অতিরিক্ত পড়েছি?",
-    importance: "low",
-    points: 1,
-    category: "সলাত",
-    details: "যোহরের নামাজের পর দুই রাকাত নফল নামাজ আদায় করা মুস্তাহাব।",
   },
   {
     id: 4,
@@ -89,7 +72,7 @@ export const amalQuestions = [
   // Morning and Evening Dhikr Part
   {
     id: 10,
-    question: "সকাল সন্ধ্যা জিকির করেছি? (আবশ্যক)",
+    question: "সকাল সন্ধ্যা জিকির করেছি?",
     importance: "normal",
     points: 1,
     category: "সকাল সন্ধ্যা জিকির",
@@ -116,7 +99,7 @@ export const amalQuestions = [
   {
     id: 13,
     question:
-      "জান্নাতুল ফেরদৌসের জন্য দোয়া করেছি ও জাহান্নাম থেকে মুক্তির দোয়া করেছি? (আবশ্যক)",
+      "জান্নাতুল ফেরদৌসের জন্য দোয়া করেছি ও জাহান্নাম থেকে মুক্তির দোয়া করেছি? ",
     importance: "low",
     points: 1,
     category: "সকাল সন্ধ্যা জিকির",
@@ -154,7 +137,7 @@ export const amalQuestions = [
     id: 17,
     question: "সর্বক্ষণ জিকির, ইস্তেগফার ও দুরুদ পড়েছি?",
     importance: "normal",
-    points: 5,
+    points: 3,
     category: "অন্যান্য",
     details:
       "নিয়মিত জিকির, ইস্তেগফার ও দুরুদ পাঠ করলে অন্তর পরিশুদ্ধ হয় এবং আল্লাহর নৈকট্য লাভ হয়।",
@@ -318,6 +301,22 @@ export const amalQuestions = [
     id: 37,
     question: "সর্বদা অজুর সাথে থেকেছি / অজুর সলাত আদায় করেছি?",
     importance: "normal",
+    points: 1,
+    category: "অন্যান্য",
+    details: "অজু অবস্থায় থাকা একটি গুরুত্বপূর্ণ ইবাদত।",
+  },
+  {
+    id: 38,
+    question: "ঘুমাতে যাওয়ার আগের এবং ঘুম থেকে উঠে আমল করেছি?",
+    importance: "important",
+    points: 1,
+    category: "অন্যান্য",
+    details: "অজু অবস্থায় থাকা একটি গুরুত্বপূর্ণ ইবাদত।",
+  },
+  {
+    id: 39,
+    question: "অন্তত একজন কে দ্বীনের দাওয়াত দিয়েছি?",
+    importance: "important",
     points: 1,
     category: "অন্যান্য",
     details: "অজু অবস্থায় থাকা একটি গুরুত্বপূর্ণ ইবাদত।",
