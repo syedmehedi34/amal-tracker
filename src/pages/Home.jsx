@@ -22,6 +22,7 @@ const quotes = [
 function Home() {
   const { user } = useAuth();
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+  console.log("API KEY from env:", import.meta.env.VITE_API_KEY);
 
   return (
     <div className="max-w-4xl mx-auto">
