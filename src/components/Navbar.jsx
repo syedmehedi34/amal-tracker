@@ -34,7 +34,7 @@ function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="text-2xl font-bold text-islamic">
-            Daily Amal
+            Ibad Allah (عباد الله)
           </Link>
 
           {/* Navigation Links (visible on medium and larger screens) */}
