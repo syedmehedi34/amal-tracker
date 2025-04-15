@@ -1,35 +1,4 @@
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import Navbar from "./components/Navbar.jsx";
-// import Home from "./pages/Home.jsx";
-// import DailyTracker from "./pages/DailyTracker";
-// import TrackerStatus from "./pages/TrackerStatus";
-// import Login from "./pages/Login";
-// import Register from "./pages/Register";
-// import AuthProvider from "./context/AuthProvider.jsx";
-
-// function App() {
-//   return (
-//     <AuthProvider>
-//       <Router>
-//         <div className="min-h-screen islamic-pattern">
-//           <Navbar />
-//           <main className="container mx-auto px-4 py-8">
-//             <Routes>
-//               <Route path="/" element={<Home />} />
-//               <Route path="/daily-tracker" element={<DailyTracker />} />
-//               <Route path="/tracker-status" element={<TrackerStatus />} />
-//               <Route path="/login" element={<Login />} />
-//               <Route path="/register" element={<Register />} />
-//             </Routes>
-//           </main>
-//         </div>
-//       </Router>
-//     </AuthProvider>
-//   );
-// }
-
-// export default App;
-
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home.jsx";
@@ -37,15 +6,21 @@ import DailyTracker from "./pages/DailyTracker";
 import TrackerStatus from "./pages/TrackerStatus";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import AuthProvider from "./context/AuthProvider.jsx";
-import { useAuth } from "./context/AuthProvider.jsx";
+import AuthProvider, { useAuth } from "./context/AuthProvider.jsx";
 
-// Child component to handle content rendering
+// Create a QueryClient instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
+
 function AppContent() {
   const { loading } = useAuth();
-  console.log(loading);
 
-  // Loading spinner component
   const LoadingSpinner = () => (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 islamic-pattern">
       <div className="flex flex-col items-center">
@@ -55,12 +30,10 @@ function AppContent() {
     </div>
   );
 
-  // If loading, show spinner
   if (loading) {
     return <LoadingSpinner />;
   }
 
-  // Once loading is complete, show the app
   return (
     <Router>
       <div className="min-h-screen islamic-pattern">
@@ -81,9 +54,11 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 

@@ -7,7 +7,7 @@ function Navbar() {
   const { user, logOut } = useAuth();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const navigate = useNavigate();
-  console.log(user);
+  // console.log(user);
 
   // Toggle drawer open/close
   const toggleDrawer = () => {
