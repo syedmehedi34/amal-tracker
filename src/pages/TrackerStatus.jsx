@@ -23,9 +23,10 @@ import {
   isWithinInterval,
 } from "date-fns";
 import { amalQuestions } from "../data/amalQuestions";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
 import { HiExclamationCircle, HiChartBar, HiFire } from "react-icons/hi";
 import { HiTrophy } from "react-icons/hi2";
+import { useAuth } from "../context/AuthProvider";
 
 ChartJS.register(
   CategoryScale,

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"; // Hamburger and close icons
+import { useAuth } from "../context/AuthProvider";
 
 function Navbar() {
   const { user, logout } = useAuth();

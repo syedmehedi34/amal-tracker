@@ -1,29 +1,30 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
+// import { useAuth } from '../context/AuthContext';
 
 function Login() {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     // Mock login - In a real app, this would be an API call
     if (formData.email && formData.password) {
       login({
-        name: formData.email.split('@')[0],
+        name: formData.email.split("@")[0],
         email: formData.email,
       });
-      navigate('/daily-tracker');
+      navigate("/daily-tracker");
     } else {
-      setError('Please fill in all fields');
+      setError("Please fill in all fields");
     }
   };
 
@@ -49,7 +50,10 @@ function Login() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-primary-600">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-primary-600"
+            >
               Email
             </label>
             <input
@@ -63,7 +67,10 @@ function Login() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-primary-600">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-primary-600"
+            >
               Password
             </label>
             <input

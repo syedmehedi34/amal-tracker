@@ -8,9 +8,10 @@ import {
   HiPencil,
   HiInformationCircle,
 } from "react-icons/hi";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
 import AmalDetailsModal from "../components/AmalDetailsModal";
 import PrayerBreakdown from "../components/PrayerBreakdown";
+import { useAuth } from "../context/AuthProvider";
 
 function DailyTracker() {
   const [currentQuestion, setCurrentQuestion] = useState(0);

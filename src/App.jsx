@@ -1,11 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar.jsx';
-import Home from './pages/Home';
-import DailyTracker from './pages/DailyTracker';
-import TrackerStatus from './pages/TrackerStatus';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import { AuthProvider } from './context/AuthContext';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar.jsx";
+import Home from "./pages/Home.jsx";
+import DailyTracker from "./pages/DailyTracker";
+import TrackerStatus from "./pages/TrackerStatus";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import AuthProvider from "./context/AuthProvider.jsx";
 
 function App() {
   return (
