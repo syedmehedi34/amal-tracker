@@ -1,0 +1,60 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/*  */
+/* styles.css or equivalent */
+.btn-primary {
+  @apply bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700;
+}
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300;
+}
+.nav-link {
+  @apply text-islamic hover:text-islamic-dark;
+}
+.text-islamic {
+  @apply text-green-800;
+}
+.hover\:text-islamic-dark:hover {
+  @apply text-green-900;
+}
