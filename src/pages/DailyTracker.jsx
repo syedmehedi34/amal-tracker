@@ -285,7 +285,7 @@ function DailyTracker() {
               className="flex items-center text-islamic hover:text-islamic-dark text-sm"
             >
               <HiPencil className="w-4 h-4 mr-1" />
-              পুনরায় জমা দিন
+              এডিট করুন
             </button>
           </div>
           <h2 className="text-lg sm:text-xl font-bold text-islamic mb-3">
