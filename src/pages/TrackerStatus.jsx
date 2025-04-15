@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import {
@@ -344,18 +345,6 @@ function TrackerStatus() {
           <h2 className="text-xl sm:text-2xl font-bold text-islamic">
             Progress Tracker
           </h2>
-
-          {error && (
-            <div className="text-red-600 text-sm">
-              Error: {error.message}
-              <button
-                onClick={refetch}
-                className="ml-2 btn-primary text-sm px-2 py-1"
-              >
-                Retry
-              </button>
-            </div>
-          )}
 
           {!user && (
             <div className="text-yellow-600 text-sm">
