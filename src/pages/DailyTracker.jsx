@@ -111,7 +111,7 @@ function DailyTracker() {
         (acc, [questionIndex, completed]) => {
           const question = amalQuestions[questionIndex];
           // todo:need to change the id as questionName
-          acc[question.id] = completed ? "Yes" : "No";
+          acc[question.question] = completed ? "Yes" : "No";
           return acc;
         },
         {}
