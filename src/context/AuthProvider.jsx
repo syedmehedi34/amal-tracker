@@ -26,6 +26,7 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
   const axiosPublic = useAxiosPublic();
 
   // Create a new user
@@ -55,20 +56,16 @@ const AuthProvider = ({ children }) => {
     return sendPasswordResetEmail(auth, email);
   };
 
-  // todo: reset password [this will work only if the user is logged in]
+  // Reset password (only if user is logged in)
   const changePassword = async (email, oldPassword, newPassword) => {
-    // const auth = getAuth();
     const user = auth.currentUser;
-
     const credential = EmailAuthProvider.credential(email, oldPassword);
 
     try {
       // Step 1: Re-authenticate
       await reauthenticateWithCredential(user, credential);
-
       // Step 2: Update password
       await updatePassword(user, newPassword);
-
       console.log("✅ Password updated successfully!");
     } catch (error) {
       console.error("❌ Error changing password:", error.message);
@@ -84,29 +81,12 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-
-      // console.log(currentUser);
-
-      // if (currentUser?.email) {
-      //   const user = { email: currentUser.email };
-      //   axiosPublic
-      //     .post("/jwt", user, { withCredentials: true })
-      //     .then((res) => {
-      //       console.log("login token", res.data);
-      //       setLoading(false);
-      //     });
-      // } else {
-      //   axiosPublic
-      //     .post("/logout", {}, { withCredentials: true })
-      //     .then((res) => {
-      //       console.log("logout data : ", res.data);
-      //       setLoading(false);
-      //     });
-      // }
+      setLoading(false); // Set loading to false once auth state is resolved
+      console.log("Auth state changed:", currentUser);
     });
 
     return () => unsubscribe();
-  }, [axiosPublic]);
+  }, []); // Removed axiosPublic dependency if not used
 
   const authInfo = {
     user,
