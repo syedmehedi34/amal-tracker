@@ -112,17 +112,17 @@ function DailyTracker() {
         (acc, [questionIndex, completed]) => {
           const question = amalQuestions[questionIndex];
           // todo:need to change the id as questionName
-          acc[question.question] = completed ? "Yes" : "No";
+          acc[question.questionName] = completed ? "Yes" : "No";
           return acc;
         },
         {}
       ),
       prayerValues: { ...prayerValues },
-      points: {
-        regularPoints,
-        prayerPoints,
-        totalPoints,
-      },
+      // points: {
+      //   regularPoints,
+      //   prayerPoints,
+      //   totalPoints,
+      // },
     };
 
     // Log the combined answers object
