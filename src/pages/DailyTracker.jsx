@@ -139,12 +139,12 @@ function DailyTracker() {
     };
 
     // Log the combined answers object
-    console.log(allAnswerInfo);
+    // console.log(allAnswerInfo);
 
     //? send the allAnswerInfo to the server
     try {
       const res = await axiosPublic.post("/amal_data", allAnswerInfo);
-      console.log("Response:", res.data);
+      // console.log(res.data);
       Swal.fire({
         position: "top-center",
         icon: "success",
