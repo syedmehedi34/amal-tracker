@@ -445,7 +445,7 @@ function DailyTracker() {
     try {
       const res = await axiosPublic.post("/amal_data", allAnswerInfo);
       Swal.fire({
-        position: "top-center",
+        position: "center",
         icon: "success",
         title: res.data.message || "Your daily Amal has been saved!",
         showConfirmButton: false,
@@ -461,7 +461,7 @@ function DailyTracker() {
     } catch (error) {
       console.error("Error submitting data:", error);
       Swal.fire({
-        position: "top-center",
+        position: "center",
         icon: "error",
         title: "Failed to save data",
         showConfirmButton: false,
