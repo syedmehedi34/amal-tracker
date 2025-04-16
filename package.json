@@ -16,12 +16,14 @@
     "chart.js": "^4.4.1",
     "date-fns": "^3.3.1",
     "firebase": "^11.6.0",
+    "hijri-date": "^0.2.2",
+    "moment-hijri": "^3.0.0",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.30.0",
-    "sweetalert2": "^11.18.0"
+    "sweetalert2": "^11.6.13"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
@@ -36,6 +38,6 @@
     "globals": "^15.9.0",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
-    "vite": "^5.4.2"
+    "vite": "^6.2.6"
   }
 }

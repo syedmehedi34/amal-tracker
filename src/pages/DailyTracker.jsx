@@ -7,12 +7,14 @@
 //   HiChevronRight,
 //   HiPencil,
 //   HiInformationCircle,
+//   HiLightBulb,
 // } from "react-icons/hi";
 // import AmalDetailsModal from "../components/AmalDetailsModal";
 // import PrayerBreakdown from "../components/PrayerBreakdown";
 // import { useAuth } from "../context/AuthProvider";
 // import useAxiosPublic from "../hooks/useAxiosPublic";
 // import Swal from "sweetalert2";
+// import moment from "moment-hijri"; // Added for Hijri date
 
 // function DailyTracker() {
 //   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -35,6 +37,71 @@
 //     (total, q) => total + q.points,
 //     0
 //   );
+
+//   // Helper function to convert numbers to Bengali numerals
+//   const toBengaliNumeral = (num) =>
+//     String(num).replace(/[0-9]/g, (d) => "০১২৩৪৫৬৭৮৯".charAt(Number(d)));
+
+//   // Helper function to get Bengali month name for Gregorian date
+//   const getBengaliMonth = (month) => {
+//     const months = [
+//       "জানুয়ারি",
+//       "ফেব্রুয়ারি",
+//       "মার্চ",
+//       "এপ্রিল",
+//       "মে",
+//       "জুন",
+//       "জুলাই",
+//       "আগস্ট",
+//       "সেপ্টেম্বর",
+//       "অক্টোবর",
+//       "নভেম্বর",
+//       "ডিসেম্বর",
+//     ];
+//     return months[month];
+//   };
+
+//   // Helper function to get Bengali Hijri month name
+//   const getBengaliHijriMonth = (monthName) => {
+//     const hijriMonths = {
+//       Muharram: "মুহাররম",
+//       Safar: "সফর",
+//       "Rabi al-Awwal": "রবিউল আউয়াল",
+//       "Rabi al-Thani": "রবিউস সানি",
+//       "Jumada al-Awwal": "জমাদিউল আউয়াল",
+//       "Jumada al-Thani": "জমাদিউস সানি",
+//       Rajab: "রজব",
+//       Shaban: "শাবান",
+//       Ramadan: "রমজান",
+//       Shawwal: "শাওয়াল",
+//       "Dhu al-Qidah": "জিলকদ",
+//       "Dhu al-Hijjah": "জিলহজ",
+//     };
+//     return hijriMonths[monthName] || monthName;
+//   };
+
+//   // Format English (Gregorian) date
+//   const getEnglishDate = () => {
+//     const today = new Date();
+//     const day = toBengaliNumeral(today.getDate());
+//     const month = getBengaliMonth(today.getMonth());
+//     const year = toBengaliNumeral(today.getFullYear());
+//     return `${day} ${month}, ${year} ইং`;
+//   };
+
+//   // Format Arabic (Hijri) date
+//   const getHijriDate = () => {
+//     try {
+//       const hijri = moment().format("iD iMMMM iYYYY");
+//       const [day, monthName, year] = hijri.split(" ");
+//       return `${toBengaliNumeral(day)} ${getBengaliHijriMonth(
+//         monthName
+//       )}, ${toBengaliNumeral(year)} হিঃ`;
+//     } catch (error) {
+//       console.error("Error calculating Hijri date:", error);
+//       return "হিজরি তারিখ পাওয়া যায়নি";
+//     }
+//   };
 
 //   useEffect(() => {
 //     if (!user?.email) return;
@@ -109,6 +176,41 @@
 //       if (prayer === "dhuhr" && values.nafl) total += 1;
 //     });
 //     return total;
+//   };
+
+//   const getSuggestions = () => {
+//     const suggestions = [];
+
+//     Object.entries(prayerValues).forEach(([prayer, values]) => {
+//       if (!values.status || values.status === "notPrayed") {
+//         suggestions.push(`${prayer} - এর সলাত আদায় করুন।`);
+//       }
+//       if (values.status !== "congregation") {
+//         suggestions.push(
+//           `${prayer} - এর সলাত জামাতের সাথে আদায়ের চেষ্টা করুন।`
+//         );
+//       }
+//       if (
+//         !values.sunnah &&
+//         (prayer === "fajr" || prayer === "dhuhr" || prayer === "maghrib")
+//       ) {
+//         suggestions.push(`${prayer} - এর সুন্নাত নামাজ আদায় করুন।`);
+//       }
+//     });
+
+//     Object.entries(answers).forEach(([index, completed]) => {
+//       if (!completed && amalQuestions[index]) {
+//         const question = amalQuestions[index];
+//         if (question.category === "কুরআন তেলাওয়াত") {
+//           suggestions.push("কুরআন তেলাওয়াত করুন।");
+//         }
+//         if (question.category === "সকাল সন্ধ্যা জিকির") {
+//           suggestions.push("আপনার সকাল সন্ধ্যা যিকর গুলো করুন।");
+//         }
+//       }
+//     });
+
+//     return suggestions.slice(0, 5);
 //   };
 
 //   const handleAnswer = (completed) => {
@@ -276,8 +378,10 @@
 
 //   if (hasParticipatedToday && !isEditing) {
 //     const { message, className } = getPerformanceMessage(todayPoints);
+//     const suggestions = getSuggestions();
+
 //     return (
-//       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6">
+//       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 space-y-6">
 //         <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 text-center">
 //           <div className="flex justify-end mb-3">
 //             <button
@@ -292,6 +396,9 @@
 //             আজকের আমল সম্পন্ন হয়েছে
 //           </h2>
 //           <p className="text-base sm:text-lg mb-3">
+//             {getEnglishDate()} | {getHijriDate()}
+//           </p>
+//           <p className="text-base sm:text-lg mb-3">
 //             আপনার প্রাপ্ত নম্বর:{" "}
 //             <span className="font-bold">
 //               {todayPoints}/{totalPossiblePoints}
@@ -301,6 +408,25 @@
 //             {message}
 //           </p>
 //         </div>
+
+//         {suggestions.length > 0 && (
+//           <div className="bg-islamic-light/10 rounded-lg shadow-lg p-4 sm:p-6">
+//             <div className="flex items-center mb-4">
+//               <HiLightBulb className="w-6 h-6 text-islamic mr-2" />
+//               <h3 className="text-lg sm:text-xl font-semibold text-islamic">
+//                 You need to improve these Amals
+//               </h3>
+//             </div>
+//             <ul className="space-y-3">
+//               {suggestions.map((suggestion, index) => (
+//                 <li key={index} className="flex items-start">
+//                   <span className="inline-block w-2 h-2 mt-2 mr-2 bg-islamic rounded-full"></span>
+//                   <span className="text-gray-700">{suggestion}</span>
+//                 </li>
+//               ))}
+//             </ul>
+//           </div>
+//         )}
 //       </div>
 //     );
 //   }
@@ -488,13 +614,14 @@ import {
   HiChevronRight,
   HiPencil,
   HiInformationCircle,
-  HiLightBulb, // Added for suggestions
+  HiLightBulb,
 } from "react-icons/hi";
 import AmalDetailsModal from "../components/AmalDetailsModal";
 import PrayerBreakdown from "../components/PrayerBreakdown";
 import { useAuth } from "../context/AuthProvider";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
+import moment from "moment-hijri"; // Added for Hijri date
 
 function DailyTracker() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -517,6 +644,72 @@ function DailyTracker() {
     (total, q) => total + q.points,
     0
   );
+
+  // Helper function to convert numbers to Bengali numerals
+  const toBengaliNumeral = (num) =>
+    String(num).replace(/[0-9]/g, (d) => "০১২৩৪৫৬৭৮৯".charAt(Number(d)));
+
+  // Helper function to get Bengali month name for Gregorian date
+  const getBengaliMonth = (month) => {
+    const months = [
+      "জানুয়ারি",
+      "ফেব্রুয়ারি",
+      "মার্চ",
+      "এপ্রিল",
+      "মে",
+      "জুন",
+      "জুলাই",
+      "আগস্ট",
+      "সেপ্টেম্বর",
+      "অক্টোবর",
+      "নভেম্বর",
+      "ডিসেম্বর",
+    ];
+    return months[month];
+  };
+
+  // Helper function to get Bengali Hijri month name
+  const getBengaliHijriMonth = (monthIndex) => {
+    const hijriMonths = [
+      "মুহাররম", // 0
+      "সফর", // 1
+      "রবিউল আউয়াল", // 2
+      "রবিউস সানি", // 3
+      "জমাদিউল আউয়াল", // 4
+      "জমাদিউস সানি", // 5
+      "রজব", // 6
+      "শাবান", // 7
+      "রমজান", // 8
+      "শাওয়াল", // 9
+      "জিলকদ", // 10
+      "জিলহজ", // 11
+    ];
+    return hijriMonths[monthIndex] || "অজানা মাস";
+  };
+
+  // Format English (Gregorian) date
+  const getEnglishDate = () => {
+    const today = new Date();
+    const day = toBengaliNumeral(today.getDate());
+    const month = getBengaliMonth(today.getMonth());
+    const year = toBengaliNumeral(today.getFullYear());
+    return `${day} ${month}, ${year} ইং`;
+  };
+
+  // Format Arabic (Hijri) date
+  const getHijriDate = () => {
+    try {
+      const day = moment().iDate();
+      const monthIndex = moment().iMonth();
+      const year = moment().iYear();
+      return `${toBengaliNumeral(day)} ${getBengaliHijriMonth(
+        monthIndex
+      )}, ${toBengaliNumeral(year)} হিঃ`;
+    } catch (error) {
+      console.error("Error calculating Hijri date:", error);
+      return "হিজরি তারিখ পাওয়া যায়নি";
+    }
+  };
 
   useEffect(() => {
     if (!user?.email) return;
@@ -593,40 +786,38 @@ function DailyTracker() {
     return total;
   };
 
-  // Added getSuggestions function
   const getSuggestions = () => {
     const suggestions = [];
 
-    // Check prayers
     Object.entries(prayerValues).forEach(([prayer, values]) => {
       if (!values.status || values.status === "notPrayed") {
-        suggestions.push(`Try to pray ${prayer} on time`);
+        suggestions.push(`${prayer} - এর সলাত আদায় করুন।`);
       }
       if (values.status !== "congregation") {
-        suggestions.push(`Aim to pray ${prayer} in congregation`);
+        suggestions.push(
+          `${prayer} - এর সলাত জামাতের সাথে আদায়ের চেষ্টা করুন।`
+        );
       }
       if (
         !values.sunnah &&
         (prayer === "fajr" || prayer === "dhuhr" || prayer === "maghrib")
       ) {
-        suggestions.push(`Don't forget the Sunnah prayers for ${prayer}`);
+        suggestions.push(`${prayer} - এর সুন্নাত নামাজ আদায় করুন।`);
       }
     });
 
-    // Check other amals
     Object.entries(answers).forEach(([index, completed]) => {
       if (!completed && amalQuestions[index]) {
         const question = amalQuestions[index];
         if (question.category === "কুরআন তেলাওয়াত") {
-          suggestions.push("Make time for Quran recitation");
+          suggestions.push("কুরআন তেলাওয়াত করুন।");
         }
         if (question.category === "সকাল সন্ধ্যা জিকির") {
-          suggestions.push("Remember to do your morning and evening dhikr");
+          suggestions.push("আপনার সকাল সন্ধ্যা যিকর গুলো করুন।");
         }
       }
     });
 
-    // Limit to 5 most important suggestions
     return suggestions.slice(0, 5);
   };
 
@@ -795,7 +986,7 @@ function DailyTracker() {
 
   if (hasParticipatedToday && !isEditing) {
     const { message, className } = getPerformanceMessage(todayPoints);
-    const suggestions = getSuggestions(); // Call getSuggestions
+    const suggestions = getSuggestions();
 
     return (
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 space-y-6">
@@ -813,6 +1004,9 @@ function DailyTracker() {
             আজকের আমল সম্পন্ন হয়েছে
           </h2>
           <p className="text-base sm:text-lg mb-3">
+            {getEnglishDate()} | {getHijriDate()}
+          </p>
+          <p className="text-base sm:text-lg mb-3">
             আপনার প্রাপ্ত নম্বর:{" "}
             <span className="font-bold">
               {todayPoints}/{totalPossiblePoints}
@@ -828,7 +1022,7 @@ function DailyTracker() {
             <div className="flex items-center mb-4">
               <HiLightBulb className="w-6 h-6 text-islamic mr-2" />
               <h3 className="text-lg sm:text-xl font-semibold text-islamic">
-                Suggestions for Improvement
+                You need to improve these Amals
               </h3>
             </div>
             <ul className="space-y-3">
