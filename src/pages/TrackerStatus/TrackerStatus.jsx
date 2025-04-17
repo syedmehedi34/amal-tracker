@@ -33,6 +33,8 @@ import {
 import { HiOutlineExclamationTriangle, HiTrophy } from "react-icons/hi2";
 import { useAuth } from "../../context/AuthProvider"; // Adjust path
 import useAmalData from "../../hooks/useAmalData"; // Adjust path
+import UpdateYourAmal from "./UpdateYourAmal";
+import Statistics from "./StatisticsCard";
 
 ChartJS.register(
   CategoryScale,
@@ -432,165 +434,13 @@ function TrackerStatus() {
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
-          <h3 className="text-base sm:text-lg font-semibold text-islamic">
-            Statistics
-          </h3>
-          <select
-            value={selectedStatsRange}
-            onChange={(e) => setSelectedStatsRange(e.target.value)}
-            className="w-full sm:w-auto px-3 py-1.5 border border-islamic rounded-md focus:outline-none focus:ring-2 focus:ring-islamic text-sm"
-          >
-            <option value="week">Weekly Stats</option>
-            <option value="month">Monthly Stats</option>
-            <option value="year">Yearly Stats</option>
-          </select>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* best performance card  */}
-          <div className="bg-green-50 p-4 rounded-lg">
-            <div className="flex items-center mb-2">
-              <HiTrophy className="w-5 h-5 text-green-600 mr-2" />
-              <h3 className="text-base font-semibold text-green-800">
-                Best Performance
-              </h3>
-            </div>
-            <p className="text-green-600 text-sm">
-              {stats.bestDay.date ? (
-                <>
-                  {format(parseISO(stats.bestDay.date), "MMM dd, yyyy")}
-                  <br />
-                  {stats.bestDay.points} points
-                </>
-              ) : (
-                "No data yet"
-              )}
-            </p>
-          </div>
-
-          {/* lowest card  */}
-          <div className="bg-red-50 p-4 rounded-lg">
-            <div className="flex items-center mb-2">
-              <HiExclamationCircle className="w-5 h-5 text-red-600 mr-2" />
-              <h3 className="text-base font-semibold text-red-800">
-                Needs Improvement
-              </h3>
-            </div>
-            <p className="text-red-600 text-sm">
-              {stats.worstDay.date ? (
-                <>
-                  {format(parseISO(stats.worstDay.date), "MMM dd, yyyy")}
-                  <br />
-                  {stats.worstDay.points} points
-                </>
-              ) : (
-                "No data yet"
-              )}
-            </p>
-          </div>
-
-          {/* average card */}
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <div className="flex items-center mb-2">
-              <HiChartBar className="w-5 h-5 text-blue-600 mr-2" />
-              <h3 className="text-base font-semibold text-blue-800">
-                Average Points
-              </h3>
-            </div>
-            <p className="text-blue-600 text-sm">
-              {stats.averagePoints} points per day
-            </p>
-          </div>
-
-          {/* streak card  */}
-          <div className="bg-orange-50 p-4 rounded-lg">
-            <div className="flex items-center mb-2">
-              <HiFire className="w-5 h-5 text-orange-600 mr-2" />
-              <h3 className="text-base font-semibold text-orange-800">
-                Current Streak
-              </h3>
-            </div>
-            <p className="text-orange-600 text-sm">
-              {stats.streak} {stats.streak === 1 ? "day" : "days"}
-            </p>
-          </div>
-        </div>
-
+        <Statistics
+          selectedStatsRange={selectedStatsRange}
+          setSelectedStatsRange={setSelectedStatsRange}
+          stats={stats}
+        />
         {/* //todo: attention table starts */}
-        <div className="mt-8">
-          <div className="flex items-center mb-4">
-            <HiOutlineExclamationTriangle className="w-5 h-5 text-islamic mr-2" />
-            <h3 className="text-lg font-semibold text-islamic">
-              Areas Needing Attention
-            </h3>
-          </div>
-          <div className="bg-white rounded-lg overflow-hidden border border-gray-200">
-            <table className="w-full">
-              <tbody>
-                {[
-                  {
-                    question: "Sample Amal",
-                    category: "সলাত",
-                    missedCount: 5,
-                    totalDays: 30,
-                  },
-                  {
-                    question: "Sample Amal",
-                    category: "সলাত",
-                    missedCount: 5,
-                    totalDays: 30,
-                  },
-                  {
-                    question: "Sample Amal",
-                    category: "সলাত",
-                    missedCount: 5,
-                    totalDays: 30,
-                  },
-                  {
-                    question: "Sample Amal",
-                    category: "সলাত",
-                    missedCount: 5,
-                    totalDays: 30,
-                  },
-                ].map((amal, index) => (
-                  <tr
-                    key={index}
-                    className={`border-b border-gray-200 ${
-                      index === 0 ? "border-b0" : ""
-                    }`}
-                  >
-                    <td className="py-3 px-4">
-                      <div className="flex items-center space-x-2">
-                        <span className="font-medium text-gray-800">
-                          {amal.question}
-                        </span>
-                        <button
-                          onClick={() => {}}
-                          className="text-islamic hover:text-islamic-dark transition-colors"
-                          title="View details"
-                        >
-                          <HiInformationCircle className="w-4 h-4" />
-                        </button>
-                        <span
-                          className={`text-xs px-2 py-0.5 rounded-full bg-green-100`}
-                        >
-                          {amal.category}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4 text-right whitespace-nowrap">
-                      <span className="text-sm text-gray-600">
-                        Missed {amal.missedCount}/{amal.totalDays}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        {/* //todo: attention table ends */}
+        <UpdateYourAmal />
       </div>
     </div>
   );
