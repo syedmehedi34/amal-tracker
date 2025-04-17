@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home.jsx";
 import DailyTracker from "./pages/DailyTracker";
-import TrackerStatus from "./pages/TrackerStatus";
+import TrackerStatus from "./pages/TrackerStatus/TrackerStatus.jsx";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AuthProvider, { useAuth } from "./context/AuthProvider.jsx";
