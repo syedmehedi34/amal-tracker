@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { format, parseISO } from "date-fns";
 import { HiExclamationCircle, HiChartBar, HiFire } from "react-icons/hi";
 import { HiTrophy } from "react-icons/hi2";
