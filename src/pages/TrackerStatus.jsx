@@ -55,6 +55,7 @@ function TrackerStatus() {
   const [dailyDetails, setDailyDetails] = useState([]);
   const { user } = useAuth();
   const { amalData, isLoading, error, refetch } = useAmalData();
+  console.log(amalData);
 
   // Max possible points per day
   const totalPossiblePoints = 100;
