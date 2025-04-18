@@ -171,7 +171,7 @@ function DailyTracker() {
     Object.entries(prayerValues).forEach(([prayer, values]) => {
       if (values.status === "congregation") total += 4;
       else if (values.status === "alone") total += 1;
-
+      else if (values.status === "notPrayed") total += -20;
       if (values.sunnah) {
         if (prayer === "dhuhr") total += 3;
         else total += 1;

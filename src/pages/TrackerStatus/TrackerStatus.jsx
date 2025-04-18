@@ -23,14 +23,6 @@ import {
   parseISO,
   isWithinInterval,
 } from "date-fns";
-import { amalQuestions } from "../../data/amalQuestions"; // Adjust path
-import {
-  HiExclamationCircle,
-  HiChartBar,
-  HiFire,
-  HiInformationCircle,
-} from "react-icons/hi";
-import { HiOutlineExclamationTriangle, HiTrophy } from "react-icons/hi2";
 import { useAuth } from "../../context/AuthProvider"; // Adjust path
 import useAmalData from "../../hooks/useAmalData"; // Adjust path
 import UpdateYourAmal from "./UpdateYourAmal";
