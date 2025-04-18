@@ -14,7 +14,7 @@ const prayers = {
     options: {
       congregation: { label: "Prayed in congregation", points: 4 },
       alone: { label: "Prayed alone", points: 1 },
-      notPrayed: { label: "Not prayed", points: 0 },
+      notPrayed: { label: "Not prayed", points: -20 },
       sunnah: { label: "Sunnah prayed", points: 3 },
       nafl: { label: "Nafl (extra) prayer prayed", points: 1 },
     },
@@ -24,7 +24,7 @@ const prayers = {
     options: {
       congregation: { label: "Prayed in congregation", points: 4 },
       alone: { label: "Prayed alone", points: 1 },
-      notPrayed: { label: "Not prayed", points: 0 },
+      notPrayed: { label: "Not prayed", points: -20 },
     },
   },
   maghrib: {
@@ -32,7 +32,7 @@ const prayers = {
     options: {
       congregation: { label: "Prayed in congregation", points: 4 },
       alone: { label: "Prayed alone", points: 1 },
-      notPrayed: { label: "Not prayed", points: 0 },
+      notPrayed: { label: "Not prayed", points: -20 },
       sunnah: { label: "Sunnah prayed", points: 1 },
     },
   },
@@ -41,7 +41,7 @@ const prayers = {
     options: {
       congregation: { label: "Prayed in congregation", points: 4 },
       alone: { label: "Prayed alone", points: 1 },
-      notPrayed: { label: "Not prayed", points: 0 },
+      notPrayed: { label: "Not prayed", points: -20 },
       sunnah: { label: "Sunnah prayed", points: 1 },
     },
   },
