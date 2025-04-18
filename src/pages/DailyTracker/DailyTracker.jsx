@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { amalQuestions } from "../data/amalQuestions";
+import { amalQuestions } from "../../data/amalQuestions";
 import { format } from "date-fns";
 import {
   HiChevronLeft,
@@ -9,10 +9,10 @@ import {
   HiInformationCircle,
   HiLightBulb,
 } from "react-icons/hi";
-import AmalDetailsModal from "../components/AmalDetailsModal";
-import PrayerBreakdown from "../components/PrayerBreakdown";
-import { useAuth } from "../context/AuthProvider";
-import useAxiosPublic from "../hooks/useAxiosPublic";
+import AmalDetailsModal from "../../components/AmalDetailsModal";
+import PrayerBreakdown from "../../components/PrayerBreakdown";
+import { useAuth } from "../../context/AuthProvider";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 import moment from "moment-hijri";
 
