@@ -65,7 +65,7 @@ const useHijriDate = (gregorianDate = new Date()) => {
 
     try {
       // Maghrib time (approximate) for Bangladesh, e.g., 6:15 PM
-      const maghribHour = 18;
+      const maghribHour = 20; // 8 PM in 24-hour format
       const maghribMinute = 15;
 
       const now = new Date(gregorianDate);
