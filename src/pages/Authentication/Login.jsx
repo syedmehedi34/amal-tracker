@@ -82,7 +82,7 @@ function Login() {
 
       console.log(response.data);
 
-      navigate("/dashboard");
+      navigate("/");
     } catch (err) {
       console.error("Google login error:", err);
       setError("Google sign-in failed. Please try again.");
