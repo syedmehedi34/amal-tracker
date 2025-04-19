@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
@@ -80,7 +81,7 @@ function Login() {
         email: user?.email,
       });
 
-      console.log(response.data);
+      // console.log(response.data);
 
       navigate("/");
     } catch (err) {

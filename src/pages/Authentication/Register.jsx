@@ -71,7 +71,7 @@ function Register() {
         email: user?.email,
       });
 
-      console.log(response.data);
+      // console.log(response.data);
 
       navigate("/");
     } catch (err) {
