@@ -1,9 +1,18 @@
 /* eslint-disable react/prop-types */
-import { format, parseISO } from "date-fns";
+import { format, parse, isValid } from "date-fns";
 import { HiExclamationCircle, HiChartBar, HiFire } from "react-icons/hi";
 import { HiTrophy } from "react-icons/hi2";
 
 const Statistics = ({ selectedStatsRange, setSelectedStatsRange, stats }) => {
+  // console.log(stats);
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "No data yet";
+    const parsedDate = parse(dateStr, "dd-MM-yyyy", new Date());
+    return isValid(parsedDate)
+      ? format(parsedDate, "MMMM dd, yyyy")
+      : "Invalid Date";
+  };
+
   return (
     <>
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
@@ -21,9 +30,9 @@ const Statistics = ({ selectedStatsRange, setSelectedStatsRange, stats }) => {
         </select>
       </div>
 
-      {/* cards grid */}
+      {/* Cards grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* best performance card  */}
+        {/* Best performance card */}
         <div className="bg-green-50 p-4 rounded-lg">
           <div className="flex items-center mb-2">
             <HiTrophy className="w-5 h-5 text-green-600 mr-2" />
@@ -34,7 +43,7 @@ const Statistics = ({ selectedStatsRange, setSelectedStatsRange, stats }) => {
           <p className="text-green-600 text-sm">
             {stats.bestDay.date ? (
               <>
-                {format(parseISO(stats.bestDay.date), "MMM dd, yyyy")}
+                {formatDate(stats.bestDay.date)}
                 <br />
                 {stats.bestDay.points} points
               </>
@@ -44,7 +53,7 @@ const Statistics = ({ selectedStatsRange, setSelectedStatsRange, stats }) => {
           </p>
         </div>
 
-        {/* lowest card  */}
+        {/* Lowest card */}
         <div className="bg-red-50 p-4 rounded-lg">
           <div className="flex items-center mb-2">
             <HiExclamationCircle className="w-5 h-5 text-red-600 mr-2" />
@@ -55,7 +64,7 @@ const Statistics = ({ selectedStatsRange, setSelectedStatsRange, stats }) => {
           <p className="text-red-600 text-sm">
             {stats.worstDay.date ? (
               <>
-                {format(parseISO(stats.worstDay.date), "MMM dd, yyyy")}
+                {formatDate(stats.worstDay.date)}
                 <br />
                 {stats.worstDay.points} points
               </>
@@ -65,7 +74,7 @@ const Statistics = ({ selectedStatsRange, setSelectedStatsRange, stats }) => {
           </p>
         </div>
 
-        {/* average card */}
+        {/* Average card */}
         <div className="bg-blue-50 p-4 rounded-lg">
           <div className="flex items-center mb-2">
             <HiChartBar className="w-5 h-5 text-blue-600 mr-2" />
@@ -78,7 +87,7 @@ const Statistics = ({ selectedStatsRange, setSelectedStatsRange, stats }) => {
           </p>
         </div>
 
-        {/* streak card  */}
+        {/* Streak card */}
         <div className="bg-orange-50 p-4 rounded-lg">
           <div className="flex items-center mb-2">
             <HiFire className="w-5 h-5 text-orange-600 mr-2" />

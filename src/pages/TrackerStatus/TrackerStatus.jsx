@@ -20,11 +20,12 @@ import {
   endOfMonth,
   startOfYear,
   endOfYear,
-  parseISO,
+  parse,
   isWithinInterval,
+  eachDayOfInterval,
 } from "date-fns";
-import { useAuth } from "../../context/AuthProvider"; // Adjust path
-import useAmalData from "../../hooks/useAmalData"; // Adjust path
+import { useAuth } from "../../context/AuthProvider";
+import useAmalData from "../../hooks/useAmalData";
 import UpdateYourAmal from "./UpdateYourAmal";
 import Statistics from "./StatisticsCard";
 import RenderDailyDetails from "./renderDailyDetails";
@@ -42,7 +43,7 @@ ChartJS.register(
 function TrackerStatus() {
   const [selectedPeriod, setSelectedPeriod] = useState("month");
   const [selectedDate, setSelectedDate] = useState(
-    format(new Date(), "yyyy-MM-dd")
+    format(new Date(), "dd-MM-yyyy")
   );
   const [selectedStatsRange, setSelectedStatsRange] = useState("month");
   const [chartData, setChartData] = useState(null);
@@ -54,17 +55,14 @@ function TrackerStatus() {
   });
   const [dailyDetails, setDailyDetails] = useState([]);
   const { user } = useAuth();
-  const { amalData, isLoading, error, refetch } = useAmalData();
-  console.log(amalData);
-
-  // Max possible points per day
+  const { amalData, isLoading, error } = useAmalData();
   const totalPossiblePoints = 100;
 
   useEffect(() => {
     if (!user || isLoading) return;
 
     if (error) {
-      console.error("Error fetching amal data:", error);
+      // console.error("Error fetching amal data:", error);
       setDailyDetails([]);
       setChartData(null);
       setStats({
@@ -76,61 +74,64 @@ function TrackerStatus() {
       return;
     }
 
-    // Aggregate highest points per date
     const pointsByDate = amalData.reduce((acc, item) => {
-      const date = item.userInformation?.date;
-      if (!date) return acc;
-      const points = item.points?.totalPoints || 0;
-      acc[date] = Math.max(acc[date] || 0, points);
+      const date = item.info?.amalDate;
+      if (date) acc[date] = Number(item.info?.totalObtainedPoints) || 0;
       return acc;
     }, {});
 
-    // Calculate stats
     const calculateStats = (range) => {
-      let bestDay = { date: null, points: 0 };
-      let worstDay = { date: null, points: totalPossiblePoints };
+      let bestDay = { date: null, points: -Infinity };
+      let worstDay = { date: null, points: Infinity };
       let totalPoints = 0;
       let currentStreak = 0;
       let previousDate = null;
 
       const today = new Date();
-      let startDate;
-      switch (range) {
-        case "week":
-          startDate = startOfWeek(today, { weekStartsOn: 1 });
-          break;
-        case "month":
-          startDate = startOfMonth(today);
-          break;
-        case "year":
-          startDate = startOfYear(today);
-          break;
-        default:
-          startDate = subDays(today, 365);
-      }
+      const yesterday = subDays(today, 1);
+      const startDate =
+        range === "week"
+          ? startOfWeek(today, { weekStartsOn: 1 })
+          : range === "month"
+          ? startOfMonth(today)
+          : range === "year"
+          ? startOfYear(today)
+          : subDays(today, 365);
 
-      // Filter points by range
-      const filteredPoints = Object.entries(pointsByDate).filter(([date]) =>
-        isWithinInterval(parseISO(date), { start: startDate, end: today })
-      );
+      const filteredPoints = Object.entries(pointsByDate).filter(([date]) => {
+        try {
+          return isWithinInterval(parse(date, "dd-MM-yyyy", new Date()), {
+            start: startDate,
+            end: yesterday, // Exclude today
+          });
+        } catch (e) {
+          console.warn(`Invalid date format: ${date}`);
+          return false;
+        }
+      });
 
       filteredPoints.sort(
         ([dateA], [dateB]) =>
-          parseISO(dateA).getTime() - parseISO(dateB).getTime()
+          parse(dateA, "dd-MM-yyyy", new Date()).getTime() -
+          parse(dateB, "dd-MM-yyyy", new Date()).getTime()
       );
 
       filteredPoints.forEach(([date, points]) => {
-        if (points > bestDay.points) {
-          bestDay = { date, points };
+        const displayPoints = points; // Use raw points for stats
+        if (displayPoints > bestDay.points) {
+          bestDay = { date, points: displayPoints };
         }
-        if (points < worstDay.points && points > 0) {
-          worstDay = { date, points };
+        if (displayPoints < worstDay.points) {
+          worstDay = { date, points: displayPoints };
         }
 
-        const percentage = (points / totalPossiblePoints) * 100;
+        // Clamp points for streak calculation to maintain consistency
+        const percentage = (Math.max(points, 0) / totalPossiblePoints) * 100;
         if (percentage >= 95) {
-          const current = parseISO(date);
-          const prev = previousDate ? parseISO(previousDate) : null;
+          const current = parse(date, "dd-MM-yyyy", new Date());
+          const prev = previousDate
+            ? parse(previousDate, "dd-MM-yyyy", new Date())
+            : null;
           if (!prev || (current - prev) / (1000 * 60 * 60 * 24) === 1) {
             currentStreak++;
           } else {
@@ -142,7 +143,7 @@ function TrackerStatus() {
           previousDate = null;
         }
 
-        totalPoints += points;
+        totalPoints += displayPoints;
       });
 
       return {
@@ -155,14 +156,13 @@ function TrackerStatus() {
       };
     };
 
-    // Get date range for chart
     const getDateRange = () => {
       const today = new Date();
       switch (selectedPeriod) {
         case "day":
           return {
-            start: parseISO(selectedDate),
-            end: parseISO(selectedDate),
+            start: parse(selectedDate, "dd-MM-yyyy", new Date()),
+            end: parse(selectedDate, "dd-MM-yyyy", new Date()),
           };
         case "week":
           return {
@@ -180,37 +180,40 @@ function TrackerStatus() {
       }
     };
 
-    // Handle daily view
     if (selectedPeriod === "day") {
       const dayData = amalData.filter(
-        (item) => item.userInformation?.date === selectedDate
+        (item) => item.info?.amalDate === selectedDate
       );
       setDailyDetails(
         dayData.length
           ? dayData.map((item) => ({
-              answers: item.questions,
-              prayerValues: item.prayerValues,
-              totalPoints: item.points?.totalPoints || 0,
+              answers: item.amalDetails.map((detail) => ({
+                amalCode: detail.amalCode,
+                amalName: detail.amalName,
+                category: detail.category,
+                priority: detail.priority,
+                isDone: detail.isDone,
+                point: detail.point,
+              })),
+              totalPoints: item.info?.totalObtainedPoints || 0,
             }))
           : []
       );
       return;
     }
 
-    // Handle chart view
     const range = getDateRange();
-    const data = [];
-    let currentDate = new Date(range.start);
-
-    while (currentDate <= range.end) {
-      const dateStr = format(currentDate, "yyyy-MM-dd");
-      const points = pointsByDate[dateStr] || 0;
-      data.push({ date: dateStr, points });
-      currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
-    }
+    const allDates = eachDayOfInterval({ start: range.start, end: range.end });
+    const data = allDates.map((date) => {
+      const dateStr = format(date, "dd-MM-yyyy");
+      const points = Math.max(pointsByDate[dateStr] || 0, 0); // Clamp for chart
+      return { date: dateStr, points };
+    });
 
     setChartData({
-      labels: data.map((d) => format(parseISO(d.date), "MMM dd")),
+      labels: data.map((d) =>
+        format(parse(d.date, "dd-MM-yyyy", new Date()), "MMM dd")
+      ),
       datasets: [
         {
           label: "Daily Points",
@@ -238,30 +241,13 @@ function TrackerStatus() {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        position: "top",
-        labels: { font: { size: 12 } },
-      },
-      title: {
-        display: true,
-        text: "Your Amal Progress",
-        font: { size: 16 },
-      },
+      legend: { position: "top", labels: { font: { size: 12 } } },
+      title: { display: true, text: "Your Amal Progress", font: { size: 16 } },
       tooltip: { bodyFont: { size: 12 } },
     },
     scales: {
-      y: {
-        beginAtZero: true,
-        max: 120, // Set top value to 120 as requested
-        ticks: { font: { size: 10 } },
-      },
-      x: {
-        ticks: {
-          font: { size: 10 },
-          maxRotation: 45,
-          minRotation: 45,
-        },
-      },
+      y: { beginAtZero: true, max: 120, min: 0, ticks: { font: { size: 10 } } },
+      x: { ticks: { font: { size: 10 }, maxRotation: 45, minRotation: 45 } },
     },
   };
 
@@ -272,64 +258,42 @@ function TrackerStatus() {
           <h2 className="text-xl sm:text-2xl font-bold text-islamic">
             Progress Tracker
           </h2>
-
           {!user && (
             <div className="text-yellow-600 text-sm">
               Please log in to view your progress.
             </div>
           )}
-
           <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             {selectedPeriod === "day" && (
               <input
                 type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
+                value={format(
+                  parse(selectedDate, "dd-MM-yyyy", new Date()),
+                  "yyyy-MM-dd"
+                )}
+                onChange={(e) =>
+                  setSelectedDate(
+                    format(new Date(e.target.value), "dd-MM-yyyy")
+                  )
+                }
                 className="w-full sm:w-auto px-3 py-1.5 border border-islamic rounded-md focus:outline-none focus:ring-2 focus:ring-islamic text-sm"
                 max={format(new Date(), "yyyy-MM-dd")}
               />
             )}
             <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setSelectedPeriod("day")}
-                className={`px-3 py-1.5 text-sm rounded-md ${
-                  selectedPeriod === "day" ? "btn-primary" : "btn-secondary"
-                }`}
-              >
-                Daily
-              </button>
-              <button
-                onClick={() => setSelectedPeriod("week")}
-                className={`px-3 py-1.5 text-sm rounded-md ${
-                  selectedPeriod === "week" ? "btn-primary" : "btn-secondary"
-                }`}
-              >
-                Weekly
-              </button>
-              <button
-                onClick={() => setSelectedPeriod("month")}
-                className={`px-3 py-1.5 text-sm rounded-md ${
-                  selectedPeriod === "month" ? "btn-primary" : "btn-secondary"
-                }`}
-              >
-                Monthly
-              </button>
-              <button
-                onClick={() => setSelectedPeriod("year")}
-                className={`px-3 py-1.5 text-sm rounded-md ${
-                  selectedPeriod === "year" ? "btn-primary" : "btn-secondary"
-                }`}
-              >
-                Yearly
-              </button>
-              <button
-                onClick={() => setSelectedPeriod("all")}
-                className={`px-3 py-1.5 text-sm rounded-md ${
-                  selectedPeriod === "all" ? "btn-primary" : "btn-secondary"
-                }`}
-              >
-                All Time
-              </button>
+              {["day", "week", "month", "year", "all"].map((period) => (
+                <button
+                  key={period}
+                  onClick={() => setSelectedPeriod(period)}
+                  className={`px-3 py-1.5 text-sm rounded-md ${
+                    selectedPeriod === period ? "btn-primary" : "btn-secondary"
+                  }`}
+                >
+                  {period.charAt(0).toUpperCase() +
+                    period.slice(1) +
+                    (period === "all" ? " Time" : "ly")}
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -344,7 +308,7 @@ function TrackerStatus() {
             dailyDetails={dailyDetails}
             selectedDate={selectedDate}
             totalPossiblePoints={totalPossiblePoints}
-          ></RenderDailyDetails>
+          />
         ) : (
           <div className="h-64 sm:h-80 mb-6">
             {!chartData || chartData.datasets[0].data.every((p) => p === 0) ? (
@@ -362,7 +326,6 @@ function TrackerStatus() {
           setSelectedStatsRange={setSelectedStatsRange}
           stats={stats}
         />
-        {/* //todo: attention table starts */}
         <UpdateYourAmal />
       </div>
     </div>

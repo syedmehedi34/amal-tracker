@@ -7,6 +7,7 @@ import TrackerStatus from "./pages/TrackerStatus/TrackerStatus.jsx";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AuthProvider, { useAuth } from "./context/AuthProvider.jsx";
+import DailyTrackerProvider from "./context/DailyTrackerProvider.jsx";
 
 // Create a QueryClient instance
 const queryClient = new QueryClient({
@@ -56,7 +57,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <AppContent />
+        <DailyTrackerProvider>
+          <AppContent />
+        </DailyTrackerProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
