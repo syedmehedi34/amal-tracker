@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AuthProvider, { useAuth } from "./context/AuthProvider.jsx";
 import DailyTrackerProvider from "./context/DailyTrackerProvider.jsx";
+import { ThemeProvider } from "./context/ThemeContext.jsx";
 
 // Create a QueryClient instance
 const queryClient = new QueryClient({
@@ -56,11 +57,13 @@ function AppContent() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <DailyTrackerProvider>
-          <AppContent />
-        </DailyTrackerProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <DailyTrackerProvider>
+            <AppContent />
+          </DailyTrackerProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

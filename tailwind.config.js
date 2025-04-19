@@ -27,11 +27,11 @@ export default {
       },
     },
   },
+  darkMode: "class", // Explicitly set to 'class'
   plugins: [
     require("daisyui"), // Add daisyUI as a plugin
   ],
-  // Optional: Configure daisyUI themes (uncomment to use specific themes)
   daisyui: {
-    themes: ["light", "dark"], // Example themes
+    themes: ["light", "dark"], // Keep light and dark themes
   },
 };

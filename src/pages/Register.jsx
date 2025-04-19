@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthProvider";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -10,7 +10,7 @@ function Register() {
   });
   const [error, setError] = useState("");
   const { createNewUser, signInWithGoogle, updateUser } = useAuth();
-  const navigate = useNavigate(); // Initialize navigate for redirection
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ function Register() {
       console.log("User registered:", user);
 
       // Redirect to a different page after successful registration
-      navigate("/dashboard"); // Adjust the path as needed
+      navigate("/dashboard");
     } catch (err) {
       console.error("Registration error:", err);
       // Map Firebase error codes to user-friendly messages
@@ -62,7 +62,7 @@ function Register() {
     try {
       await signInWithGoogle();
       console.log("Google login successful");
-      navigate("/dashboard"); // Redirect after Google login
+      navigate("/dashboard");
     } catch (err) {
       console.error("Google login error:", err);
       setError("Google sign-in failed. Please try again.");
@@ -71,13 +71,13 @@ function Register() {
 
   return (
     <div className="max-w-md mx-auto">
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-islamic mb-6 text-center">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+        <h2 className="text-2xl font-bold text-islamic dark:text-islamic-light mb-6 text-center">
           Create Your Account
         </h2>
 
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-red-100 dark:bg-red-900/50 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-300 px-4 py-3 rounded mb-4">
             {error}
           </div>
         )}
@@ -86,7 +86,7 @@ function Register() {
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-primary-600"
+              className="block text-sm font-medium text-primary-600 dark:text-primary-300"
             >
               Name
             </label>
@@ -96,15 +96,15 @@ function Register() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-primary-300 shadow-sm focus:border-islamic focus:ring focus:ring-islamic focus:ring-opacity-50"
-              required // Add required attribute
+              className="mt-1 block w-full rounded-md border-primary-300 dark:border-primary-700 bg-white dark:bg-gray-700 text-primary-900 dark:text-primary-100 shadow-sm focus:border-islamic dark:focus:border-islamic-light focus:ring focus:ring-islamic dark:focus:ring-islamic-light focus:ring-opacity-50"
+              required
             />
           </div>
 
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-primary-600"
+              className="block text-sm font-medium text-primary-600 dark:text-primary-300"
             >
               Email
             </label>
@@ -114,7 +114,7 @@ function Register() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-primary-300 shadow-sm focus:border-islamic focus:ring focus:ring-islamic focus:ring-opacity-50"
+              className="mt-1 block w-full rounded-md border-primary-300 dark:border-primary-700 bg-white dark:bg-gray-700 text-primary-900 dark:text-primary-100 shadow-sm focus:border-islamic dark:focus:border-islamic-light focus:ring focus:ring-islamic dark:focus:ring-islamic-light focus:ring-opacity-50"
               required
             />
           </div>
@@ -122,7 +122,7 @@ function Register() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-primary-600"
+              className="block text-sm font-medium text-primary-600 dark:text-primary-300"
             >
               Password
             </label>
@@ -132,7 +132,7 @@ function Register() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-primary-300 shadow-sm focus:border-islamic focus:ring focus:ring-islamic focus:ring-opacity-50"
+              className="mt-1 block w-full rounded-md border-primary-300 dark:border-primary-700 bg-white dark:bg-gray-700 text-primary-900 dark:text-primary-100 shadow-sm focus:border-islamic dark:focus:border-islamic-light focus:ring focus:ring-islamic dark:focus:ring-islamic-light focus:ring-opacity-50"
               required
             />
           </div>
@@ -145,16 +145,18 @@ function Register() {
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">or</span>
+              <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                or
+              </span>
             </div>
           </div>
 
           <button
             onClick={handleGoogleLogin}
-            className="mt-4 w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-islamic focus:ring-opacity-50"
+            className="mt-4 w-full flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-islamic dark:focus:ring-islamic-light focus:ring-opacity-50"
           >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
               <path

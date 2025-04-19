@@ -28,7 +28,7 @@ import { useAuth } from "../../context/AuthProvider";
 import useAmalData from "../../hooks/useAmalData";
 import UpdateYourAmal from "./UpdateYourAmal";
 import Statistics from "./StatisticsCard";
-import RenderDailyDetails from "./renderDailyDetails";
+import RenderDailyDetails from "./RenderDailyDetails.jsx";
 
 ChartJS.register(
   CategoryScale,
@@ -241,30 +241,102 @@ function TrackerStatus() {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: "top", labels: { font: { size: 12 } } },
-      title: { display: true, text: "Your Amal Progress", font: { size: 16 } },
-      tooltip: { bodyFont: { size: 12 } },
+      legend: {
+        position: "top",
+        labels: {
+          font: { size: 12 },
+          color: "#1B4242", // Light mode text
+          usePointStyle: true,
+        },
+      },
+      title: {
+        display: true,
+        text: "Your Amal Progress",
+        font: { size: 16 },
+        color: "#1B4242", // Light mode title
+      },
+      tooltip: {
+        bodyFont: { size: 12 },
+        titleFont: { size: 12 },
+      },
     },
     scales: {
       y: {
         beginAtZero: true,
         max: 120,
         min: 0,
-        ticks: { font: { size: 10 } },
+        ticks: {
+          font: { size: 10 },
+          color: "#1B4242", // Light mode ticks
+        },
+        grid: {
+          color: "#E2E8F0", // Light mode grid
+        },
       },
-      x: { ticks: { font: { size: 10 }, maxRotation: 45, minRotation: 45 } },
+      x: {
+        ticks: {
+          font: { size: 10 },
+          maxRotation: 45,
+          minRotation: 45,
+          color: "#1B4242", // Light mode ticks
+        },
+        grid: {
+          color: "#E2E8F0", // Light mode grid
+        },
+      },
+    },
+  };
+
+  // Dark mode chart options
+  const darkOptions = {
+    ...options,
+    plugins: {
+      ...options.plugins,
+      legend: {
+        ...options.plugins.legend,
+        labels: {
+          ...options.plugins.legend.labels,
+          color: "#F1F5F9", // Dark mode text (primary-100)
+        },
+      },
+      title: {
+        ...options.plugins.title,
+        color: "#F1F5F9", // Dark mode title (primary-100)
+      },
+    },
+    scales: {
+      y: {
+        ...options.scales.y,
+        ticks: {
+          ...options.scales.y.ticks,
+          color: "#F1F5F9", // Dark mode ticks (primary-100)
+        },
+        grid: {
+          color: "#4B5563", // Dark mode grid (gray-600)
+        },
+      },
+      x: {
+        ...options.scales.x,
+        ticks: {
+          ...options.scales.x.ticks,
+          color: "#F1F5F9", // Dark mode ticks (primary-100)
+        },
+        grid: {
+          color: "#4B5563", // Dark mode grid (gray-600)
+        },
+      },
     },
   };
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
         <div className="flex flex-col items-start mb-6 space-y-4">
-          <h2 className="text-xl sm:text-2xl font-bold text-islamic">
+          <h2 className="text-xl sm:text-2xl font-bold text-islamic dark:text-islamic-light">
             Progress Tracker
           </h2>
           {!user && (
-            <div className="text-yellow-600 text-sm">
+            <div className="text-yellow-600 dark:text-yellow-400 text-sm">
               Please log in to view your progress.
             </div>
           )}
@@ -281,8 +353,7 @@ function TrackerStatus() {
                     format(new Date(e.target.value), "dd-MM-yyyy")
                   )
                 }
-                className="w-full sm:w-auto px-3 py-1.5 border border-islamic rounded-md focus:outline-none focus:ring-2 focus:ring-islamic text-sm"
-                max={format(new Date(), "yyyy-MM-dd")}
+                className="w-full sm:w-auto px-3 py-1.5 border border-islamic dark:border-islamic-light rounded-md focus:outline-none focus:ring-2 focus:ring-islamic dark:focus:ring-islamic-light text-sm bg-white dark:bg-gray-700 text-primary-900 dark:text-primary-50"
               />
             )}
             <div className="flex flex-wrap gap-2">
@@ -305,8 +376,10 @@ function TrackerStatus() {
 
         {isLoading ? (
           <div className="text-center py-8">
-            <div className="w-12 h-12 border-4 border-islamic border-t-transparent rounded-full animate-spin mx-auto"></div>
-            <p className="mt-4 text-lg text-islamic">Loading...</p>
+            <div className="w-12 h-12 border-4 border-islamic dark:border-islamic-light border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <p className="mt-4 text-lg text-islamic dark:text-islamic-light">
+              Loading...
+            </p>
           </div>
         ) : selectedPeriod === "day" ? (
           <RenderDailyDetails
@@ -317,11 +390,18 @@ function TrackerStatus() {
         ) : (
           <div className="h-64 sm:h-80 mb-6">
             {!chartData || chartData.datasets[0].data.every((p) => p === 0) ? (
-              <div className="text-center text-gray-600 py-8 text-sm">
+              <div className="text-center text-gray-600 dark:text-gray-400 py-8 text-sm">
                 No data available for this period
               </div>
             ) : (
-              <Line options={options} data={chartData} />
+              <Line
+                options={
+                  document.documentElement.classList.contains("dark")
+                    ? darkOptions
+                    : options
+                }
+                data={chartData}
+              />
             )}
           </div>
         )}

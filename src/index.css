@@ -9,7 +9,7 @@
 }
 
 body {
-  @apply bg-primary-50 text-primary-900;
+  @apply bg-primary-50 text-primary-900 dark:bg-primary-900 dark:text-primary-100;
 }
 
 .islamic-pattern {
@@ -17,16 +17,21 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231B4242' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
+[data-theme="dark"] .islamic-pattern {
+  background-color: #1e293b; /* primary-800 */
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238AB4B1' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
 @layer components {
   .btn-primary {
-    @apply px-4 py-2 bg-islamic text-white rounded-md hover:bg-islamic-dark transition-colors;
+    @apply px-4 py-2 bg-islamic text-white rounded-md hover:bg-islamic-dark dark:bg-islamic-light dark:hover:bg-islamic transition-colors;
   }
 
   .btn-secondary {
-    @apply px-4 py-2 bg-white text-islamic border border-islamic rounded-md hover:bg-islamic-light/10 transition-colors;
+    @apply px-4 py-2 bg-white text-islamic border border-islamic rounded-md hover:bg-islamic-light/10 dark:bg-primary-800 dark:text-islamic-light dark:border-islamic-light dark:hover:bg-primary-700 transition-colors;
   }
 
   .nav-link {
-    @apply text-islamic hover:text-islamic-dark transition-colors;
+    @apply text-islamic hover:text-islamic-dark dark:text-islamic-light dark:hover:text-islamic transition-colors;
   }
 }
