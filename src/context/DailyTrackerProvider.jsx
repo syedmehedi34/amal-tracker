@@ -552,6 +552,7 @@ const DailyTrackerProvider = ({ children }) => {
 
     try {
       const res = await axiosPublic.post("/amal_data", dailyAmalData);
+      amalDataRefetch();
       Swal.fire({
         position: "center",
         icon: "success",
