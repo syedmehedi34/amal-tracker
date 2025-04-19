@@ -17,6 +17,7 @@
     "date-fns": "^3.3.1",
     "firebase": "^11.6.0",
     "hijri-date": "^0.2.2",
+    "moment": "^2.30.1",
     "moment-hijri": "^3.0.0",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",

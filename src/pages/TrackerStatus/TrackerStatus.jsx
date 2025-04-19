@@ -246,7 +246,12 @@ function TrackerStatus() {
       tooltip: { bodyFont: { size: 12 } },
     },
     scales: {
-      y: { beginAtZero: true, max: 120, min: 0, ticks: { font: { size: 10 } } },
+      y: {
+        beginAtZero: true,
+        max: 120,
+        min: 0,
+        ticks: { font: { size: 10 } },
+      },
       x: { ticks: { font: { size: 10 }, maxRotation: 45, minRotation: 45 } },
     },
   };
