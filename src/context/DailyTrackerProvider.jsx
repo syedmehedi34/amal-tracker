@@ -6,10 +6,12 @@ import { DailyTrackerContext } from "./DailyTrackerContext";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 import useAmalData from "../hooks/useAmalData";
+import { useAuth } from "./AuthProvider";
 
 const DailyTrackerProvider = ({ children }) => {
   const axiosPublic = useAxiosPublic();
   const { amalData, isLoading, error, amalDataRefetch } = useAmalData();
+  const { user } = useAuth();
 
   // Get today's date in DD-MM-YYYY format
   const today = new Date()
@@ -334,17 +336,17 @@ const DailyTrackerProvider = ({ children }) => {
   // Zikr questions
   const zikrQuestions = [
     { field: "tasbih33", label: "৩৩+৩৩+৩৩+১ - জিকির পড়েছি" },
-    { field: "ayatulKursi", label: "আয়াতুল কুরসি পড়েছি (আবশ্যক)" },
-    { field: "morningEvening", label: "সকাল সন্ধ্যা জিকির পড়েছি (আবশ্যক)" },
+    { field: "ayatulKursi", label: "আয়াতুল কুরসি পড়েছি  " },
+    { field: "morningEvening", label: "সকাল সন্ধ্যা জিকির পড়েছি  " },
     {
       field: "subhanAllah100",
       label: "১০০ বার 'সুবহানাল্লাহি ওবি হামদিহি' পড়েছি",
     },
-    { field: "sayyidulIstighfar", label: "সাইয়েদুল ইস্তেগফার পড়েছি (আবশ্যক)" },
+    { field: "sayyidulIstighfar", label: "সাইয়েদুল ইস্তেগফার পড়েছি  " },
     {
       field: "jannahDua",
       label:
-        "জান্নাতুল ফেরদৌসের জন্য দোয়া করেছি ও জাহান্নাম থেকে মুক্তির দোয়া করেছি (আবশ্যক)",
+        "জান্নাতুল ফেরদৌসের জন্য দোয়া করেছি ও জাহান্নাম থেকে মুক্তির দোয়া করেছি  ",
     },
     {
       field: "constantZikr",
@@ -356,7 +358,7 @@ const DailyTrackerProvider = ({ children }) => {
   const quranQuestions = [
     {
       field: "dailyRecitation",
-      label: "প্রতিদিন নির্দিষ্ট অংশ নায়েরা করেছি (আবশ্যক)",
+      label: "প্রতিদিন নির্দিষ্ট অংশ নায়েরা করেছি  ",
     },
     { field: "tafsir", label: "নায়েরা কৃত অংশের ব্যাখ্যা পড়েছি" },
     { field: "sirat", label: "সিরাত পঠন করেছি" },
@@ -364,28 +366,28 @@ const DailyTrackerProvider = ({ children }) => {
 
   // Pre-Sleep questions
   const preSleepQuestions = [
-    { field: "surahMulk", label: "রাতে সূরা মুলক তেলাওয়া করেছি (আবশ্যক)" },
+    { field: "surahMulk", label: "রাতে সূরা মুলক তেলাওয়া করেছি  " },
   ];
 
   // Additional questions
   const additionalQuestions = [
-    { field: "avoidMajorSins", label: "কবিরা গুনাহ করিনি (আবশ্যক)" },
-    { field: "halalFood", label: "হালাল খাওয়া খেয়েছি (আবশ্যক)" },
-    { field: "avoidZina", label: "জেনা থেকে বেঁচে থেকেছি (আবশ্যক)" },
-    { field: "keepTrust", label: "আমানত ও অঙ্গীকার রক্ষা করেছি (আবশ্যক)" },
+    { field: "avoidMajorSins", label: "কবিরা গুনাহ করিনি  " },
+    { field: "halalFood", label: "হালাল খাওয়া খেয়েছি  " },
+    { field: "avoidZina", label: "জেনা থেকে বেঁচে থেকেছি  " },
+    { field: "keepTrust", label: "আমানত ও অঙ্গীকার রক্ষা করেছি  " },
     {
       field: "seekForgiveness",
-      label: "সারাদিনের কৃতকর্মের জন্য মাফ চেয়েছি (আবশ্যক)",
+      label: "সারাদিনের কৃতকর্মের জন্য মাফ চেয়েছি  ",
     },
-    { field: "avoidBackbiting", label: "গিবত করিনি (আবশ্যক)" },
-    { field: "avoidEnvy", label: "হিংসা থেকে বেঁচে থেকেছি (আবশ্যক)" },
-    { field: "avoidLying", label: "মিথ্যা বলিনি (আবশ্যক)" },
+    { field: "avoidBackbiting", label: "গিবত করিনি  " },
+    { field: "avoidEnvy", label: "হিংসা থেকে বেঁচে থেকেছি  " },
+    { field: "avoidLying", label: "মিথ্যা বলিনি  " },
     { field: "charity", label: "দান সাদাকা করেছি" },
     { field: "voluntaryFasting", label: "নফল রোজা রেখেছি" },
-    { field: "goodBehavior", label: "কারোর সাথে বাজে আচরণ করিনি (আবশ্যক)" },
+    { field: "goodBehavior", label: "কারোর সাথে বাজে আচরণ করিনি  " },
     {
       field: "kalimaAfterWudu",
-      label: "অজুর পর কালিমা শাহাদাত পড়েছি (আবশ্যক)",
+      label: "অজুর পর কালিমা শাহাদাত পড়েছি  ",
     },
     { field: "avoidUseless", label: "অহেতুক কাজ করিনি" },
     { field: "respondAdhan", label: "আজানের উত্তর দিয়েছি" },
@@ -408,7 +410,7 @@ const DailyTrackerProvider = ({ children }) => {
     },
     {
       field: "sleepWakeAmal",
-      label: "ঘুমাতে যাওয়ার আগের এবং ঘুম থেকে উঠে আমল করেছি (আবশ্যক)",
+      label: "ঘুমাতে যাওয়ার আগের এবং ঘুম থেকে উঠে আমল করেছি  ",
     },
     { field: "dawah", label: "দ্বীনের দাওয়াত দিয়েছি" },
   ];
@@ -539,8 +541,8 @@ const DailyTrackerProvider = ({ children }) => {
     const dailyAmalData = {
       amalDetails,
       info: {
-        userEmail: "syedmehedi34@gmail.com",
-        userName: "mehedi34",
+        userEmail: user?.email,
+        userName: user?.displayName,
         totalObtainedPoints,
         amalDate,
       },

@@ -3,7 +3,7 @@ export const amalQuestions = [
   // Salah Part
   {
     id: 1,
-    question: "৫ ওয়াক্ত জামাতে পড়েছি? (আবশ্যক)",
+    question: "৫ ওয়াক্ত জামাতে পড়েছি?  ",
     importance: "critical",
     questionName: "fiveTimeSalah",
     points: 27,
@@ -45,7 +45,7 @@ export const amalQuestions = [
   },
   {
     id: 7,
-    question: "আয়াতুল কুরসি পরেছি? (আবশ্যক)",
+    question: "আয়াতুল কুরসি পরেছি?  ",
     importance: "critical",
     questionName: "ayatAlKursiAfterSalah",
     points: 2,
@@ -57,7 +57,7 @@ export const amalQuestions = [
   // Quran Recitation Part
   {
     id: 8,
-    question: "প্রতিদিন নির্দিষ্ট অংশ নায়েরা করেছি? (আবশ্যক)",
+    question: "প্রতিদিন নির্দিষ্ট অংশ নায়েরা করেছি?  ",
     importance: "important",
     questionName: "quranNazera",
     points: 8,
@@ -98,7 +98,7 @@ export const amalQuestions = [
   },
   {
     id: 12,
-    question: "সাইয়েদুল ইস্তেগফার পড়েছি? (আবশ্যক)",
+    question: "সাইয়েদুল ইস্তেগফার পড়েছি?  ",
     importance: "critical",
     questionName: "sayyidulIstighfar",
     points: 2,
@@ -121,7 +121,7 @@ export const amalQuestions = [
   // Others - Essential
   {
     id: 14,
-    question: "কবিরা গুনাহ থেকে বেঁচে থেকেছি? (আবশ্যক)",
+    question: "কবিরা গুনাহ থেকে বেঁচে থেকেছি?  ",
     importance: "critical",
     questionName: "kebiraGunah",
     points: 5,
@@ -131,7 +131,7 @@ export const amalQuestions = [
   },
   {
     id: 15,
-    question: "রাতে সূরা মূলক তেলাওয়াত করেছি? (আবশ্যক)",
+    question: "রাতে সূরা মূলক তেলাওয়াত করেছি?  ",
     importance: "critical",
     questionName: "surahMulk",
     points: 5,
@@ -140,7 +140,7 @@ export const amalQuestions = [
   },
   {
     id: 16,
-    question: "হালাল খাবার খেয়েছি? (আবশ্যক)",
+    question: "হালাল খাবার খেয়েছি?  ",
     importance: "critical",
     questionName: "halalFood",
     points: 5,
@@ -159,7 +159,7 @@ export const amalQuestions = [
   },
   {
     id: 18,
-    question: "জেনা থেকে বেঁচে থেকেছি? (আবশ্যক)",
+    question: "জেনা থেকে বেঁচে থেকেছি?  ",
     importance: "important",
     questionName: "safeFromZina",
     points: 3,
@@ -169,7 +169,7 @@ export const amalQuestions = [
   },
   {
     id: 19,
-    question: "আমানত ও অঙ্গীকার রক্ষা করেছি? (আবশ্যক)",
+    question: "আমানত ও অঙ্গীকার রক্ষা করেছি?  ",
     importance: "important",
     questionName: "amanatAndPledge",
     points: 2,
@@ -179,7 +179,7 @@ export const amalQuestions = [
   },
   {
     id: 20,
-    question: "সারাদিনের কৃতকর্মের জন্য মাফ চেয়েছি? (আবশ্যক)",
+    question: "সারাদিনের কৃতকর্মের জন্য মাফ চেয়েছি?  ",
     importance: "normal",
     questionName: "forgivenessEveryday",
     points: 2,
@@ -198,7 +198,7 @@ export const amalQuestions = [
   },
   {
     id: 22,
-    question: "হিংসা থেকে বেঁচে থেকেছি? (আবশ্যক)",
+    question: "হিংসা থেকে বেঁচে থেকেছি?  ",
     importance: "important",
     questionName: "safeFromHingsa",
     points: 2,
@@ -207,7 +207,7 @@ export const amalQuestions = [
   },
   {
     id: 23,
-    question: "মিথ্যা বলি নি? (আবশ্যক)",
+    question: "মিথ্যা বলি নি?  ",
     importance: "important",
     questionName: "safeFromLiar",
     points: 2,
@@ -234,7 +234,7 @@ export const amalQuestions = [
   },
   {
     id: 26,
-    question: "কারোর সাথে বাজে আচরণ করি নি? (আবশ্যক)",
+    question: "কারোর সাথে বাজে আচরণ করি নি?  ",
     importance: "important",
     questionName: "safeFromBadBehavior",
     points: 1,
@@ -243,7 +243,7 @@ export const amalQuestions = [
   },
   {
     id: 27,
-    question: "অজুর পর কালিমা শাহাদাৎ পাঠ করেছি? (আবশ্যক)",
+    question: "অজুর পর কালিমা শাহাদাৎ পাঠ করেছি?  ",
     importance: "important",
     questionName: "kalimaShahadatAfterWudu",
     points: 1,

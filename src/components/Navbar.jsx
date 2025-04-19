@@ -23,7 +23,7 @@ function Navbar() {
   const handleLogout = async () => {
     try {
       await logOut(); // Call Firebase signOut via AuthProvider
-      console.log("User logged out successfully");
+      // console.log("User logged out successfully");
       closeDrawer(); // Close drawer if open
       navigate("/login"); // Redirect to login page
     } catch (err) {
