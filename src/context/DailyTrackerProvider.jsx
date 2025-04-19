@@ -37,7 +37,7 @@ const DailyTrackerProvider = ({ children }) => {
     }));
   };
 
-  // Primary answers state
+  // ! [new question need to add here] Primary answers state
   const [answers, setAnswers] = useState({
     fajr: { main: "", sunnah: false },
     zuhr: { main: "", sunnah: false, nafl: false },
@@ -125,7 +125,7 @@ const DailyTrackerProvider = ({ children }) => {
       return value;
     };
 
-    // Field mapping for non-salat categories
+    // ! [new question need to add here] Field mapping for non-salat categories
     const fieldMap = {
       naflSalah_tahajjud: "tahajjud",
       naflSalah_duha: "duha",
@@ -166,7 +166,7 @@ const DailyTrackerProvider = ({ children }) => {
       additional_dawah: "dawah",
     };
 
-    // Process amalDetails
+    // ! [new question may need to customize here] Process amalDetails
     todayData.amalDetails.forEach((amal) => {
       const { amalCode, isDone, point, category } = amal;
 
@@ -200,7 +200,7 @@ const DailyTrackerProvider = ({ children }) => {
           }
         }
       } catch (err) {
-        console.error(`Error processing ${amalCode}:`, err);
+        // console.error(`Error processing ${amalCode}:`, err);
       }
     });
 
@@ -208,7 +208,7 @@ const DailyTrackerProvider = ({ children }) => {
     setAnswers(newAnswers);
   }, [amalData, isLoading]);
 
-  // All point distribution
+  // ! [new question need to add here its point] All point distribution
   const pointMap = {
     fajr_main: { jamaat: 4, alone: 1, qaza: -5, notDone: -20 },
     zuhr_main: { jamaat: 4, alone: 1, qaza: -5, notDone: -20 },
@@ -260,7 +260,7 @@ const DailyTrackerProvider = ({ children }) => {
     additional_dawah: 1,
   };
 
-  // Salah data with questions
+  // ! [new salah question need to add here] Salah data with questions
   const salahData = [
     {
       name: "fajr",
@@ -413,9 +413,9 @@ const DailyTrackerProvider = ({ children }) => {
     { field: "dawah", label: "দ্বীনের দাওয়াত দিয়েছি" },
   ];
 
-  // Unified amal data
+  //! [new data may needs updating this section] Unified amal data
   const allAmals = [
-    // Salah main
+    // Salah main [মূল সালাত]
     ...salahData.map((salah) => ({
       amalName: salah.title,
       amalCode: `${salah.name}_main`,
@@ -427,7 +427,7 @@ const DailyTrackerProvider = ({ children }) => {
       isSunnah: () => answers[salah.name].sunnah || false,
       isNafl: () => answers[salah.name].nafl || false,
     })),
-    // Salah sunnah
+    // Salah sunnah [সুন্নাত সালাত]
     ...salahData
       .filter((salah) => salah.checkboxes.some((cb) => cb.field === "sunnah"))
       .map((salah) => ({
@@ -441,7 +441,7 @@ const DailyTrackerProvider = ({ children }) => {
         isSunnah: () => true,
         isNafl: () => false,
       })),
-    // Salah nafl
+    // Salah nafl [যোহরের নফল সলাত]
     {
       amalName: "যোহর সলাত - নফল",
       amalCode: "zuhr_nafl",
@@ -452,7 +452,7 @@ const DailyTrackerProvider = ({ children }) => {
       isSunnah: () => false,
       isNafl: () => true,
     },
-    // Salah witr
+    // Salah witr [বিতর সালাত]
     {
       amalName: "এশা সলাত - বিতর",
       amalCode: "isha_witr",
@@ -463,7 +463,7 @@ const DailyTrackerProvider = ({ children }) => {
       isSunnah: () => false,
       isNafl: () => false,
     },
-    // Nafl Salah
+    // Nafl Salah [তাহাজ্জুদ & সালাতুত দোহা]
     ...naflSalahQuestions.map((q) => ({
       amalName: q.label,
       amalCode: `naflSalah_${q.field}`,
@@ -473,12 +473,12 @@ const DailyTrackerProvider = ({ children }) => {
       getPoints: () =>
         answers.naflSalah[q.field] ? pointMap[`naflSalah_${q.field}`] : 0,
     })),
-    // Zikr
+    // Zikr []
     ...zikrQuestions.map((q) => ({
       amalName: q.label,
       amalCode: `zikr_${q.field}`,
       category: "zikr",
-      priority: q.label.includes("আবশ্যক") ? "high" : "normal",
+      priority: "normal",
       isDone: () => answers.zikr[q.field],
       getPoints: () =>
         answers.zikr[q.field] ? pointMap[`zikr_${q.field}`] : 0,
@@ -488,7 +488,7 @@ const DailyTrackerProvider = ({ children }) => {
       amalName: q.label,
       amalCode: `quran_${q.field}`,
       category: "quran",
-      priority: q.label.includes("আবশ্যক") ? "high" : "normal",
+      priority: "important",
       isDone: () => answers.quran[q.field],
       getPoints: () =>
         answers.quran[q.field] ? pointMap[`quran_${q.field}`] : 0,
@@ -498,7 +498,7 @@ const DailyTrackerProvider = ({ children }) => {
       amalName: q.label,
       amalCode: `preSleep_${q.field}`,
       category: "preSleep",
-      priority: "high",
+      priority: "important",
       isDone: () => answers.preSleep[q.field],
       getPoints: () =>
         answers.preSleep[q.field] ? pointMap[`preSleep_${q.field}`] : 0,
@@ -508,7 +508,7 @@ const DailyTrackerProvider = ({ children }) => {
       amalName: q.label,
       amalCode: `additional_${q.field}`,
       category: "additional",
-      priority: q.label.includes("আবশ্যক") ? "high" : "normal",
+      priority: "normal",
       isDone: () => answers.additional[q.field],
       getPoints: () =>
         answers.additional[q.field] ? pointMap[`additional_${q.field}`] : 0,
@@ -529,10 +529,6 @@ const DailyTrackerProvider = ({ children }) => {
       priority: amal.priority,
       isDone: amal.isDone(),
       category: amal.category,
-      ...(amal.category === "salat" && {
-        isSunnah: amal.isSunnah(),
-        isNafl: amal.isNafl(),
-      }),
     }));
 
     const totalObtainedPoints = amalDetails.reduce(
