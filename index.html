@@ -8,12 +8,34 @@
       href="https://img.icons8.com/?size=100&id=SnK8eZpbaGV6&format=png&color=000000"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <!-- PWA: Theme color for the status bar -->
+    <meta name="theme-color" content="#000000" />
+    <!-- PWA: Manifest file -->
+    <link rel="manifest" href="/manifest.json" />
+    <!-- PWA: Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="/icon-192x192.png" />
     <title>Ibad Allah (عباد الله)</title>
   </head>
-
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <!-- PWA: Service Worker Registration -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => {
+              console.log(
+                "Service Worker registered with scope:",
+                registration.scope
+              );
+            })
+            .catch((error) => {
+              console.error("Service Worker registration failed:", error);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
