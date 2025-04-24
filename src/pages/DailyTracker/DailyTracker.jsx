@@ -36,89 +36,58 @@ const DailyTracker = () => {
             {salahData.map((salah) => (
               <div
                 key={salah.name}
-                className="card bg-gradient-to-r from-primary-50 to-islamic-light dark:from-primary-900 dark:to-islamic border border-primary-200 dark:border-primary-700 shadow-md cursor-pointer hover:shadow-lg hover:bg-primary-100 dark:hover:bg-primary-800 transition-all duration-300 rounded-xl font-arabic"
-                onClick={() =>
-                  document.getElementById(`modal-${salah.name}`).showModal()
-                }
+                className="card bg-gradient-to-r from-primary-50 to-islamic-light dark:from-primary-900 dark:to-islamic border border-primary-200 dark:border-primary-700 shadow-md hover:shadow-lg transition-all duration-300 rounded-xl"
               >
-                <div className="card-body p-5">
-                  <h3 className="card-title text-islamic dark:text-islamic-light text-lg">
+                <div className="card-body p-6">
+                  <h3 className="card-title text-islamic dark:text-islamic-light text-lg mb-4">
                     {salah.title}
                   </h3>
+                  <div className="flex flex-col gap-3">
+                    {/* Radio buttons for main Salah */}
+                    {salah.options.map((option) => (
+                      <label
+                        key={option.value}
+                        className="flex items-center gap-3"
+                      >
+                        <input
+                          type="radio"
+                          name={`${salah.name}-main`}
+                          value={option.value}
+                          checked={answers[salah.name].main === option.value}
+                          onChange={() =>
+                            handleRadioChange(salah.name, "main", option.value)
+                          }
+                          className="radio radio-primary"
+                        />
+                        <span className="text-primary-900 dark:text-primary-100 font-arabic">
+                          {option.label}
+                        </span>
+                      </label>
+                    ))}
+                    {/* Checkboxes for Sunnah/Nafl/Witr */}
+                    {salah.checkboxes.map((checkbox) => (
+                      <label
+                        key={checkbox.field}
+                        className="flex items-center gap-3"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={answers[salah.name][checkbox.field]}
+                          onChange={() =>
+                            handleCheckboxChange(salah.name, checkbox.field)
+                          }
+                          className="checkbox checkbox-primary"
+                        />
+                        <span className="text-primary-900 dark:text-primary-100 font-arabic">
+                          {checkbox.label}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-
-          {/* Modals for each Salah */}
-          {salahData.map((salah) => (
-            <dialog
-              key={salah.name}
-              id={`modal-${salah.name}`}
-              className="modal"
-            >
-              <div className="modal-box bg-white dark:bg-gray-800 max-w-sm font-arabic rounded-xl shadow-xl">
-                <h3 className="text-xl font-bold text-islamic dark:text-islamic-light">
-                  {salah.title}
-                </h3>
-                <div className="py-4 flex flex-col gap-3">
-                  {salah.options.map((option) => (
-                    <label
-                      key={option.value}
-                      className="flex items-center gap-3"
-                    >
-                      <input
-                        type="radio"
-                        name={`${salah.name}-main`}
-                        value={option.value}
-                        checked={answers[salah.name].main === option.value}
-                        onChange={() =>
-                          handleRadioChange(salah.name, "main", option.value)
-                        }
-                        className="radio radio-primary"
-                      />
-                      <span className="text-primary-900 dark:text-primary-100">
-                        {option.label}
-                      </span>
-                    </label>
-                  ))}
-                  {salah.checkboxes.map((checkbox) => (
-                    <label
-                      key={checkbox.field}
-                      className="flex items-center gap-3"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={answers[salah.name][checkbox.field]}
-                        onChange={() =>
-                          handleCheckboxChange(salah.name, checkbox.field)
-                        }
-                        className="checkbox checkbox-primary"
-                      />
-                      <span className="text-primary-900 dark:text-primary-100">
-                        {checkbox.label}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-                <div className="modal-action flex justify-end gap-2">
-                  <form method="dialog">
-                    <button className="btn btn-error btn-outline dark:btn-error dark:text-error dark:border-error hover:scale-105 transition-transform duration-200">
-                      বাতিল
-                    </button>
-                  </form>
-                  <form method="dialog">
-                    <button
-                      className="btn btn-primary hover:scale-105 transition-transform duration-200"
-                      onClick={handleSubmit}
-                    >
-                      নিশ্চিত করুন
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </dialog>
-          ))}
         </div>
 
         {/* Question category -> নফল সলাত */}
