@@ -41,11 +41,11 @@ const DailyTrackerProvider = ({ children }) => {
 
   // ! [new question need to add here] Primary answers state
   const [answers, setAnswers] = useState({
-    fajr: { main: "", sunnah: false },
-    zuhr: { main: "", sunnah: false, nafl: false },
-    asr: { main: "" },
-    maghrib: { main: "", sunnah: false },
-    isha: { main: "", sunnah: false, witr: false },
+    fajr: { main: "notAnswered", sunnah: false },
+    zuhr: { main: "notAnswered", sunnah: false, nafl: false },
+    asr: { main: "notAnswered" },
+    maghrib: { main: "notAnswered", sunnah: false },
+    isha: { main: "notAnswered", sunnah: false, witr: false },
     naflSalah: {
       tahajjud: false,
       duha: false,
@@ -122,7 +122,7 @@ const DailyTrackerProvider = ({ children }) => {
       }
       const pointNum = parseInt(point);
       const value =
-        Object.keys(map).find((key) => map[key] === pointNum) || "notDone";
+        Object.keys(map).find((key) => map[key] === pointNum) || "notAnswered";
       // console.log(`Mapped ${amalCode} point ${point} to value ${value}`);
       return value;
     };
