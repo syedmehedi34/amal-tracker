@@ -423,7 +423,7 @@ const DailyTrackerProvider = ({ children }) => {
       amalCode: `${salah.name}_main`,
       category: "salat",
       priority: "salat",
-      isDone: () => !!answers[salah.name].main,
+      isDone: () => (answers[salah.name].main ? true : "notAnswered"),
       getPoints: () =>
         pointMap[`${salah.name}_main`][answers[salah.name].main] || 0,
       isSunnah: () => answers[salah.name].sunnah || false,
