@@ -39,7 +39,7 @@ const DailyTrackerProvider = ({ children }) => {
     }));
   };
 
-  // ! [new question need to add here] Primary answers state
+  // Primary answers state
   const [answers, setAnswers] = useState({
     fajr: { main: "notAnswered", sunnah: false },
     zuhr: { main: "notAnswered", sunnah: false, nafl: false },
@@ -98,36 +98,28 @@ const DailyTrackerProvider = ({ children }) => {
   // Initialize answers from amalData
   useEffect(() => {
     if (isLoading || !amalData) {
-      // console.log("Waiting for amalData, isLoading:", isLoading);
       return;
     }
 
-    // console.log("Processing amalData for date:", today);
     const todayData = amalData.find((entry) => entry.info?.amalDate === today);
 
     if (!todayData) {
-      // console.log(`No amalData found for ${today}, keeping default answers`);
       return;
     }
 
     // Create a new answers object
     const newAnswers = JSON.parse(JSON.stringify(answers)); // Deep copy
 
-    // Helper to map point to radio button value
+    // Helper to map point to radio button value for salah main
     const getRadioValue = (amalCode, point) => {
-      const map = pointMap[amalCode];
-      if (!map || typeof map !== "object") {
-        // console.warn(`No valid pointMap for ${amalCode}`);
-        return "";
-      }
+      const salah = salahData.find((s) => `${s.name}_main` === amalCode);
+      if (!salah) return "notAnswered";
       const pointNum = parseInt(point);
-      const value =
-        Object.keys(map).find((key) => map[key] === pointNum) || "notAnswered";
-      // console.log(`Mapped ${amalCode} point ${point} to value ${value}`);
-      return value;
+      const option = salah.options.find((opt) => opt.point === pointNum);
+      return option ? option.value : "notAnswered";
     };
 
-    // ! [new question need to add here] Field mapping for non-salat categories
+    // Field mapping for non-salat categories
     const fieldMap = {
       naflSalah_tahajjud: "tahajjud",
       naflSalah_duha: "duha",
@@ -166,9 +158,15 @@ const DailyTrackerProvider = ({ children }) => {
       additional_constantWudu: "constantWudu",
       additional_sleepWakeAmal: "sleepWakeAmal",
       additional_dawah: "dawah",
+      fajr_sunnah: "sunnah",
+      zuhr_sunnah: "sunnah",
+      maghrib_sunnah: "sunnah",
+      isha_sunnah: "sunnah",
+      zuhr_nafl: "nafl",
+      isha_witr: "witr",
     };
 
-    // ! [new question may need to customize here] Process amalDetails
+    // Process amalDetails
     todayData.amalDetails.forEach((amal) => {
       const { amalCode, isDone, point, category } = amal;
 
@@ -181,7 +179,6 @@ const DailyTrackerProvider = ({ children }) => {
           } else {
             if (field in newAnswers[salahName]) {
               newAnswers[salahName][field] = isDone;
-              // console.log(`Set ${salahName}.${field} = ${isDone}`);
             } else {
               console.warn(`Field ${field} not found in answers.${salahName}`);
             }
@@ -194,263 +191,418 @@ const DailyTrackerProvider = ({ children }) => {
           }
           if (newAnswers[category] && field in newAnswers[category]) {
             newAnswers[category][field] = isDone;
-            // console.log(`Set ${category}.${field} = ${isDone}`);
           } else {
-            // console.warn(
-            //   `Invalid category ${category} or field ${field} in answers`
-            // );
+            console.warn(
+              `Invalid category ${category} or field ${field} in answers`
+            );
           }
         }
       } catch (err) {
-        // console.error(`Error processing ${amalCode}:`, err);
+        console.error(`Error processing ${amalCode}:`, err);
       }
     });
 
-    // console.log("Updated answers:", JSON.stringify(newAnswers, null, 2));
     setAnswers(newAnswers);
   }, [amalData, isLoading]);
 
-  // ! [new question need to add here its point] All point distribution
-  const pointMap = {
-    fajr_main: { jamaat: 4, alone: 1, qaza: -5, notDone: -20 },
-    zuhr_main: { jamaat: 4, alone: 1, qaza: -5, notDone: -20 },
-    asr_main: { jamaat: 4, alone: 1, qaza: -5, notDone: -20 },
-    maghrib_main: { jamaat: 4, alone: 1, qaza: -5, notDone: -20 },
-    isha_main: { jamaat: 4, alone: 1, qaza: -5, notDone: -20 },
-    fajr_sunnah: 1,
-    zuhr_sunnah: 3,
-    maghrib_sunnah: 2,
-    isha_sunnah: 1,
-    zuhr_nafl: 1,
-    isha_witr: 2,
-    naflSalah_tahajjud: 5,
-    naflSalah_duha: 1,
-    zikr_tasbih33: 1,
-    zikr_ayatulKursi: 2,
-    zikr_morningEvening: 1,
-    zikr_subhanAllah100: 1,
-    zikr_sayyidulIstighfar: 2,
-    zikr_jannahDua: 1,
-    zikr_constantZikr: 3,
-    quran_dailyRecitation: 8,
-    quran_tafsir: 2,
-    quran_sirat: 2,
-    preSleep_surahMulk: 5,
-    additional_avoidMajorSins: 5,
-    additional_halalFood: 5,
-    additional_avoidZina: 3,
-    additional_keepTrust: 2,
-    additional_seekForgiveness: 2,
-    additional_avoidBackbiting: 2,
-    additional_avoidEnvy: 2,
-    additional_avoidLying: 2,
-    additional_charity: 2,
-    additional_voluntaryFasting: 2,
-    additional_goodBehavior: 1,
-    additional_kalimaAfterWudu: 1,
-    additional_avoidUseless: 1,
-    additional_respondAdhan: 1,
-    additional_coverAwrah: 1,
-    additional_helpOthers: 1,
-    additional_removeHarm: 1,
-    additional_goodAdvice: 1,
-    additional_giveSalam: 1,
-    additional_rememberAkhirah: 1,
-    additional_duaProphet: 1,
-    additional_constantWudu: 1,
-    additional_sleepWakeAmal: 1,
-    additional_dawah: 1,
-  };
-
-  // ! [new salah question need to add here] Salah data with questions
+  // Salah data with questions, points, and priorities
   const salahData = [
     {
       name: "fajr",
       title: "ফজর সলাত",
+      priority: "salat",
       options: [
-        { value: "jamaat", label: "জামাতে আদায় করেছি" },
-        { value: "alone", label: "একাকী আদায় করেছি" },
-        { value: "qaza", label: "কাজা আদায় করেছি" },
-        { value: "notDone", label: "আদায় করিনি" },
+        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 4 },
+        { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
+        { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
+        { value: "notDone", label: "আদায় করিনি", point: -20 },
       ],
-      checkboxes: [{ field: "sunnah", label: "সুন্নাত আদায় করেছি" }],
+      checkboxes: [
+        {
+          field: "sunnah",
+          label: "সুন্নাত আদায় করেছি",
+          point: 1,
+          priority: "important",
+        },
+      ],
     },
     {
       name: "zuhr",
       title: "যোহর সলাত",
+      priority: "salat",
       options: [
-        { value: "jamaat", label: "জামাতে আদায় করেছি" },
-        { value: "alone", label: "একাকী আদায় করেছি" },
-        { value: "qaza", label: "কাজা আদায় করেছি" },
-        { value: "notDone", label: "আদায় করিনি" },
+        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 4 },
+        { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
+        { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
+        { value: "notDone", label: "আদায় করিনি", point: -20 },
       ],
       checkboxes: [
-        { field: "sunnah", label: "সুন্নাত আদায় করেছি" },
-        { field: "nafl", label: "নফল আদায় করেছি" },
+        {
+          field: "sunnah",
+          label: "সুন্নাত আদায় করেছি",
+          point: 3,
+          priority: "important",
+        },
+        { field: "nafl", label: "নফল আদায় করেছি", point: 1, priority: "low" },
       ],
     },
     {
       name: "asr",
       title: "আসর সলাত",
+      priority: "salat",
       options: [
-        { value: "jamaat", label: "জামাতে আদায় করেছি" },
-        { value: "alone", label: "একাকী আদায় করেছি" },
-        { value: "qaza", label: "কাজা আদায় করেছি" },
-        { value: "notDone", label: "আদায় করিনি" },
+        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 4 },
+        { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
+        { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
+        { value: "notDone", label: "আদায় করিনি", point: -20 },
       ],
       checkboxes: [],
     },
     {
       name: "maghrib",
       title: "মাগরিব সলাত",
+      priority: "salat",
       options: [
-        { value: "jamaat", label: "জামাতে আদায় করেছি" },
-        { value: "alone", label: "একাকী আদায় করেছি" },
-        { value: "qaza", label: "কাজা আদায় করেছি" },
-        { value: "notDone", label: "আদায় করিনি" },
+        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 4 },
+        { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
+        { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
+        { value: "notDone", label: "আদায় করিনি", point: -20 },
       ],
-      checkboxes: [{ field: "sunnah", label: "সুন্নাত আদায় করেছি" }],
+      checkboxes: [
+        {
+          field: "sunnah",
+          label: "সুন্নাত আদায় করেছি",
+          point: 2,
+          priority: "important",
+        },
+      ],
     },
     {
       name: "isha",
       title: "এশা সলাত",
+      priority: "salat",
       options: [
-        { value: "jamaat", label: "জামাতে আদায় করেছি" },
-        { value: "alone", label: "একাকী আদায় করেছি" },
-        { value: "qaza", label: "কাজা আদায় করেছি" },
-        { value: "notDone", label: "আদায় করিনি" },
+        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 4 },
+        { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
+        { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
+        { value: "notDone", label: "আদায় করিনি", point: -20 },
       ],
       checkboxes: [
-        { field: "sunnah", label: "সুন্নাত আদায় করেছি" },
-        { field: "witr", label: "বিতর আদায় করেছি" },
+        {
+          field: "sunnah",
+          label: "সুন্নাত আদায় করেছি",
+          point: 1,
+          priority: "important",
+        },
+        {
+          field: "witr",
+          label: "বিতর আদায় করেছি",
+          point: 2,
+          priority: "important",
+        },
       ],
     },
   ];
 
-  // Nafl Salah questions
+  // Nafl Salah questions with points and priorities
   const naflSalahQuestions = [
-    { field: "tahajjud", label: "তাহাজ্জুদ আদায় করেছি" },
-    { field: "duha", label: "সালাতুত দোহা আদায় করেছি" },
+    {
+      field: "tahajjud",
+      label: "তাহাজ্জুদ আদায় করেছি",
+      point: 5,
+      priority: "normal",
+    },
+    {
+      field: "duha",
+      label: "সালাতুত দোহা আদায় করেছি",
+      point: 1,
+      priority: "normal",
+    },
   ];
 
-  // Zikr questions
+  // Zikr questions with points and priorities
   const zikrQuestions = [
-    { field: "tasbih33", label: "৩৩+৩৩+৩৩+১ - জিকির পড়েছি" },
-    { field: "ayatulKursi", label: "আয়াতুল কুরসি পড়েছি  " },
-    { field: "morningEvening", label: "সকাল সন্ধ্যা জিকির পড়েছি  " },
+    {
+      field: "tasbih33",
+      label: "৩৩+৩৩+৩৩+১ - জিকির পড়েছি",
+      point: 1,
+      priority: "normal",
+    },
+    {
+      field: "ayatulKursi",
+      label: "আয়াতুল কুরসি পড়েছি",
+      point: 2,
+      priority: "normal",
+    },
+    {
+      field: "morningEvening",
+      label: "সকাল সন্ধ্যা জিকির পড়েছি",
+      point: 1,
+      priority: "normal",
+    },
     {
       field: "subhanAllah100",
       label: "১০০ বার 'সুবহানাল্লাহি ওবি হামদিহি' পড়েছি",
+      point: 1,
+      priority: "normal",
     },
-    { field: "sayyidulIstighfar", label: "সাইয়েদুল ইস্তেগফার পড়েছি  " },
+    {
+      field: "sayyidulIstighfar",
+      label: "সাইয়েদুল ইস্তেগফার পড়েছি",
+      point: 2,
+      priority: "normal",
+    },
     {
       field: "jannahDua",
       label:
-        "জান্নাতুল ফেরদৌসের জন্য দোয়া করেছি ও জাহান্নাম থেকে মুক্তির দোয়া করেছি  ",
+        "জান্নাতুল ফেরদৌসের জন্য দোয়া করেছি ও জাহান্নাম থেকে মুক্তির দোয়া করেছি",
+      point: 1,
+      priority: "normal",
     },
     {
       field: "constantZikr",
-      label: "সর্বক্ষণ জিকির, ইস্তেগফার ও দুরুদ পড়েছি",
+      label: "সর্বক্ষণ জিকির, ইস্তেগফакон",
+      point: 3,
+      priority: "normal",
     },
   ];
 
-  // Quran questions
+  // Quran questions with points and priorities
   const quranQuestions = [
     {
       field: "dailyRecitation",
-      label: "প্রতিদিন নির্দিষ্ট অংশ নায়েরা করেছি  ",
+      label: "প্রতিদিন নির্দিষ্ট অংশ নায়েরা করেছি",
+      point: 8,
+      priority: "important",
     },
-    { field: "tafsir", label: "নায়েরা কৃত অংশের ব্যাখ্যা পড়েছি" },
-    { field: "sirat", label: "সিরাত পঠন করেছি" },
+    {
+      field: "tafsir",
+      label: "নায়েরা কৃত অংশের ব্যাখ্যা পড়েছি",
+      point: 2,
+      priority: "important",
+    },
+    {
+      field: "sirat",
+      label: "সিরাত পঠন করেছি",
+      point: 2,
+      priority: "important",
+    },
   ];
 
-  // Pre-Sleep questions
+  // Pre-Sleep questions with points and priorities
   const preSleepQuestions = [
-    { field: "surahMulk", label: "রাতে সূরা মুলক তেলাওয়া করেছি  " },
+    {
+      field: "surahMulk",
+      label: "রাতে সূরা মুলক তেলাওয়া করেছি",
+      point: 5,
+      priority: "important",
+    },
   ];
 
-  // Additional questions
+  // Additional questions with points and priorities
   const additionalQuestions = [
-    { field: "avoidMajorSins", label: "কবিরা গুনাহ করিনি  " },
-    { field: "halalFood", label: "হালাল খাওয়া খেয়েছি  " },
-    { field: "avoidZina", label: "জেনা থেকে বেঁচে থেকেছি  " },
-    { field: "keepTrust", label: "আমানত ও অঙ্গীকার রক্ষা করেছি  " },
+    {
+      field: "avoidMajorSins",
+      label: "কবিরা গুনাহ করিনি",
+      point: 5,
+      priority: "normal",
+    },
+    {
+      field: "halalFood",
+      label: "হালাল খাওয়া খেয়েছি",
+      point: 5,
+      priority: "normal",
+    },
+    {
+      field: "avoidZina",
+      label: "জেনা থেকে বেঁচে থেকেছি",
+      point: 3,
+      priority: "normal",
+    },
+    {
+      field: "keepTrust",
+      label: "আমানত ও অঙ্গীকার রক্ষা করেছি",
+      point: 2,
+      priority: "normal",
+    },
     {
       field: "seekForgiveness",
-      label: "সারাদিনের কৃতকর্মের জন্য মাফ চেয়েছি  ",
+      label: "সারাদিনের কৃতকর্মের জন্য মাফ চেয়েছি",
+      point: 2,
+      priority: "normal",
     },
-    { field: "avoidBackbiting", label: "গিবত করিনি  " },
-    { field: "avoidEnvy", label: "হিংসা থেকে বেঁচে থেকেছি  " },
-    { field: "avoidLying", label: "মিথ্যা বলিনি  " },
-    { field: "charity", label: "দান সাদাকা করেছি" },
-    { field: "voluntaryFasting", label: "নফল রোজা রেখেছি" },
-    { field: "goodBehavior", label: "কারোর সাথে বাজে আচরণ করিনি  " },
+    {
+      field: "avoidBackbiting",
+      label: "গিবত করিনি",
+      point: 2,
+      priority: "normal",
+    },
+    {
+      field: "avoidEnvy",
+      label: "হিংসা থেকে বেঁচে থেকেছি",
+      point: 2,
+      priority: "normal",
+    },
+    {
+      field: "avoidLying",
+      label: "মিথ্যা বলিনি",
+      point: 2,
+      priority: "normal",
+    },
+    {
+      field: "charity",
+      label: "দান সাদাকা করেছি",
+      point: 2,
+      priority: "normal",
+    },
+    {
+      field: "voluntaryFasting",
+      label: "নফল রোজা রেখেছি",
+      point: 2,
+      priority: "normal",
+    },
+    {
+      field: "goodBehavior",
+      label: "কারোর সাথে বাজে আচরণ করিনি",
+      point: 1,
+      priority: "normal",
+    },
     {
       field: "kalimaAfterWudu",
-      label: "অজুর পর কালিমা শাহাদাত পড়েছি  ",
+      label: "অজুর পর কালিমা শাহাদাত পড়েছি",
+      point: 1,
+      priority: "normal",
     },
-    { field: "avoidUseless", label: "অহেতুক কাজ করিনি" },
-    { field: "respondAdhan", label: "আজানের উত্তর দিয়েছি" },
-    { field: "coverAwrah", label: "সর্বদা সতর ঢেকে রেখেছি" },
+    {
+      field: "avoidUseless",
+      label: "অহেতুক কাজ করিনি",
+      point: 1,
+      priority: "normal",
+    },
+    {
+      field: "respondAdhan",
+      label: "আজানের উত্তর দিয়েছি",
+      point: 1,
+      priority: "normal",
+    },
+    {
+      field: "coverAwrah",
+      label: "সর্বদা সতর ঢেকে রেখেছি",
+      point: 1,
+      priority: "normal",
+    },
     {
       field: "helpOthers",
       label: "কাউকে সাহায্য করেছি/পানি পান করিয়েছি/মানসিক সাহায্য করেছি",
+      point: 1,
+      priority: "normal",
     },
-    { field: "removeHarm", label: "রাস্তা থেকে ক্ষতিকর বস্তু সরিয়েছি" },
-    { field: "goodAdvice", label: "সৎ উপদেশ দিয়েছি/ভালো কথা বলেছি" },
-    { field: "giveSalam", label: "সালাম দিয়েছি" },
-    { field: "rememberAkhirah", label: "সর্বদা আখিরাতের কথা স্মরণ রেখেছি" },
+    {
+      field: "removeHarm",
+      label: "রাস্তা থেকে ক্ষতিকর বস্তু সরিয়েছি",
+      point: 1,
+      priority: "normal",
+    },
+    {
+      field: "goodAdvice",
+      label: "সৎ উপদেশ দিয়েছি/ভালো কথা বলেছি",
+      point: 1,
+      priority: "normal",
+    },
+    {
+      field: "giveSalam",
+      label: "সালাম দিয়েছি",
+      point: 1,
+      priority: "normal",
+    },
+    {
+      field: "rememberAkhirah",
+      label: "সর্বদা আখিরাতের কথা স্মরণ রেখেছি",
+      point: 1,
+      priority: "normal",
+    },
     {
       field: "duaProphet",
       label: "জান্নাতে রাসুলুল্লাহ (সাঃ) এর কাছাকাছি থাকার দোয়া করেছি",
+      point: 1,
+      priority: "normal",
     },
     {
       field: "constantWudu",
       label: "সর্বদা অজুর সাথে থেকেছি / অজুর সলাত আদায় করেছি",
+      point: 1,
+      priority: "normal",
     },
     {
       field: "sleepWakeAmal",
-      label: "ঘুমাতে যাওয়ার আগের এবং ঘুম থেকে উঠে আমল করেছি  ",
+      label: "ঘুমাতে যাওয়ার আগের এবং ঘুম থেকে উঠে আমল করেছি",
+      point: 1,
+      priority: "normal",
     },
-    { field: "dawah", label: "দ্বীনের দাওয়াত দিয়েছি" },
+    {
+      field: "dawah",
+      label: "দ্বীনের দাওয়াত দিয়েছি",
+      point: 1,
+      priority: "normal",
+    },
   ];
 
-  //! [new data may needs updating this section] Unified amal data
+  // Unified amal data
   const allAmals = [
     // Salah main [মূল সালাত]
     ...salahData.map((salah) => ({
       amalName: salah.title,
       amalCode: `${salah.name}_main`,
       category: "salat",
-      priority: "salat",
-      isDone: () => (answers[salah.name].main ? true : "notAnswered"),
-      getPoints: () =>
-        pointMap[`${salah.name}_main`][answers[salah.name].main] || 0,
+      priority: salah.priority,
+      isDone: () =>
+        answers[salah.name].main !== "notAnswered" &&
+        answers[salah.name].main !== "notDone",
+      getPoints: () => {
+        const selectedOption = salah.options.find(
+          (opt) => opt.value === answers[salah.name].main
+        );
+        return selectedOption ? selectedOption.point : 0;
+      },
       isSunnah: () => answers[salah.name].sunnah || false,
       isNafl: () => answers[salah.name].nafl || false,
     })),
     // Salah sunnah [সুন্নাত সালাত]
     ...salahData
       .filter((salah) => salah.checkboxes.some((cb) => cb.field === "sunnah"))
-      .map((salah) => ({
-        amalName: `${salah.title} - সুন্নাত`,
-        amalCode: `${salah.name}_sunnah`,
-        category: "salat",
-        priority: "important",
-        isDone: () => answers[salah.name].sunnah,
-        getPoints: () =>
-          answers[salah.name].sunnah ? pointMap[`${salah.name}_sunnah`] : 0,
-        isSunnah: () => true,
-        isNafl: () => false,
-      })),
+      .map((salah) => {
+        const sunnahCheckbox = salah.checkboxes.find(
+          (cb) => cb.field === "sunnah"
+        );
+        return {
+          amalName: `${salah.title} - সুন্নাত`,
+          amalCode: `${salah.name}_sunnah`,
+          category: "salat",
+          priority: sunnahCheckbox.priority,
+          isDone: () => answers[salah.name].sunnah,
+          getPoints: () =>
+            answers[salah.name].sunnah && sunnahCheckbox
+              ? sunnahCheckbox.point
+              : 0,
+          isSunnah: () => true,
+          isNafl: () => false,
+        };
+      }),
     // Salah nafl [যোহরের নফল সলাত]
     {
       amalName: "যোহর সলাত - নফল",
       amalCode: "zuhr_nafl",
       category: "salat",
-      priority: "low",
+      priority: salahData
+        .find((s) => s.name === "zuhr")
+        .checkboxes.find((cb) => cb.field === "nafl").priority,
       isDone: () => answers.zuhr.nafl,
-      getPoints: () => (answers.zuhr.nafl ? pointMap.zuhr_nafl : 0),
+      getPoints: () => {
+        const naflCheckbox = salahData
+          .find((s) => s.name === "zuhr")
+          .checkboxes.find((cb) => cb.field === "nafl");
+        return answers.zuhr.nafl && naflCheckbox ? naflCheckbox.point : 0;
+      },
       isSunnah: () => false,
       isNafl: () => true,
     },
@@ -459,9 +611,16 @@ const DailyTrackerProvider = ({ children }) => {
       amalName: "এশা সলাত - বিতর",
       amalCode: "isha_witr",
       category: "salat",
-      priority: "important",
+      priority: salahData
+        .find((s) => s.name === "isha")
+        .checkboxes.find((cb) => cb.field === "witr").priority,
       isDone: () => answers.isha.witr,
-      getPoints: () => (answers.isha.witr ? pointMap.isha_witr : 0),
+      getPoints: () => {
+        const witrCheckbox = salahData
+          .find((s) => s.name === "isha")
+          .checkboxes.find((cb) => cb.field === "witr");
+        return answers.isha.witr && witrCheckbox ? witrCheckbox.point : 0;
+      },
       isSunnah: () => false,
       isNafl: () => false,
     },
@@ -470,50 +629,45 @@ const DailyTrackerProvider = ({ children }) => {
       amalName: q.label,
       amalCode: `naflSalah_${q.field}`,
       category: "naflSalah",
-      priority: "normal",
+      priority: q.priority,
       isDone: () => answers.naflSalah[q.field],
-      getPoints: () =>
-        answers.naflSalah[q.field] ? pointMap[`naflSalah_${q.field}`] : 0,
+      getPoints: () => (answers.naflSalah[q.field] ? q.point : 0),
     })),
-    // Zikr []
+    // Zikr
     ...zikrQuestions.map((q) => ({
       amalName: q.label,
       amalCode: `zikr_${q.field}`,
       category: "zikr",
-      priority: "normal",
+      priority: q.priority,
       isDone: () => answers.zikr[q.field],
-      getPoints: () =>
-        answers.zikr[q.field] ? pointMap[`zikr_${q.field}`] : 0,
+      getPoints: () => (answers.zikr[q.field] ? q.point : 0),
     })),
     // Quran
     ...quranQuestions.map((q) => ({
       amalName: q.label,
       amalCode: `quran_${q.field}`,
       category: "quran",
-      priority: "important",
+      priority: q.priority,
       isDone: () => answers.quran[q.field],
-      getPoints: () =>
-        answers.quran[q.field] ? pointMap[`quran_${q.field}`] : 0,
+      getPoints: () => (answers.quran[q.field] ? q.point : 0),
     })),
     // Pre-Sleep
     ...preSleepQuestions.map((q) => ({
       amalName: q.label,
       amalCode: `preSleep_${q.field}`,
       category: "preSleep",
-      priority: "important",
+      priority: q.priority,
       isDone: () => answers.preSleep[q.field],
-      getPoints: () =>
-        answers.preSleep[q.field] ? pointMap[`preSleep_${q.field}`] : 0,
+      getPoints: () => (answers.preSleep[q.field] ? q.point : 0),
     })),
     // Additional
     ...additionalQuestions.map((q) => ({
       amalName: q.label,
       amalCode: `additional_${q.field}`,
       category: "additional",
-      priority: "normal",
+      priority: q.priority,
       isDone: () => answers.additional[q.field],
-      getPoints: () =>
-        answers.additional[q.field] ? pointMap[`additional_${q.field}`] : 0,
+      getPoints: () => (answers.additional[q.field] ? q.point : 0),
     })),
   ];
 
@@ -575,7 +729,6 @@ const DailyTrackerProvider = ({ children }) => {
     handleCheckboxChange,
     answers,
     setAnswers,
-    pointMap,
     salahData,
     naflSalahQuestions,
     zikrQuestions,
