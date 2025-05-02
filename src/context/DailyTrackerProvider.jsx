@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useMemo } from "react";
 import { DailyTrackerContext } from "./DailyTrackerContext";
@@ -84,12 +83,8 @@ const DailyTrackerProvider = ({ children }) => {
   // Update answers when date changes
   useEffect(() => {
     const today = formatDate("DD-MM-YYYY");
-    // console.log("DailyTrackerProvider useEffect triggered with today:", today);
-    // console.log("Dependencies:", { isLoading, amalData, date: today });
 
     if (isLoading || !amalData) {
-      // console.log("Resetting to defaultAnswers due to loading or no amalData");
-      // Only update if answers differ to prevent infinite loop
       if (JSON.stringify(answers) !== JSON.stringify(defaultAnswers)) {
         setAnswers(defaultAnswers);
       }
