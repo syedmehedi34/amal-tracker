@@ -5,6 +5,7 @@ const useDate = () => {
   const [selectedDateValue, setSelectedDateValue] = useState(
     formatDate(new Date(), "YYYY-MM-DD")
   );
+  // console.log(date);
 
   // Function 1: Format date to a specified format
   function formatDate(dateObj, format = "YYYY-MM-DD") {
