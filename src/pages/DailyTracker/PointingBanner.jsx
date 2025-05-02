@@ -1,19 +1,27 @@
 /* eslint-disable no-unused-vars */
-import useDate from "../../hooks/useDate";
+import { useDateContext } from "../../context/DateContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const PointingBanner = () => {
   const {
     date,
     formatDate,
+    formatAnyDate,
     handleDateChange,
     handlePreviousDay,
     handleNextDay,
     selectedDateValue,
-  } = useDate();
+  } = useDateContext();
 
   // Format the current date to DD-MM-YYYY for display
   const today = formatDate("DD-MM-YYYY");
+
+  // Normalize dates for comparison
+  const normalizeDate = (d) => {
+    const normalized = new Date(d);
+    normalized.setHours(0, 0, 0, 0);
+    return normalized;
+  };
 
   return (
     <div>
@@ -25,6 +33,7 @@ const PointingBanner = () => {
             type="date"
             value={selectedDateValue}
             onChange={(e) => handleDateChange(e.target.value)}
+            max={formatAnyDate(new Date(), "YYYY-MM-DD")} // Prevent future dates
             className="w-full md:w-1/4 bg-primary-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-primary-600"
           />
         </div>
@@ -46,6 +55,10 @@ const PointingBanner = () => {
             <button
               onClick={handleNextDay}
               className="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
+              disabled={
+                formatAnyDate(normalizeDate(date), "YYYY-MM-DD") ===
+                formatAnyDate(normalizeDate(new Date()), "YYYY-MM-DD")
+              }
             >
               <ChevronRight />
             </button>

@@ -9,6 +9,7 @@ import Register from "./pages/Authentication/Register.jsx";
 import AuthProvider, { useAuth } from "./context/AuthProvider.jsx";
 import DailyTrackerProvider from "./context/DailyTrackerProvider.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
+import { DateProvider } from "./context/DateContext.jsx";
 
 // Create a QueryClient instance
 const queryClient = new QueryClient({
@@ -59,9 +60,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <AuthProvider>
-          <DailyTrackerProvider>
-            <AppContent />
-          </DailyTrackerProvider>
+          <DateProvider>
+            <DailyTrackerProvider>
+              <AppContent />
+            </DailyTrackerProvider>
+          </DateProvider>
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>

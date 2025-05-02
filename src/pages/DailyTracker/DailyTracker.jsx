@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useState } from "react";
+import { useContext, useEffect } from "react";
 import PointingBanner from "./PointingBanner";
 import { DailyTrackerContext } from "../../context/DailyTrackerContext";
 
@@ -9,7 +9,6 @@ const DailyTracker = () => {
     handleCheckboxChange,
     answers,
     setAnswers,
-    pointMap,
     salahData,
     naflSalahQuestions,
     zikrQuestions,
@@ -19,6 +18,14 @@ const DailyTracker = () => {
     allAmals,
     handleSubmit,
   } = useContext(DailyTrackerContext);
+
+  // Debug log to track answers changes
+  useEffect(() => {
+    // console.log(
+    //   "DailyTracker answers updated:",
+    //   JSON.stringify(answers, null, 2)
+    // );
+  }, [answers]);
 
   return (
     <>

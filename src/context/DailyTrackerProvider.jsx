@@ -1,116 +1,119 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { DailyTrackerContext } from "./DailyTrackerContext";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 import useAmalData from "../hooks/useAmalData";
 import { useAuth } from "./AuthProvider";
+import { useDateContext } from "./DateContext";
 
 const DailyTrackerProvider = ({ children }) => {
   const axiosPublic = useAxiosPublic();
-  const { amalData, isLoading, error, amalDataRefetch } = useAmalData();
+  const { amalData, isLoading } = useAmalData();
   const { user } = useAuth();
+  const { date, formatDate } = useDateContext();
 
-  // Get today's date in DD-MM-YYYY format
-  const today = new Date()
-    .toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    })
-    .split("/")
-    .join("-");
-
-  // Handle radio button changes for Salah
-  const handleRadioChange = (category, field, value) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [category]: { ...prev[category], [field]: value },
-    }));
-  };
-
-  // Handle checkbox changes for Nafl Salah, Zikr, Quran, Pre-Sleep, Additional
-  const handleCheckboxChange = (category, field) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [category]: { ...prev[category], [field]: !prev[category][field] },
-    }));
-  };
+  // Memoized default answers to ensure stability
+  const defaultAnswers = useMemo(
+    () => ({
+      fajr: { main: "notAnswered", sunnah: false },
+      zuhr: { main: "notAnswered", sunnah: false, nafl: false },
+      asr: { main: "notAnswered" },
+      maghrib: { main: "notAnswered", sunnah: false },
+      isha: { main: "notAnswered", sunnah: false, witr: false },
+      naflSalah: { tahajjud: false, duha: false },
+      zikr: {
+        tasbih33: false,
+        ayatulKursi: false,
+        morningEvening: false,
+        subhanAllah100: false,
+        sayyidulIstighfar: false,
+        jannahDua: false,
+        constantZikr: false,
+      },
+      quran: { dailyRecitation: false, tafsir: false, sirat: false },
+      preSleep: { surahMulk: false },
+      additional: {
+        avoidMajorSins: false,
+        halalFood: false,
+        avoidZina: false,
+        keepTrust: false,
+        seekForgiveness: false,
+        avoidBackbiting: false,
+        avoidEnvy: false,
+        avoidLying: false,
+        charity: false,
+        voluntaryFasting: false,
+        goodBehavior: false,
+        kalimaAfterWudu: false,
+        avoidUseless: false,
+        respondAdhan: false,
+        coverAwrah: false,
+        helpOthers: false,
+        removeHarm: false,
+        goodAdvice: false,
+        giveSalam: false,
+        rememberAkhirah: false,
+        duaProphet: false,
+        constantWudu: false,
+        sleepWakeAmal: false,
+        dawah: false,
+      },
+    }),
+    []
+  );
 
   // Primary answers state
-  const [answers, setAnswers] = useState({
-    fajr: { main: "notAnswered", sunnah: false },
-    zuhr: { main: "notAnswered", sunnah: false, nafl: false },
-    asr: { main: "notAnswered" },
-    maghrib: { main: "notAnswered", sunnah: false },
-    isha: { main: "notAnswered", sunnah: false, witr: false },
-    naflSalah: {
-      tahajjud: false,
-      duha: false,
-    },
-    zikr: {
-      tasbih33: false,
-      ayatulKursi: false,
-      morningEvening: false,
-      subhanAllah100: false,
-      sayyidulIstighfar: false,
-      jannahDua: false,
-      constantZikr: false,
-    },
-    quran: {
-      dailyRecitation: false,
-      tafsir: false,
-      sirat: false,
-    },
-    preSleep: {
-      surahMulk: false,
-    },
-    additional: {
-      avoidMajorSins: false,
-      halalFood: false,
-      avoidZina: false,
-      keepTrust: false,
-      seekForgiveness: false,
-      avoidBackbiting: false,
-      avoidEnvy: false,
-      avoidLying: false,
-      charity: false,
-      voluntaryFasting: false,
-      goodBehavior: false,
-      kalimaAfterWudu: false,
-      avoidUseless: false,
-      respondAdhan: false,
-      coverAwrah: false,
-      helpOthers: false,
-      removeHarm: false,
-      goodAdvice: false,
-      giveSalam: false,
-      rememberAkhirah: false,
-      duaProphet: false,
-      constantWudu: false,
-      sleepWakeAmal: false,
-      dawah: false,
-    },
-  });
+  const [answers, setAnswers] = useState(defaultAnswers);
 
-  // Initialize answers from amalData
+  // Normalize date format for comparison
+  const normalizeDate = (dateStr) => {
+    if (!dateStr) return null;
+    if (/^\d{2}-\d{2}-\d{4}$/.test(dateStr)) return dateStr; // DD-MM-YYYY
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      // YYYY-MM-DD
+      const [year, month, day] = dateStr.split("-");
+      return `${day}-${month}-${year}`;
+    }
+    console.warn("Unknown date format:", dateStr);
+    return dateStr;
+  };
+
+  // Update answers when date changes
   useEffect(() => {
+    const today = formatDate("DD-MM-YYYY");
+    // console.log("DailyTrackerProvider useEffect triggered with today:", today);
+    // console.log("Dependencies:", { isLoading, amalData, date: today });
+
     if (isLoading || !amalData) {
+      // console.log("Resetting to defaultAnswers due to loading or no amalData");
+      // Only update if answers differ to prevent infinite loop
+      if (JSON.stringify(answers) !== JSON.stringify(defaultAnswers)) {
+        setAnswers(defaultAnswers);
+      }
       return;
     }
 
-    const todayData = amalData.find((entry) => entry.info?.amalDate === today);
+    const todayData = amalData.find((entry) => {
+      const amalDate = normalizeDate(entry.info?.amalDate);
+      // console.log("Comparing amalDate:", amalDate, "with today:", today);
+      return amalDate === today;
+    });
+
+    // console.log("todayData:", todayData);
 
     if (!todayData) {
+      // console.log("No data found for date, resetting to defaultAnswers");
+      if (JSON.stringify(answers) !== JSON.stringify(defaultAnswers)) {
+        setAnswers(defaultAnswers);
+      }
       return;
     }
 
-    // Create a new answers object
-    const newAnswers = JSON.parse(JSON.stringify(answers)); // Deep copy
+    const newAnswers = JSON.parse(JSON.stringify(defaultAnswers));
 
-    // Helper to map point to radio button value for salah main
     const getRadioValue = (amalCode, point) => {
       const salah = salahData.find((s) => `${s.name}_main` === amalCode);
       if (!salah) return "notAnswered";
@@ -119,7 +122,6 @@ const DailyTrackerProvider = ({ children }) => {
       return option ? option.value : "notAnswered";
     };
 
-    // Field mapping for non-salat categories
     const fieldMap = {
       naflSalah_tahajjud: "tahajjud",
       naflSalah_duha: "duha",
@@ -166,22 +168,17 @@ const DailyTrackerProvider = ({ children }) => {
       isha_witr: "witr",
     };
 
-    // Process amalDetails
     todayData.amalDetails.forEach((amal) => {
       const { amalCode, isDone, point, category } = amal;
-
       try {
         if (category === "salat") {
           const [salahName, field] = amalCode.split("_");
-
           if (field === "main") {
             newAnswers[salahName].main = getRadioValue(amalCode, point);
+          } else if (field in newAnswers[salahName]) {
+            newAnswers[salahName][field] = isDone;
           } else {
-            if (field in newAnswers[salahName]) {
-              newAnswers[salahName][field] = isDone;
-            } else {
-              console.warn(`Field ${field} not found in answers.${salahName}`);
-            }
+            console.warn(`Field ${field} not found in answers.${salahName}`);
           }
         } else {
           const field = fieldMap[amalCode];
@@ -202,8 +199,31 @@ const DailyTrackerProvider = ({ children }) => {
       }
     });
 
-    setAnswers(newAnswers);
-  }, [amalData, isLoading]);
+    // console.log("Computed newAnswers:", JSON.stringify(newAnswers, null, 2));
+    // Only update if answers differ
+    if (JSON.stringify(answers) !== JSON.stringify(newAnswers)) {
+      // console.log("Setting new answers");
+      setAnswers(newAnswers);
+    } else {
+      // console.log("No change in answers, skipping setAnswers");
+    }
+  }, [isLoading, amalData, date, defaultAnswers]);
+
+  // Handle radio button changes for Salah
+  const handleRadioChange = (category, field, value) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [category]: { ...prev[category], [field]: value },
+    }));
+  };
+
+  // Handle checkbox changes for Nafl Salah, Zikr, Quran, Pre-Sleep, Additional
+  const handleCheckboxChange = (category, field) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [category]: { ...prev[category], [field]: !prev[category][field] },
+    }));
+  };
 
   // Salah data with questions, points, and priorities
   const salahData = [
@@ -361,7 +381,7 @@ const DailyTrackerProvider = ({ children }) => {
     },
     {
       field: "constantZikr",
-      label: "সর্বক্ষণ জিকির, ইস্তেগফакон",
+      label: "সর্বক্ষণ জিকির, ইস্তেগফার করেছি",
       point: 3,
       priority: "normal",
     },
@@ -371,13 +391,13 @@ const DailyTrackerProvider = ({ children }) => {
   const quranQuestions = [
     {
       field: "dailyRecitation",
-      label: "প্রতিদিন নির্দিষ্ট অংশ নায়েরা করেছি",
+      label: "প্রতিদিন নির্দিষ্ট অংশ তেলাওয়াত করেছি",
       point: 8,
       priority: "important",
     },
     {
       field: "tafsir",
-      label: "নায়েরা কৃত অংশের ব্যাখ্যা পড়েছি",
+      label: "তেলাওয়াতকৃত অংশের ব্যাখ্যা পড়েছি",
       point: 2,
       priority: "important",
     },
@@ -393,7 +413,7 @@ const DailyTrackerProvider = ({ children }) => {
   const preSleepQuestions = [
     {
       field: "surahMulk",
-      label: "রাতে সূরা মুলক তেলাওয়া করেছি",
+      label: "রাতে সূরা মুলক তেলাওয়াত করেছি",
       point: 5,
       priority: "important",
     },
@@ -547,136 +567,155 @@ const DailyTrackerProvider = ({ children }) => {
     },
   ];
 
-  // Unified amal data
-  const allAmals = [
-    // Salah main [মূল সালাত]
-    ...salahData.map((salah) => ({
-      amalName: salah.title,
-      amalCode: `${salah.name}_main`,
-      category: "salat",
-      priority: salah.priority,
-      isDone: () =>
-        answers[salah.name].main !== "notAnswered" &&
-        answers[salah.name].main !== "notDone",
-      getPoints: () => {
-        const selectedOption = salah.options.find(
-          (opt) => opt.value === answers[salah.name].main
-        );
-        return selectedOption ? selectedOption.point : 0;
-      },
-      isSunnah: () => answers[salah.name].sunnah || false,
-      isNafl: () => answers[salah.name].nafl || false,
-    })),
-    // Salah sunnah [সুন্নাত সালাত]
-    ...salahData
-      .filter((salah) => salah.checkboxes.some((cb) => cb.field === "sunnah"))
-      .map((salah) => {
-        const sunnahCheckbox = salah.checkboxes.find(
-          (cb) => cb.field === "sunnah"
-        );
-        return {
-          amalName: `${salah.title} - সুন্নাত`,
-          amalCode: `${salah.name}_sunnah`,
-          category: "salat",
-          priority: sunnahCheckbox.priority,
-          isDone: () => answers[salah.name].sunnah,
-          getPoints: () =>
-            answers[salah.name].sunnah && sunnahCheckbox
-              ? sunnahCheckbox.point
-              : 0,
-          isSunnah: () => true,
-          isNafl: () => false,
-        };
-      }),
-    // Salah nafl [যোহরের নফল সলাত]
-    {
-      amalName: "যোহর সলাত - নফল",
-      amalCode: "zuhr_nafl",
-      category: "salat",
-      priority: salahData
-        .find((s) => s.name === "zuhr")
-        .checkboxes.find((cb) => cb.field === "nafl").priority,
-      isDone: () => answers.zuhr.nafl,
-      getPoints: () => {
-        const naflCheckbox = salahData
+  // Memoized unified amal data
+  const allAmals = useMemo(
+    () => [
+      // Salah main [মূল সালাত]
+      ...salahData.map((salah) => ({
+        amalName: salah.title,
+        amalCode: `${salah.name}_main`,
+        category: "salat",
+        priority: salah.priority,
+        isDone: () =>
+          answers[salah.name].main !== "notAnswered" &&
+          answers[salah.name].main !== "notDone",
+        getPoints: () => {
+          const selectedOption = salah.options.find(
+            (opt) => opt.value === answers[salah.name].main
+          );
+          return selectedOption ? selectedOption.point : 0;
+        },
+        isSunnah: () => answers[salah.name].sunnah || false,
+        isNafl: () => answers[salah.name].nafl || false,
+      })),
+      // Salah sunnah [সুন্নাত সালাত]
+      ...salahData
+        .filter((salah) => salah.checkboxes.some((cb) => cb.field === "sunnah"))
+        .map((salah) => {
+          const sunnahCheckbox = salah.checkboxes.find(
+            (cb) => cb.field === "sunnah"
+          );
+          return {
+            amalName: `${salah.title} - সুন্নাত`,
+            amalCode: `${salah.name}_sunnah`,
+            category: "salat",
+            priority: sunnahCheckbox.priority,
+            isDone: () => answers[salah.name].sunnah,
+            getPoints: () =>
+              answers[salah.name].sunnah && sunnahCheckbox
+                ? sunnahCheckbox.point
+                : 0,
+            isSunnah: () => true,
+            isNafl: () => false,
+          };
+        }),
+      // Salah nafl [যোহরের নফল সলাত]
+      {
+        amalName: "যোহর সলাত - নফল",
+        amalCode: "zuhr_nafl",
+        category: "salat",
+        priority: salahData
           .find((s) => s.name === "zuhr")
-          .checkboxes.find((cb) => cb.field === "nafl");
-        return answers.zuhr.nafl && naflCheckbox ? naflCheckbox.point : 0;
+          .checkboxes.find((cb) => cb.field === "nafl").priority,
+        isDone: () => answers.zuhr.nafl,
+        getPoints: () => {
+          const naflCheckbox = salahData
+            .find((s) => s.name === "zuhr")
+            .checkboxes.find((cb) => cb.field === "nafl");
+          return answers.zuhr.nafl && naflCheckbox ? naflCheckbox.point : 0;
+        },
+        isSunnah: () => false,
+        isNafl: () => true,
       },
-      isSunnah: () => false,
-      isNafl: () => true,
-    },
-    // Salah witr [বিতর সালাত]
-    {
-      amalName: "এশা সলাত - বিতর",
-      amalCode: "isha_witr",
-      category: "salat",
-      priority: salahData
-        .find((s) => s.name === "isha")
-        .checkboxes.find((cb) => cb.field === "witr").priority,
-      isDone: () => answers.isha.witr,
-      getPoints: () => {
-        const witrCheckbox = salahData
+      // Salah witr [বিতর সালাত]
+      {
+        amalName: "এশা সলাত - বিতর",
+        amalCode: "isha_witr",
+        category: "salat",
+        priority: salahData
           .find((s) => s.name === "isha")
-          .checkboxes.find((cb) => cb.field === "witr");
-        return answers.isha.witr && witrCheckbox ? witrCheckbox.point : 0;
+          .checkboxes.find((cb) => cb.field === "witr").priority,
+        isDone: () => answers.isha.witr,
+        getPoints: () => {
+          const naflCheckbox = salahData
+            .find((s) => s.name === "isha")
+            .checkboxes.find((cb) => cb.field === "witr");
+          return answers.isha.witr && naflCheckbox ? naflCheckbox.point : 0;
+        },
+        isSunnah: () => false,
+        isNafl: () => false,
       },
-      isSunnah: () => false,
-      isNafl: () => false,
-    },
-    // Nafl Salah [তাহাজ্জুদ & সালাতুত দোহা]
-    ...naflSalahQuestions.map((q) => ({
-      amalName: q.label,
-      amalCode: `naflSalah_${q.field}`,
-      category: "naflSalah",
-      priority: q.priority,
-      isDone: () => answers.naflSalah[q.field],
-      getPoints: () => (answers.naflSalah[q.field] ? q.point : 0),
-    })),
-    // Zikr
-    ...zikrQuestions.map((q) => ({
-      amalName: q.label,
-      amalCode: `zikr_${q.field}`,
-      category: "zikr",
-      priority: q.priority,
-      isDone: () => answers.zikr[q.field],
-      getPoints: () => (answers.zikr[q.field] ? q.point : 0),
-    })),
-    // Quran
-    ...quranQuestions.map((q) => ({
-      amalName: q.label,
-      amalCode: `quran_${q.field}`,
-      category: "quran",
-      priority: q.priority,
-      isDone: () => answers.quran[q.field],
-      getPoints: () => (answers.quran[q.field] ? q.point : 0),
-    })),
-    // Pre-Sleep
-    ...preSleepQuestions.map((q) => ({
-      amalName: q.label,
-      amalCode: `preSleep_${q.field}`,
-      category: "preSleep",
-      priority: q.priority,
-      isDone: () => answers.preSleep[q.field],
-      getPoints: () => (answers.preSleep[q.field] ? q.point : 0),
-    })),
-    // Additional
-    ...additionalQuestions.map((q) => ({
-      amalName: q.label,
-      amalCode: `additional_${q.field}`,
-      category: "additional",
-      priority: q.priority,
-      isDone: () => answers.additional[q.field],
-      getPoints: () => (answers.additional[q.field] ? q.point : 0),
-    })),
-  ];
+      // Nafl Salah [তাহাজ্জুদ & সালাতুত দোহা]
+      ...naflSalahQuestions.map((q) => ({
+        amalName: q.label,
+        amalCode: `naflSalah_${q.field}`,
+        category: "naflSalah",
+        priority: q.priority,
+        isDone: () => answers.naflSalah[q.field],
+        getPoints: () => (answers.naflSalah[q.field] ? q.point : 0),
+      })),
+      // Zikr
+      ...zikrQuestions.map((q) => ({
+        amalName: q.label,
+        amalCode: `zikr_${q.field}`,
+        category: "zikr",
+        priority: q.priority,
+        isDone: () => answers.zikr[q.field],
+        getPoints: () => (answers.zikr[q.field] ? q.point : 0),
+      })),
+      // Quran
+      ...quranQuestions.map((q) => ({
+        amalName: q.label,
+        amalCode: `quran_${q.field}`,
+        category: "quran",
+        priority: q.priority,
+        isDone: () => answers.quran[q.field],
+        getPoints: () => (answers.quran[q.field] ? q.point : 0),
+      })),
+      // Pre-Sleep
+      ...preSleepQuestions.map((q) => ({
+        amalName: q.label,
+        amalCode: `preSleep_${q.field}`,
+        category: "preSleep",
+        priority: q.priority,
+        isDone: () => answers.preSleep[q.field],
+        getPoints: () => (answers.preSleep[q.field] ? q.point : 0),
+      })),
+      // Additional
+      ...additionalQuestions.map((q) => ({
+        amalName: q.label,
+        amalCode: `additional_${q.field}`,
+        category: "additional",
+        priority: q.priority,
+        isDone: () => answers.additional[q.field],
+        getPoints: () => (answers.additional[q.field] ? q.point : 0),
+      })),
+    ],
+    [
+      answers,
+      salahData,
+      naflSalahQuestions,
+      zikrQuestions,
+      quranQuestions,
+      preSleepQuestions,
+      additionalQuestions,
+    ]
+  );
 
   // Handle form submission
   const handleSubmit = async () => {
-    const amalDate = new Date()
-      .toLocaleDateString("en-GB")
-      .split("/")
-      .join("-");
+    const amalDate = formatDate("DD-MM-YYYY");
+    const today = formatDate("DD-MM-YYYY");
+    if (amalDate > today) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Cannot submit for future dates",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      return;
+    }
 
     const amalDetails = allAmals.map((amal) => ({
       amalName: amal.amalName,
@@ -704,7 +743,6 @@ const DailyTrackerProvider = ({ children }) => {
 
     try {
       const res = await axiosPublic.post("/amal_data", dailyAmalData);
-      amalDataRefetch();
       Swal.fire({
         position: "center",
         icon: "success",
@@ -724,20 +762,32 @@ const DailyTrackerProvider = ({ children }) => {
     }
   };
 
-  const contextValue = {
-    handleRadioChange,
-    handleCheckboxChange,
-    answers,
-    setAnswers,
-    salahData,
-    naflSalahQuestions,
-    zikrQuestions,
-    quranQuestions,
-    preSleepQuestions,
-    additionalQuestions,
-    allAmals,
-    handleSubmit,
-  };
+  const contextValue = useMemo(
+    () => ({
+      handleRadioChange,
+      handleCheckboxChange,
+      answers,
+      setAnswers,
+      salahData,
+      naflSalahQuestions,
+      zikrQuestions,
+      quranQuestions,
+      preSleepQuestions,
+      additionalQuestions,
+      allAmals,
+      handleSubmit,
+    }),
+    [
+      answers,
+      salahData,
+      naflSalahQuestions,
+      zikrQuestions,
+      quranQuestions,
+      preSleepQuestions,
+      additionalQuestions,
+      allAmals,
+    ]
+  );
 
   return (
     <DailyTrackerContext.Provider value={contextValue}>

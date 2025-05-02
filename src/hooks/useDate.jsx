@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const useDate = () => {
   const [date, setDate] = useState(new Date());
   const [selectedDateValue, setSelectedDateValue] = useState(
     formatDate(new Date(), "YYYY-MM-DD")
   );
-  // console.log(date);
+
+  // Log date changes for debugging
+  useEffect(() => {
+    console.log("useDate date updated:", formatDate(date, "DD-MM-YYYY"));
+  }, [date]);
 
   // Function 1: Format date to a specified format
   function formatDate(dateObj, format = "YYYY-MM-DD") {
@@ -29,6 +33,7 @@ const useDate = () => {
     const newDate = new Date(year, month - 1, day);
     setDate(newDate);
     setSelectedDateValue(selectedDate);
+    console.log("Date picker changed to:", selectedDate);
   }
 
   // Function 4: Handle previous day navigation
@@ -36,6 +41,7 @@ const useDate = () => {
     const newDate = addDays(date, -1);
     setDate(newDate);
     setSelectedDateValue(formatDate(newDate, "YYYY-MM-DD"));
+    console.log("Previous day:", formatDate(newDate, "DD-MM-YYYY"));
   }
 
   // Function 5: Handle next day navigation
@@ -43,6 +49,7 @@ const useDate = () => {
     const newDate = addDays(date, 1);
     setDate(newDate);
     setSelectedDateValue(formatDate(newDate, "YYYY-MM-DD"));
+    console.log("Next day:", formatDate(newDate, "DD-MM-YYYY"));
   }
 
   return {
