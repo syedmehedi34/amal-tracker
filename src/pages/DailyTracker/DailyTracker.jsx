@@ -19,14 +19,6 @@ const DailyTracker = () => {
     handleSubmit,
   } = useContext(DailyTrackerContext);
 
-  // Debug log to track answers changes
-  useEffect(() => {
-    // console.log(
-    //   "DailyTracker answers updated:",
-    //   JSON.stringify(answers, null, 2)
-    // );
-  }, [answers]);
-
   return (
     <>
       {/* Banner section for point counting */}

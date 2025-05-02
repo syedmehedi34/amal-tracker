@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useDateContext } from "../../context/DateContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 

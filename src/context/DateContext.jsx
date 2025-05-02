@@ -1,9 +1,14 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, useEffect, useMemo } from "react";
+import { createContext, useContext, useState, useMemo } from "react";
+import useAmalData from "../hooks/useAmalData";
 
 const DateContext = createContext();
 
 export const DateProvider = ({ children }) => {
+  const { amalData, isLoading, error, amalDataRefetch } = useAmalData();
   const [date, setDate] = useState(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Normalize to start of day
@@ -12,11 +17,6 @@ export const DateProvider = ({ children }) => {
   const [selectedDateValue, setSelectedDateValue] = useState(
     formatDate(new Date(), "YYYY-MM-DD")
   );
-
-  // Log date changes for debugging
-  useEffect(() => {
-    console.log("DateContext date updated:", formatDate(date, "DD-MM-YYYY"));
-  }, [date]);
 
   // Function 1: Format date to a specified format
   function formatDate(dateObj, format = "YYYY-MM-DD") {
@@ -67,21 +67,21 @@ export const DateProvider = ({ children }) => {
 
   // Function 4: Handle previous day navigation
   function handlePreviousDay() {
+    amalDataRefetch();
     const newDate = addDays(date, -1);
     setDate(newDate);
     setSelectedDateValue(formatDate(newDate, "YYYY-MM-DD"));
-    console.log("Previous day:", formatDate(newDate, "DD-MM-YYYY"));
   }
 
   // Function 5: Handle next day navigation
   function handleNextDay() {
+    amalDataRefetch();
     const newDate = addDays(date, 1);
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Normalize to start of day
     if (newDate.getTime() <= today.getTime()) {
       setDate(newDate);
       setSelectedDateValue(formatDate(newDate, "YYYY-MM-DD"));
-      console.log("Next day:", formatDate(newDate, "DD-MM-YYYY"));
     } else {
       console.warn(
         "Cannot navigate to future date:",
