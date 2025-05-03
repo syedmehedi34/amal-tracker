@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { useDateContext } from "../../context/DateContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import useAmalData from "../../hooks/useAmalData";
 
 const PointingBanner = () => {
   const {
@@ -12,6 +14,9 @@ const PointingBanner = () => {
     selectedDateValue,
   } = useDateContext();
 
+  const { amalData, isLoading, error, amalDataRefetch, isFetching } =
+    useAmalData();
+
   // Format the current date to DD-MM-YYYY for display
   const today = formatDate("DD-MM-YYYY");
 
@@ -21,6 +26,34 @@ const PointingBanner = () => {
     normalized.setHours(0, 0, 0, 0);
     return normalized;
   };
+
+  // Find today's Amal data
+  const todayAmal = amalData?.find((data) => data.info.amalDate === today);
+
+  // Get total points for display (default to 0 if no data)
+  const totalPoints = todayAmal?.info.totalObtainedPoints || 0;
+
+  // Determine the message based on points
+  const getMessage = (points) => {
+    if (points >= 80) {
+      return {
+        text: "অসাধারণ! আপনি সঠিক পথে এগিয়ে চলেছেন। আল্লাহ আপনার আমল কবুল করুন।",
+        color: "text-green-600 dark:text-green-400",
+      };
+    } else if (points >= 50) {
+      return {
+        text: "ভালো চেষ্টা! আরও আমল বাড়িয়ে আল্লাহর নৈকট্য লাভ করুন।",
+        color: "text-yellow-600 dark:text-yellow-400",
+      };
+    } else {
+      return {
+        text: "আপনি ভুল পথে আছেন, দয়া করে আপনার ঈমানের দিকে মনোযোগ দিন।",
+        color: "text-red-600 dark:text-red-400",
+      };
+    }
+  };
+
+  const message = getMessage(totalPoints);
 
   return (
     <div>
@@ -65,11 +98,11 @@ const PointingBanner = () => {
           <p className="text-primary-900 dark:text-primary-100 text-lg md:text-xl mt-4">
             আপনার প্রাপ্ত নম্বর:{" "}
             <span className="text-islamic dark:text-islamic-light font-bold">
-              40/100
+              {totalPoints}
             </span>
           </p>
-          <p className="text-red-600 dark:text-red-400 font-semibold mt-4">
-            আপনি ভুল পথে আছেন, দয়া করে আপনার ঈমানের দিকে মনোযোগ দিন।
+          <p className={`${message.color} font-semibold mt-4`}>
+            {message.text}
           </p>
         </div>
       </section>
