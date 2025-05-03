@@ -9,6 +9,7 @@ const useAmalData = () => {
   const {
     data: amalData = [],
     isLoading,
+    isFetching, // 👈 এইটা যোগ করো
     error,
     refetch: amalDataRefetch,
   } = useQuery({
@@ -24,11 +25,11 @@ const useAmalData = () => {
 
       return response.data;
     },
-    enabled: !!user?.email, // Only run query if user.email exists
-    retry: 1, // Retry once on failure
+    enabled: !!user?.email,
+    retry: 1,
   });
 
-  return { amalData, isLoading, error, amalDataRefetch };
+  return { amalData, isLoading, error, amalDataRefetch, isFetching };
 };
 
 export default useAmalData;

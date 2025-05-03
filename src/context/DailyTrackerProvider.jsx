@@ -22,44 +22,57 @@ const DailyTrackerProvider = ({ children }) => {
       asr: { main: "notAnswered" },
       maghrib: { main: "notAnswered", sunnah: false },
       isha: { main: "notAnswered", sunnah: false, witr: false },
-      naflSalah: { tahajjud: false, duha: false },
+      naflSalah: {
+        tahajjud: false, // তাহাজ্জুদ আদায় করেছি
+        duha: false, // সালাতুত দোহা আদায় করেছি
+      },
       zikr: {
-        tasbih33: false,
-        ayatulKursi: false,
-        morningEvening: false,
-        subhanAllah100: false,
-        sayyidulIstighfar: false,
-        jannahDua: false,
-        constantZikr: false,
+        tasbih33: false, // ৩৩+৩৩+৩৩+১ - জিকির পড়েছি
+        ayatulKursi: false, // আয়াতুল কুরসি পড়েছি
+        morningEvening: false, // সকাল সন্ধ্যা জিকির পড়েছি
+        subhanAllah100: false, // ১০০ বার 'সুবহানাল্লাহি ওবি হামদিহি' পড়েছি
+        sayyidulIstighfar: false, // সাইয়েদুল ইস্তেগফার পড়েছি
+        jannahDua: false, // জান্নাতুল ফেরদৌসের জন্য দোয়া করেছি ও জাহান্নাম থেকে মুক্তির দোয়া করেছি
+        constantZikr: false, // সর্বক্ষণ জিকির, ইস্তেগফার করেছি
+
+        // todo: Add new zikr amal field here, e.g., surahIkhlas: false
+        // Example: surahIkhlas: false,
       },
-      quran: { dailyRecitation: false, tafsir: false, sirat: false },
-      preSleep: { surahMulk: false },
+      quran: {
+        dailyRecitation: false, // প্রতিদিন নির্দিষ্ট অংশ তেলাওয়াত করেছি
+        tafsir: false, // তেলাওয়াতকৃত অংশের ব্যাখ্যা পড়েছি
+        sirat: false, // সিরাত পঠন করেছি
+      },
+      preSleep: {
+        surahMulk: false, // রাতে সূরা মুলক তেলাওয়াত করেছি
+      },
       additional: {
-        avoidMajorSins: false,
-        halalFood: false,
-        avoidZina: false,
-        keepTrust: false,
-        seekForgiveness: false,
-        avoidBackbiting: false,
-        avoidEnvy: false,
-        avoidLying: false,
-        charity: false,
-        voluntaryFasting: false,
-        goodBehavior: false,
-        kalimaAfterWudu: false,
-        avoidUseless: false,
-        respondAdhan: false,
-        coverAwrah: false,
-        helpOthers: false,
-        removeHarm: false,
-        goodAdvice: false,
-        giveSalam: false,
-        rememberAkhirah: false,
-        duaProphet: false,
-        constantWudu: false,
-        sleepWakeAmal: false,
-        dawah: false,
+        avoidMajorSins: false, // কবিরা গুনাহ করিনি
+        halalFood: false, // হালাল খাওয়া খেয়েছি
+        avoidZina: false, // জেনা থেকে বেঁচে আছি
+        keepTrust: false, // আমানত রক্ষা করেছি
+        seekForgiveness: false, // আল্লাহর কাছে ক্ষমা চেয়েছি
+        avoidBackbiting: false, // গীবত থেকে বেঁচে আছি
+        avoidEnvy: false, // হিংসা থেকে বেঁচে আছি
+        avoidLying: false, // মিথ্যা বলিনি
+        charity: false, // দান করেছি
+        voluntaryFasting: false, // নফল রোজা রেখেছি
+        goodBehavior: false, // ভালো আচরণ করেছি
+        kalimaAfterWudu: false, // অজুর পর কালিমা পড়েছি
+        avoidUseless: false, // অপ্রয়োজনীয় কাজ থেকে বেঁচে আছি
+        respondAdhan: false, // আযানের জবাব দিয়েছি
+        coverAwrah: false, // আবরু রক্ষা করেছি
+        helpOthers: false, // অন্যের সাহায্য করেছি
+        removeHarm: false, // অন্যের ক্ষতি থেকে বেঁচে আছি
+        goodAdvice: false, // ভালো উপদেশ দিয়েছি
+        giveSalam: false, // সালাম দিয়েছি
+        rememberAkhirah: false, // আখিরাতের কথা মনে রেখেছি
+        duaProphet: false, // নবীজির জন্য দোয়া করেছি
+        constantWudu: false, // সর্বদা অজু অবস্থায় আছি
+        sleepWakeAmal: false, // ঘুমানোর আগে ও ঘুম থেকে উঠে আমল করেছি
+        dawah: false, // দাওয়াতের কাজ করেছি
       },
+      // todo: For a new category, add a new key here, e.g., newCategory: { newAmal: false }
     }),
     []
   );
@@ -93,14 +106,11 @@ const DailyTrackerProvider = ({ children }) => {
 
     const todayData = amalData.find((entry) => {
       const amalDate = normalizeDate(entry.info?.amalDate);
-      // console.log("Comparing amalDate:", amalDate, "with today:", today);
       return amalDate === today;
     });
-
     // console.log("todayData:", todayData);
 
     if (!todayData) {
-      // console.log("No data found for date, resetting to defaultAnswers");
       if (JSON.stringify(answers) !== JSON.stringify(defaultAnswers)) {
         setAnswers(defaultAnswers);
       }
@@ -127,6 +137,8 @@ const DailyTrackerProvider = ({ children }) => {
       zikr_sayyidulIstighfar: "sayyidulIstighfar",
       zikr_jannahDua: "jannahDua",
       zikr_constantZikr: "constantZikr",
+      // todo: Add new amal mapping here, e.g., zikr_surahIkhlas: "surahIkhlas"
+      // Example: zikr_surahIkhlas: "surahIkhlas",
       quran_dailyRecitation: "dailyRecitation",
       quran_tafsir: "tafsir",
       quran_sirat: "sirat",
@@ -161,6 +173,7 @@ const DailyTrackerProvider = ({ children }) => {
       isha_sunnah: "sunnah",
       zuhr_nafl: "nafl",
       isha_witr: "witr",
+      // todo: For a new category, add mapping, e.g., newCategory_newAmal: "newAmal"
     };
 
     todayData.amalDetails.forEach((amal) => {
@@ -194,7 +207,6 @@ const DailyTrackerProvider = ({ children }) => {
       }
     });
 
-    // console.log("Computed newAnswers:", JSON.stringify(newAnswers, null, 2));
     // Only update if answers differ
     if (JSON.stringify(answers) !== JSON.stringify(newAnswers)) {
       // console.log("Setting new answers");
@@ -333,6 +345,7 @@ const DailyTrackerProvider = ({ children }) => {
       point: 1,
       priority: "normal",
     },
+    // todo: Add new naflSalah amal here, e.g., { field: "newNafl", label: "নতুন নফল সালাত", point: 2, priority: "normal" }
   ];
 
   // Zikr questions with points and priorities
@@ -380,6 +393,13 @@ const DailyTrackerProvider = ({ children }) => {
       point: 3,
       priority: "normal",
     },
+    // todo: Add new zikr amal here, e.g., { field: "surahIkhlas", label: "সূরা ইখলাস ৩ বার পড়েছি", point: 2, priority: "normal" }
+    // Example: {
+    //   field: "surahIkhlas",
+    //   label: "সূরা ইখলাস ৩ বার পড়েছি",
+    //   point: 2,
+    //   priority: "normal",
+    // },
   ];
 
   // Quran questions with points and priorities
@@ -402,6 +422,7 @@ const DailyTrackerProvider = ({ children }) => {
       point: 2,
       priority: "important",
     },
+    // todo: Add new quran amal here, e.g., { field: "newQuran", label: "নতুন কুরআন আমল", point: 3, priority: "important" }
   ];
 
   // Pre-Sleep questions with points and priorities
@@ -412,6 +433,7 @@ const DailyTrackerProvider = ({ children }) => {
       point: 5,
       priority: "important",
     },
+    // todo: Add new preSleep amal here, e.g., { field: "newPreSleep", label: "নতুন প্রি-স্লিপ আমল", point: 2, priority: "important" }
   ];
 
   // Additional questions with points and priorities
@@ -560,6 +582,7 @@ const DailyTrackerProvider = ({ children }) => {
       point: 1,
       priority: "normal",
     },
+    // todo: Add new additional amal here, e.g., { field: "newAdditional", label: "নতুন অতিরিক্ত আমল", point: 1, priority: "normal" }
   ];
 
   // Memoized unified amal data
@@ -685,6 +708,15 @@ const DailyTrackerProvider = ({ children }) => {
         isDone: () => answers.additional[q.field],
         getPoints: () => (answers.additional[q.field] ? q.point : 0),
       })),
+      // todo: Add new amal for a new category here, e.g.,
+      // ...newCategoryQuestions.map((q) => ({
+      //   amalName: q.label,
+      //   amalCode: `newCategory_${q.field}`,
+      //   category: "newCategory",
+      //   priority: q.priority,
+      //   isDone: () => answers.newCategory[q.field],
+      //   getPoints: () => (answers.newCategory[q.field] ? q.point : 0),
+      // })),
     ],
     [
       answers,
@@ -701,6 +733,7 @@ const DailyTrackerProvider = ({ children }) => {
   const handleSubmit = async () => {
     const amalDate = formatDate("DD-MM-YYYY");
     const today = formatDate("DD-MM-YYYY");
+    // control future date data submittion
     if (amalDate > today) {
       Swal.fire({
         position: "center",
@@ -771,6 +804,7 @@ const DailyTrackerProvider = ({ children }) => {
       additionalQuestions,
       allAmals,
       handleSubmit,
+      // todo: Add new category questions to contextValue, e.g., newCategoryQuestions
     }),
     [
       answers,
