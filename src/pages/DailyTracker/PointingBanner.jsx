@@ -59,7 +59,12 @@ const PointingBanner = ({
 
   // Determine the message based on points
   const getMessage = (points) => {
-    if (points > 95) {
+    if (points === 0) {
+      return {
+        text: "আপনার আজকের আমল এখনো আপডেট করা হয়নি। দয়া করে আমল আপডেট করুন।",
+        color: "text-gray-600 dark:text-gray-400",
+      };
+    } else if (points >= 95) {
       return {
         text: "অসাধারণ! আপনি সঠিক পথে এগিয়ে চলেছেন। আল্লাহ আপনার আমল কবুল করুন।",
         color: "text-green-600 dark:text-green-400",
