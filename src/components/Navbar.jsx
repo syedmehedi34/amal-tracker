@@ -41,8 +41,8 @@ function Navbar() {
     <nav className="bg-white shadow-md dark:bg-gray-800">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Hamburger Menu Icon (visible on small screens) */}
-          <div className="md:hidden flex items-center">
+          {/* Hamburger Menu Icon and Logo (left) */}
+          <div className="flex items-center space-x-4">
             <button
               onClick={toggleDrawer}
               className="text-islamic dark:text-white focus:outline-none"
@@ -50,18 +50,16 @@ function Navbar() {
             >
               <Bars3Icon className="h-6 w-6" />
             </button>
+            <Link
+              to="/"
+              className="text-2xl font-bold text-islamic dark:text-white"
+            >
+              Ibad Allah (عباد الله)
+            </Link>
           </div>
 
-          {/* Logo */}
-          <Link
-            to="/"
-            className="text-2xl font-bold text-islamic dark:text-white"
-          >
-            Ibad Allah (عباد الله)
-          </Link>
-
-          {/* Navigation Links (visible on medium and larger screens) */}
-          <div className="hidden md:flex space-x-6">
+          {/* Navigation Links (center, visible on medium and larger screens) */}
+          <div className="hidden md:flex flex-grow justify-center space-x-6">
             <Link
               to="/"
               className="nav-link dark:text-white dark:hover:text-gray-300"
@@ -86,7 +84,7 @@ function Navbar() {
             )}
           </div>
 
-          {/* User Actions and Theme Toggle (visible on medium and larger screens) */}
+          {/* User Actions and Theme Toggle (right, visible on medium and larger screens) */}
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <>
@@ -130,7 +128,7 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Drawer (visible when isDrawerOpen is true on small screens) */}
+      {/* Drawer (visible when isDrawerOpen is true) */}
       <div
         className={`fixed inset-0 z-50 flex transition-opacity duration-300 ${
           isDrawerOpen ? "opacity-100" : "opacity-0 pointer-events-none"
