@@ -282,7 +282,10 @@ const DailyTracker = () => {
           {/* Fixed Save Button */}
           <button
             className="fixed bottom-4 right-4 btn btn-primary btn-lg shadow-lg hover:scale-105 transition-transform duration-200 z-50 font-arabic"
-            onClick={handleSubmit}
+            onClick={() => {
+              handleSubmit();
+              amalDataRefetch();
+            }}
             disabled={isLoading} // Disable button during loading
           >
             সংরক্ষণ করুন

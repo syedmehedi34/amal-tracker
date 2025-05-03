@@ -35,15 +35,25 @@ const PointingBanner = () => {
 
   // Determine the message based on points
   const getMessage = (points) => {
-    if (points >= 80) {
+    if (points > 95) {
       return {
         text: "অসাধারণ! আপনি সঠিক পথে এগিয়ে চলেছেন। আল্লাহ আপনার আমল কবুল করুন।",
         color: "text-green-600 dark:text-green-400",
       };
-    } else if (points >= 50) {
+    } else if (points >= 90) {
       return {
         text: "ভালো চেষ্টা! আরও আমল বাড়িয়ে আল্লাহর নৈকট্য লাভ করুন।",
         color: "text-yellow-600 dark:text-yellow-400",
+      };
+    } else if (points >= 85) {
+      return {
+        text: "আরেকটু চেষ্টা করতে হবে। আপনি আমলে অলসতা করছেন।",
+        color: "text-orange-600 dark:text-orange-400",
+      };
+    } else if (points >= 80) {
+      return {
+        text: "আপনার চেষ্টায় অনেক কমতি আছে। আমলকে গুরুত্ব দিন।",
+        color: "text-red-500 dark:text-red-300",
       };
     } else {
       return {
@@ -98,7 +108,7 @@ const PointingBanner = () => {
           <p className="text-primary-900 dark:text-primary-100 text-lg md:text-xl mt-4">
             আপনার প্রাপ্ত নম্বর:{" "}
             <span className="text-islamic dark:text-islamic-light font-bold">
-              {totalPoints}
+              {totalPoints}/100
             </span>
           </p>
           <p className={`${message.color} font-semibold mt-4`}>
