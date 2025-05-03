@@ -3,6 +3,8 @@
   "short_name": "IbadAllah",
   "description": "A Progressive Web App for Ibad Allah built with React, Tailwind CSS, and MongoDB",
   "start_url": "/",
+  "scope": "/",
+  "id": "/?source=pwa",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
