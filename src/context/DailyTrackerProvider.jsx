@@ -264,58 +264,7 @@ const DailyTrackerProvider = ({ children }) => {
       title: "ফজর সলাত",
       priority: "salat",
       options: [
-        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 4 },
-        { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
-        { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
-        { value: "notDone", label: "আদায় করিনি", point: -20 },
-      ],
-      checkboxes: [
-        {
-          field: "sunnah",
-          label: "সুন্নাত আদায় করেছি",
-          point: 1,
-          priority: "important",
-        },
-      ],
-    },
-    {
-      name: "zuhr",
-      title: "যোহর সলাত",
-      priority: "salat",
-      options: [
-        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 4 },
-        { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
-        { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
-        { value: "notDone", label: "আদায় করিনি", point: -20 },
-      ],
-      checkboxes: [
-        {
-          field: "sunnah",
-          label: "সুন্নাত আদায় করেছি",
-          point: 3,
-          priority: "important",
-        },
-        { field: "nafl", label: "নফল আদায় করেছি", point: 1, priority: "low" },
-      ],
-    },
-    {
-      name: "asr",
-      title: "আসর সলাত",
-      priority: "salat",
-      options: [
-        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 4 },
-        { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
-        { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
-        { value: "notDone", label: "আদায় করিনি", point: -20 },
-      ],
-      checkboxes: [],
-    },
-    {
-      name: "maghrib",
-      title: "মাগরিব সলাত",
-      priority: "salat",
-      options: [
-        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 4 },
+        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 5 },
         { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
         { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
         { value: "notDone", label: "আদায় করিনি", point: -20 },
@@ -330,11 +279,62 @@ const DailyTrackerProvider = ({ children }) => {
       ],
     },
     {
+      name: "zuhr",
+      title: "যোহর সলাত",
+      priority: "salat",
+      options: [
+        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 5 },
+        { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
+        { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
+        { value: "notDone", label: "আদায় করিনি", point: -20 },
+      ],
+      checkboxes: [
+        {
+          field: "sunnah",
+          label: "সুন্নাত আদায় করেছি",
+          point: 1,
+          priority: "important",
+        },
+        { field: "nafl", label: "নফল আদায় করেছি", point: 1, priority: "low" },
+      ],
+    },
+    {
+      name: "asr",
+      title: "আসর সলাত",
+      priority: "salat",
+      options: [
+        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 5 },
+        { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
+        { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
+        { value: "notDone", label: "আদায় করিনি", point: -20 },
+      ],
+      checkboxes: [],
+    },
+    {
+      name: "maghrib",
+      title: "মাগরিব সলাত",
+      priority: "salat",
+      options: [
+        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 5 },
+        { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
+        { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
+        { value: "notDone", label: "আদায় করিনি", point: -20 },
+      ],
+      checkboxes: [
+        {
+          field: "sunnah",
+          label: "সুন্নাত আদায় করেছি",
+          point: 1,
+          priority: "important",
+        },
+      ],
+    },
+    {
       name: "isha",
       title: "এশা সলাত",
       priority: "salat",
       options: [
-        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 4 },
+        { value: "jamaat", label: "জামাতে আদায় করেছি", point: 5 },
         { value: "alone", label: "একাকী আদায় করেছি", point: 1 },
         { value: "qaza", label: "কাজা আদায় করেছি", point: -5 },
         { value: "notDone", label: "আদায় করিনি", point: -20 },
@@ -373,19 +373,19 @@ const DailyTrackerProvider = ({ children }) => {
     {
       field: "prayIstikharaSalah",
       label: "ইস্তিখারার নামাজ পড়েছি",
-      point: 2,
+      point: 1,
       priority: "normal",
     },
     {
       field: "praySalatutHajot",
       label: "সালাতুত হাজত আদায় করেছি",
-      point: 2,
+      point: 1,
       priority: "normal",
     },
     {
       field: "prayTahiyatulMasjid",
       label: "তাহিয়াতুল মসজিদ আদায় করেছি",
-      point: 2,
+      point: 1,
       priority: "normal",
     },
     // todo: Add new naflSalah amal here, e.g., { field: "newNafl", label: "নতুন নফল সালাত", point: 2, priority: "normal" }
@@ -408,13 +408,13 @@ const DailyTrackerProvider = ({ children }) => {
     {
       field: "morningEveningZikr",
       label: "সকাল সন্ধ্যা যিকির করেছি",
-      point: 2,
+      point: 2, // ? may need change
       priority: "normal",
     },
     {
       field: "subhanAllah100",
       label: "সকাল সন্ধ্যা 'সুবহানাল্লাহি ওবি হামদিহি' - (১০০ বার) পড়েছি",
-      point: 1,
+      point: 1, // ? may need change
       priority: "normal",
     },
     {
@@ -445,7 +445,7 @@ const DailyTrackerProvider = ({ children }) => {
       field: "bestKalima100",
       label:
         "লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারিকালাহু লাহুল মুলকু....(১০০ বার)",
-      point: 1,
+      point: 2,
       priority: "normal",
     },
     // todo: Add new zikr amal here, e.g., { field: "surahIkhlas", label: "সূরা ইখলাস ৩ বার পড়েছি", point: 2, priority: "normal" }
@@ -462,7 +462,7 @@ const DailyTrackerProvider = ({ children }) => {
     {
       field: "quranNazira",
       label: "কুরআন নায়েরা করেছি",
-      point: 8,
+      point: 5,
       priority: "important",
     },
     {
@@ -474,7 +474,7 @@ const DailyTrackerProvider = ({ children }) => {
     {
       field: "studySirat",
       label: "সিরাত পাঠ করেছি",
-      point: 2,
+      point: 3,
       priority: "important",
     },
     // todo: Add new quran amal here, e.g., { field: "newQuran", label: "নতুন কুরআন আমল", point: 3, priority: "important" }
@@ -485,7 +485,7 @@ const DailyTrackerProvider = ({ children }) => {
     {
       field: "suraMulkAtNight",
       label: "রাতে সূরা মুলক তেলাওয়াত করেছি",
-      point: 5,
+      point: 2,
       priority: "important",
     },
 
@@ -497,37 +497,37 @@ const DailyTrackerProvider = ({ children }) => {
     {
       field: "avoidKabiraGunah",
       label: "কবিরা গুনাহ থেকে বেঁচে থেকেছি",
-      point: 5,
+      point: 3,
       priority: "normal",
     },
     {
       field: "eatHalal",
       label: "হালাল খাবার খেয়েছি",
-      point: 5,
+      point: 2,
       priority: "normal",
     },
     {
       field: "safeFromZina",
       label: "যেনা থেকে বেঁচে থেকেছি",
-      point: 3,
+      point: 2,
       priority: "normal",
     },
     {
       field: "keepAmanatAndStatements",
       label: "আমানত ও অঙ্গীকার রক্ষা করেছি",
-      point: 2,
+      point: 1,
       priority: "normal",
     },
     {
       field: "apologizeForFullDaySins",
       label: "সারাদিনের কৃতকর্মের জন্য মাফ চেয়েছি",
-      point: 2,
+      point: 1,
       priority: "normal",
     },
     {
       field: "safeFromGibot",
       label: "গিবত থেকে বেঁচে থেকেছি",
-      point: 2,
+      point: 3,
       priority: "normal",
     },
     {
@@ -539,7 +539,7 @@ const DailyTrackerProvider = ({ children }) => {
     {
       field: "safeFromLie",
       label: "মিথ্যা থেকে বেঁচে থেকেছি",
-      point: 2,
+      point: 1,
       priority: "normal",
     },
     {
@@ -551,7 +551,7 @@ const DailyTrackerProvider = ({ children }) => {
     {
       field: "naflSawm",
       label: "নফল রোজা রেখেছি",
-      point: 2,
+      point: 1,
       priority: "normal",
     },
     {
@@ -617,13 +617,13 @@ const DailyTrackerProvider = ({ children }) => {
     {
       field: "duaForGettingJannahWithProphet",
       label: "জান্নাতে রাসুলুল্লাহ (সাঃ) এর কাছাকাছি থাকার দোয়া করেছি",
-      point: 1,
+      point: 2,
       priority: "normal",
     },
     {
       field: "alwaysStayWithOju",
       label: "সর্বদা অজুর সাথে থেকেছি / অজুর সলাত আদায় করেছি",
-      point: 1,
+      point: 2,
       priority: "normal",
     },
     {
@@ -635,7 +635,7 @@ const DailyTrackerProvider = ({ children }) => {
     {
       field: "dawahSomeone",
       label: "দ্বীনের দাওয়াত দিয়েছি",
-      point: 1,
+      point: 2,
       priority: "normal",
     },
     {
