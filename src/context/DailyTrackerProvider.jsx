@@ -25,6 +25,9 @@ const DailyTrackerProvider = ({ children }) => {
       naflSalah: {
         prayTahajjud: false, // তাহাজ্জুদ আদায় করেছি
         prayDoha: false, // সালাতুত দোহা আদায় করেছি
+        prayIstikharaSalah: false, // ইস্তিখারার নামাজ পড়েছি
+        praySalatutHajot: false, // সালাতুত হাজত আদায় করেছি
+        prayTahiyatulMasjid: false, // তাহিয়াতুল মসজিদ আদায় করেছি
       },
       zikr: {
         salahTasbeeh33: false, // ৩৩+৩৩+৩৩+১ - জিকির পড়েছি
@@ -34,7 +37,8 @@ const DailyTrackerProvider = ({ children }) => {
         sayyidulIstighfar: false, // সাইয়েদুল ইস্তেগফার পড়েছি
         duaForJannahAndJahannam: false, // জান্নাতুল ফেরদৌসের জন্য দোয়া করেছি ও জাহান্নাম থেকে মুক্তির দোয়া করেছি
         istigfarZikrDurudEverytime: false, // সর্বক্ষণ জিকির, ইস্তেগফার করেছি
-
+        durudAtLeast100Times: false, // অন্তত ১০০ বার দুরুদ পড়েছি
+        bestKalima100: false, // লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারিকালাহু লাহুল মুলকু....(১০০ বার)
         // todo: Add new zikr amal field here, e.g., surahIkhlas: false
         // Example: surahIkhlas: false,
       },
@@ -71,6 +75,10 @@ const DailyTrackerProvider = ({ children }) => {
         alwaysStayWithOju: false, // সর্বদা অজু অবস্থায় আছি
         amalForSleepingAndWakeUp: false, // ঘুমানোর আগে ও ঘুম থেকে উঠে আমল করেছি
         dawahSomeone: false, // দাওয়াতের কাজ করেছি
+        duaForShahadah: false, // শাহাদাতের মৃত্যুর জন্য দোয়া করেছি
+        goodRelationWithRelatives: false, // অন্তত একজন আত্মীয়ের সাথে যোগাযোগ করেছি
+        duaForOthers: false, // অন্যের জন্য গোপনে দোয়া করেছি
+        careTheSickPeoples: false, // অসুস্থ ব্যাক্তির খোঁজ খবর নিয়েছি
       },
       // todo: For a new category, add a new key here, e.g., newCategory: { newAmal: false }
     }),
@@ -130,6 +138,10 @@ const DailyTrackerProvider = ({ children }) => {
     const fieldMap = {
       naflSalah_prayTahajjud: "prayTahajjud",
       naflSalah_prayDoha: "prayDoha",
+      naflSalah_prayIstikharaSalah: "prayIstikharaSalah",
+      naflSalah_praySalatutHajot: "praySalatutHajot",
+      naflSalah_prayTahiyatulMasjid: "prayTahiyatulMasjid",
+
       zikr_salahTasbeeh33: "salahTasbeeh33",
       zikr_ayatulKursiAfterSalah: "ayatulKursiAfterSalah",
       zikr_morningEveningZikr: "morningEveningZikr",
@@ -137,12 +149,17 @@ const DailyTrackerProvider = ({ children }) => {
       zikr_sayyidulIstighfar: "sayyidulIstighfar",
       zikr_duaForJannahAndJahannam: "duaForJannahAndJahannam",
       zikr_istigfarZikrDurudEverytime: "istigfarZikrDurudEverytime",
+      zikr_durudAtLeast100Times: "durudAtLeast100Times",
+      zikr_bestKalima100: "bestKalima100",
       // todo: Add new amal mapping here, e.g., zikr_surahIkhlas: "surahIkhlas"
       // Example: zikr_surahIkhlas: "surahIkhlas",
+
       quran_quranNazira: "quranNazira",
       quran_quranTafsir: "quranTafsir",
       quran_studySirat: "studySirat",
+
       preSleep_suraMulkAtNight: "suraMulkAtNight",
+
       additional_avoidKabiraGunah: "avoidKabiraGunah",
       additional_eatHalal: "eatHalal",
       additional_safeFromZina: "safeFromZina",
@@ -168,6 +185,13 @@ const DailyTrackerProvider = ({ children }) => {
       additional_alwaysStayWithOju: "alwaysStayWithOju",
       additional_amalForSleepingAndWakeUp: "amalForSleepingAndWakeUp",
       additional_dawahSomeone: "dawahSomeone",
+      additional_duaForShahadah: "duaForShahadah",
+      additional_goodRelationWithRelatives: "goodRelationWithRelatives",
+      additional_duaForOthers: "duaForOthers",
+      additional_careTheSickPeoples: "careTheSickPeoples",
+      // todo: Add new amal mapping here, e.g., additional_surahIkhlas: "surahIkhlas"
+      // Example: additional_surahIkhlas: "surahIkhlas",
+
       fajr_sunnah: "sunnah",
       zuhr_sunnah: "sunnah",
       maghrib_sunnah: "sunnah",
@@ -346,6 +370,24 @@ const DailyTrackerProvider = ({ children }) => {
       point: 1,
       priority: "normal",
     },
+    {
+      field: "prayIstikharaSalah",
+      label: "ইস্তিখারার নামাজ পড়েছি",
+      point: 2,
+      priority: "normal",
+    },
+    {
+      field: "praySalatutHajot",
+      label: "সালাতুত হাজত আদায় করেছি",
+      point: 2,
+      priority: "normal",
+    },
+    {
+      field: "prayTahiyatulMasjid",
+      label: "তাহিয়াতুল মসজিদ আদায় করেছি",
+      point: 2,
+      priority: "normal",
+    },
     // todo: Add new naflSalah amal here, e.g., { field: "newNafl", label: "নতুন নফল সালাত", point: 2, priority: "normal" }
   ];
 
@@ -394,6 +436,19 @@ const DailyTrackerProvider = ({ children }) => {
       point: 3,
       priority: "normal",
     },
+    {
+      field: "durudAtLeast100Times",
+      label: "অন্তত ১০০ বার দুরুদ পড়েছি",
+      point: 1,
+      priority: "normal",
+    },
+    {
+      field: "bestKalima100",
+      label:
+        "লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারিকালাহু লাহুল মুলকু....(১০০ বার)",
+      point: 1,
+      priority: "normal",
+    },
     // todo: Add new zikr amal here, e.g., { field: "surahIkhlas", label: "সূরা ইখলাস ৩ বার পড়েছি", point: 2, priority: "normal" }
     // Example: {
     //   field: "surahIkhlas",
@@ -434,6 +489,7 @@ const DailyTrackerProvider = ({ children }) => {
       point: 5,
       priority: "important",
     },
+
     // todo: Add new preSleep amal here, e.g., { field: "newPreSleep", label: "নতুন প্রি-স্লিপ আমল", point: 2, priority: "important" }
   ];
 
@@ -583,6 +639,31 @@ const DailyTrackerProvider = ({ children }) => {
       point: 1,
       priority: "normal",
     },
+    {
+      field: "duaForShahadah",
+      label: "শাহাদাতের জন্য দোয়া করেছি",
+      point: 1,
+      priority: "normal",
+    },
+    {
+      field: "goodRelationWithRelatives",
+      label: "অন্তত একজন আত্মীয়ের সাথে যোগাযোগ করেছি",
+      point: 1,
+      priority: "normal",
+    },
+    {
+      field: "duaForOthers",
+      label: "অন্যের জন্য গোপনে দোয়া করেছি",
+      point: 1,
+      priority: "normal",
+    },
+    {
+      field: "careTheSickPeoples",
+      label: "অসুস্থ ব্যাক্তির খোঁজ খবর নিয়েছি",
+      point: 1,
+      priority: "normal",
+    },
+
     // todo: Add new additional amal here, e.g., { field: "newAdditional", label: "নতুন অতিরিক্ত আমল", point: 1, priority: "normal" }
   ];
 
