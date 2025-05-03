@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import PointingBanner from "./PointingBanner";
 import { DailyTrackerContext } from "../../context/DailyTrackerContext";
 import useAmalData from "../../hooks/useAmalData";
 
 const DailyTracker = () => {
+  const queryClient = useQueryClient();
   const {
     handleRadioChange,
     handleCheckboxChange,
@@ -22,6 +24,48 @@ const DailyTracker = () => {
   const { amalData, isLoading, error, amalDataRefetch, isFetching } =
     useAmalData();
 
+  // State for optimistic points
+  const [optimisticPoints, setOptimisticPoints] = useState(null);
+
+  // Calculate points locally based on answers
+  const calculatePoints = () => {
+    let points = 0;
+    // Example logic: Adjust based on your actual scoring system
+    Object.keys(answers).forEach((category) => {
+      Object.keys(answers[category]).forEach((field) => {
+        if (category === "salah") {
+          if (field === "main" && answers[category][field]) {
+            points += 10; // Example: 10 points for main salah
+          } else if (answers[category][field]) {
+            points += 5; // Example: 5 points for sunnah/nafl/witr
+          }
+        } else {
+          if (answers[category][field]) {
+            points += 3; // Example: 3 points for other categories
+          }
+        }
+      });
+    });
+    return points;
+  };
+
+  // Update optimistic points on answers change
+  useEffect(() => {
+    setOptimisticPoints(calculatePoints());
+  }, [answers]);
+
+  // Handle submission with optimistic update
+  const handleSave = async () => {
+    try {
+      setOptimisticPoints(calculatePoints()); // Update optimistic points
+      await handleSubmit();
+      queryClient.invalidateQueries(["amalData"]);
+      amalDataRefetch();
+    } catch (err) {
+      console.error("Error during submission:", err);
+    }
+  };
+
   return (
     <div className="relative min-h-screen">
       {/* Main content with conditional opacity */}
@@ -31,7 +75,15 @@ const DailyTracker = () => {
         }`}
       >
         {/* Banner section for point counting */}
-        <PointingBanner />
+        <PointingBanner
+          amalData={amalData}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          error={error}
+          amalDataRefetch={amalDataRefetch}
+          optimisticPoints={optimisticPoints}
+          onSubmit={handleSave}
+        />
 
         {/* Questions section */}
         <section className="w-11/12 md:w-2/3 mx-auto my-8 relative">
@@ -70,7 +122,7 @@ const DailyTracker = () => {
                               )
                             }
                             className="radio radio-primary"
-                            disabled={isLoading} // Disable inputs during loading
+                            disabled={isLoading}
                           />
                           <span className="text-primary-900 dark:text-primary-100 font-arabic">
                             {option.label}
@@ -90,7 +142,7 @@ const DailyTracker = () => {
                               handleCheckboxChange(salah.name, checkbox.field)
                             }
                             className="checkbox checkbox-primary"
-                            disabled={isLoading} // Disable inputs during loading
+                            disabled={isLoading}
                           />
                           <span className="text-primary-900 dark:text-primary-100 font-arabic">
                             {checkbox.label}
@@ -127,7 +179,7 @@ const DailyTracker = () => {
                           handleCheckboxChange("naflSalah", question.field)
                         }
                         className="checkbox checkbox-primary"
-                        disabled={isLoading} // Disable inputs during loading
+                        disabled={isLoading}
                       />
                       <span className="text-primary-900 dark:text-primary-100 font-arabic">
                         {question.label}
@@ -162,7 +214,7 @@ const DailyTracker = () => {
                           handleCheckboxChange("zikr", question.field)
                         }
                         className="checkbox checkbox-primary"
-                        disabled={isLoading} // Disable inputs during loading
+                        disabled={isLoading}
                       />
                       <span className="text-primary-900 dark:text-primary-100 font-arabic">
                         {question.label}
@@ -197,7 +249,7 @@ const DailyTracker = () => {
                           handleCheckboxChange("quran", question.field)
                         }
                         className="checkbox checkbox-primary"
-                        disabled={isLoading} // Disable inputs during loading
+                        disabled={isLoading}
                       />
                       <span className="text-primary-900 dark:text-primary-100 font-arabic">
                         {question.label}
@@ -232,7 +284,7 @@ const DailyTracker = () => {
                           handleCheckboxChange("preSleep", question.field)
                         }
                         className="checkbox checkbox-primary"
-                        disabled={isLoading} // Disable inputs during loading
+                        disabled={isLoading}
                       />
                       <span className="text-primary-900 dark:text-primary-100 font-arabic">
                         {question.label}
@@ -267,7 +319,7 @@ const DailyTracker = () => {
                           handleCheckboxChange("additional", question.field)
                         }
                         className="checkbox checkbox-primary"
-                        disabled={isLoading} // Disable inputs during loading
+                        disabled={isLoading}
                       />
                       <span className="text-primary-900 dark:text-primary-100 font-arabic">
                         {question.label}
@@ -282,11 +334,8 @@ const DailyTracker = () => {
           {/* Fixed Save Button */}
           <button
             className="fixed bottom-4 right-4 btn btn-primary btn-lg shadow-lg hover:scale-105 transition-transform duration-200 z-50 font-arabic"
-            onClick={() => {
-              handleSubmit();
-              amalDataRefetch();
-            }}
-            disabled={isLoading} // Disable button during loading
+            onClick={handleSave}
+            disabled={isLoading}
           >
             সংরক্ষণ করুন
           </button>
