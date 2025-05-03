@@ -23,54 +23,54 @@ const DailyTrackerProvider = ({ children }) => {
       maghrib: { main: "notAnswered", sunnah: false },
       isha: { main: "notAnswered", sunnah: false, witr: false },
       naflSalah: {
-        tahajjud: false, // তাহাজ্জুদ আদায় করেছি
-        duha: false, // সালাতুত দোহা আদায় করেছি
+        prayTahajjud: false, // তাহাজ্জুদ আদায় করেছি
+        prayDoha: false, // সালাতুত দোহা আদায় করেছি
       },
       zikr: {
-        tasbih33: false, // ৩৩+৩৩+৩৩+১ - জিকির পড়েছি
-        ayatulKursi: false, // আয়াতুল কুরসি পড়েছি
-        morningEvening: false, // সকাল সন্ধ্যা জিকির পড়েছি
+        salahTasbeeh33: false, // ৩৩+৩৩+৩৩+১ - জিকির পড়েছি
+        ayatulKursiAfterSalah: false, // আয়াতুল কুরসি পড়েছি
+        morningEveningZikr: false, // সকাল সন্ধ্যা জিকির পড়েছি
         subhanAllah100: false, // ১০০ বার 'সুবহানাল্লাহি ওবি হামদিহি' পড়েছি
         sayyidulIstighfar: false, // সাইয়েদুল ইস্তেগফার পড়েছি
-        jannahDua: false, // জান্নাতুল ফেরদৌসের জন্য দোয়া করেছি ও জাহান্নাম থেকে মুক্তির দোয়া করেছি
-        constantZikr: false, // সর্বক্ষণ জিকির, ইস্তেগফার করেছি
+        duaForJannahAndJahannam: false, // জান্নাতুল ফেরদৌসের জন্য দোয়া করেছি ও জাহান্নাম থেকে মুক্তির দোয়া করেছি
+        istigfarZikrDurudEverytime: false, // সর্বক্ষণ জিকির, ইস্তেগফার করেছি
 
         // todo: Add new zikr amal field here, e.g., surahIkhlas: false
         // Example: surahIkhlas: false,
       },
       quran: {
-        dailyRecitation: false, // প্রতিদিন নির্দিষ্ট অংশ তেলাওয়াত করেছি
-        tafsir: false, // তেলাওয়াতকৃত অংশের ব্যাখ্যা পড়েছি
-        sirat: false, // সিরাত পঠন করেছি
+        quranNazira: false, // প্রতিদিন নির্দিষ্ট অংশ তেলাওয়াত করেছি
+        quranTafsir: false, // তেলাওয়াতকৃত অংশের ব্যাখ্যা পড়েছি
+        studySirat: false, // সিরাত পঠন করেছি
       },
       preSleep: {
-        surahMulk: false, // রাতে সূরা মুলক তেলাওয়াত করেছি
+        suraMulkAtNight: false, // রাতে সূরা মুলক তেলাওয়াত করেছি
       },
       additional: {
-        avoidMajorSins: false, // কবিরা গুনাহ করিনি
-        halalFood: false, // হালাল খাওয়া খেয়েছি
-        avoidZina: false, // জেনা থেকে বেঁচে আছি
-        keepTrust: false, // আমানত রক্ষা করেছি
-        seekForgiveness: false, // আল্লাহর কাছে ক্ষমা চেয়েছি
-        avoidBackbiting: false, // গীবত থেকে বেঁচে আছি
-        avoidEnvy: false, // হিংসা থেকে বেঁচে আছি
-        avoidLying: false, // মিথ্যা বলিনি
-        charity: false, // দান করেছি
-        voluntaryFasting: false, // নফল রোজা রেখেছি
-        goodBehavior: false, // ভালো আচরণ করেছি
-        kalimaAfterWudu: false, // অজুর পর কালিমা পড়েছি
-        avoidUseless: false, // অপ্রয়োজনীয় কাজ থেকে বেঁচে আছি
-        respondAdhan: false, // আযানের জবাব দিয়েছি
-        coverAwrah: false, // আবরু রক্ষা করেছি
-        helpOthers: false, // অন্যের সাহায্য করেছি
-        removeHarm: false, // অন্যের ক্ষতি থেকে বেঁচে আছি
-        goodAdvice: false, // ভালো উপদেশ দিয়েছি
+        avoidKabiraGunah: false, // কবিরা গুনাহ করিনি
+        eatHalal: false, // হালাল খাওয়া খেয়েছি
+        safeFromZina: false, // জেনা থেকে বেঁচে আছি
+        keepAmanatAndStatements: false, // আমানত রক্ষা করেছি
+        apologizeForFullDaySins: false, // আল্লাহর কাছে ক্ষমা চেয়েছি
+        safeFromGibot: false, // গীবত থেকে বেঁচে আছি
+        safeFromHingsha: false, // হিংসা থেকে বেঁচে আছি
+        safeFromLie: false, // মিথ্যা বলিনি
+        giveSadaka: false, // দান করেছি
+        naflSawm: false, // নফল রোজা রেখেছি
+        goodAkhlakToEveryone: false, // ভালো আচরণ করেছি
+        kalimaShahadahAfterOju: false, // অজুর পর কালিমা পড়েছি
+        avoidUselessWorks: false, // অপ্রয়োজনীয় কাজ থেকে বেঁচে আছি
+        answerToAzan: false, // আযানের জবাব দিয়েছি
+        coverMyAwrahAlways: false, // আবরু রক্ষা করেছি
+        helpSomeone: false, // অন্যের সাহায্য করেছি
+        RemoveHarmsFromStreet: false, // অন্যের ক্ষতি থেকে বেঁচে আছি
+        goodAdviceAndGoodTalks: false, // ভালো উপদেশ দিয়েছি
         giveSalam: false, // সালাম দিয়েছি
-        rememberAkhirah: false, // আখিরাতের কথা মনে রেখেছি
-        duaProphet: false, // নবীজির জন্য দোয়া করেছি
-        constantWudu: false, // সর্বদা অজু অবস্থায় আছি
-        sleepWakeAmal: false, // ঘুমানোর আগে ও ঘুম থেকে উঠে আমল করেছি
-        dawah: false, // দাওয়াতের কাজ করেছি
+        rememberAboutAkhiratAndDeath: false, // আখিরাতের কথা মনে রেখেছি
+        duaForGettingJannahWithProphet: false, // নবীজির জন্য দোয়া করেছি
+        alwaysStayWithOju: false, // সর্বদা অজু অবস্থায় আছি
+        amalForSleepingAndWakeUp: false, // ঘুমানোর আগে ও ঘুম থেকে উঠে আমল করেছি
+        dawahSomeone: false, // দাওয়াতের কাজ করেছি
       },
       // todo: For a new category, add a new key here, e.g., newCategory: { newAmal: false }
     }),
@@ -128,45 +128,46 @@ const DailyTrackerProvider = ({ children }) => {
     };
 
     const fieldMap = {
-      naflSalah_tahajjud: "tahajjud",
-      naflSalah_duha: "duha",
-      zikr_tasbih33: "tasbih33",
-      zikr_ayatulKursi: "ayatulKursi",
-      zikr_morningEvening: "morningEvening",
+      naflSalah_prayTahajjud: "prayTahajjud",
+      naflSalah_prayDoha: "prayDoha",
+      zikr_salahTasbeeh33: "salahTasbeeh33",
+      zikr_ayatulKursiAfterSalah: "ayatulKursiAfterSalah",
+      zikr_morningEveningZikr: "morningEveningZikr",
       zikr_subhanAllah100: "subhanAllah100",
       zikr_sayyidulIstighfar: "sayyidulIstighfar",
-      zikr_jannahDua: "jannahDua",
-      zikr_constantZikr: "constantZikr",
+      zikr_duaForJannahAndJahannam: "duaForJannahAndJahannam",
+      zikr_istigfarZikrDurudEverytime: "istigfarZikrDurudEverytime",
       // todo: Add new amal mapping here, e.g., zikr_surahIkhlas: "surahIkhlas"
       // Example: zikr_surahIkhlas: "surahIkhlas",
-      quran_dailyRecitation: "dailyRecitation",
-      quran_tafsir: "tafsir",
-      quran_sirat: "sirat",
-      preSleep_surahMulk: "surahMulk",
-      additional_avoidMajorSins: "avoidMajorSins",
-      additional_halalFood: "halalFood",
-      additional_avoidZina: "avoidZina",
-      additional_keepTrust: "keepTrust",
-      additional_seekForgiveness: "seekForgiveness",
-      additional_avoidBackbiting: "avoidBackbiting",
-      additional_avoidEnvy: "avoidEnvy",
-      additional_avoidLying: "avoidLying",
-      additional_charity: "charity",
-      additional_voluntaryFasting: "voluntaryFasting",
-      additional_goodBehavior: "goodBehavior",
-      additional_kalimaAfterWudu: "kalimaAfterWudu",
-      additional_avoidUseless: "avoidUseless",
-      additional_respondAdhan: "respondAdhan",
-      additional_coverAwrah: "coverAwrah",
-      additional_helpOthers: "helpOthers",
-      additional_removeHarm: "removeHarm",
-      additional_goodAdvice: "goodAdvice",
+      quran_quranNazira: "quranNazira",
+      quran_quranTafsir: "quranTafsir",
+      quran_studySirat: "studySirat",
+      preSleep_suraMulkAtNight: "suraMulkAtNight",
+      additional_avoidKabiraGunah: "avoidKabiraGunah",
+      additional_eatHalal: "eatHalal",
+      additional_safeFromZina: "safeFromZina",
+      additional_keepAmanatAndStatements: "keepAmanatAndStatements",
+      additional_apologizeForFullDaySins: "apologizeForFullDaySins",
+      additional_safeFromGibot: "safeFromGibot",
+      additional_safeFromHingsha: "safeFromHingsha",
+      additional_safeFromLie: "safeFromLie",
+      additional_giveSadaka: "giveSadaka",
+      additional_naflSawm: "naflSawm",
+      additional_goodAkhlakToEveryone: "goodAkhlakToEveryone",
+      additional_kalimaShahadahAfterOju: "kalimaShahadahAfterOju",
+      additional_avoidUselessWorks: "avoidUselessWorks",
+      additional_answerToAzan: "answerToAzan",
+      additional_coverMyAwrahAlways: "coverMyAwrahAlways",
+      additional_helpSomeone: "helpSomeone",
+      additional_RemoveHarmsFromStreet: "RemoveHarmsFromStreet",
+      additional_goodAdviceAndGoodTalks: "goodAdviceAndGoodTalks",
       additional_giveSalam: "giveSalam",
-      additional_rememberAkhirah: "rememberAkhirah",
-      additional_duaProphet: "duaProphet",
-      additional_constantWudu: "constantWudu",
-      additional_sleepWakeAmal: "sleepWakeAmal",
-      additional_dawah: "dawah",
+      additional_rememberAboutAkhiratAndDeath: "rememberAboutAkhiratAndDeath",
+      additional_duaForGettingJannahWithProphet:
+        "duaForGettingJannahWithProphet",
+      additional_alwaysStayWithOju: "alwaysStayWithOju",
+      additional_amalForSleepingAndWakeUp: "amalForSleepingAndWakeUp",
+      additional_dawahSomeone: "dawahSomeone",
       fajr_sunnah: "sunnah",
       zuhr_sunnah: "sunnah",
       maghrib_sunnah: "sunnah",
@@ -334,13 +335,13 @@ const DailyTrackerProvider = ({ children }) => {
   // Nafl Salah questions with points and priorities
   const naflSalahQuestions = [
     {
-      field: "tahajjud",
+      field: "prayTahajjud",
       label: "তাহাজ্জুদ আদায় করেছি",
       point: 5,
       priority: "normal",
     },
     {
-      field: "duha",
+      field: "prayDoha",
       label: "সালাতুত দোহা আদায় করেছি",
       point: 1,
       priority: "normal",
@@ -351,19 +352,19 @@ const DailyTrackerProvider = ({ children }) => {
   // Zikr questions with points and priorities
   const zikrQuestions = [
     {
-      field: "tasbih33",
+      field: "salahTasbeeh33",
       label: "৩৩+৩৩+৩৩+১ - জিকির পড়েছি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "ayatulKursi",
+      field: "ayatulKursiAfterSalah",
       label: "আয়াতুল কুরসি পড়েছি",
       point: 2,
       priority: "normal",
     },
     {
-      field: "morningEvening",
+      field: "morningEveningZikr",
       label: "সকাল সন্ধ্যা জিকির পড়েছি",
       point: 1,
       priority: "normal",
@@ -381,14 +382,14 @@ const DailyTrackerProvider = ({ children }) => {
       priority: "normal",
     },
     {
-      field: "jannahDua",
+      field: "duaForJannahAndJahannam",
       label:
         "জান্নাতুল ফেরদৌসের জন্য দোয়া করেছি ও জাহান্নাম থেকে মুক্তির দোয়া করেছি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "constantZikr",
+      field: "istigfarZikrDurudEverytime",
       label: "সর্বক্ষণ জিকির, ইস্তেগফার করেছি",
       point: 3,
       priority: "normal",
@@ -405,19 +406,19 @@ const DailyTrackerProvider = ({ children }) => {
   // Quran questions with points and priorities
   const quranQuestions = [
     {
-      field: "dailyRecitation",
+      field: "quranNazira",
       label: "প্রতিদিন নির্দিষ্ট অংশ তেলাওয়াত করেছি",
       point: 8,
       priority: "important",
     },
     {
-      field: "tafsir",
+      field: "quranTafsir",
       label: "তেলাওয়াতকৃত অংশের ব্যাখ্যা পড়েছি",
       point: 2,
       priority: "important",
     },
     {
-      field: "sirat",
+      field: "studySirat",
       label: "সিরাত পঠন করেছি",
       point: 2,
       priority: "important",
@@ -428,7 +429,7 @@ const DailyTrackerProvider = ({ children }) => {
   // Pre-Sleep questions with points and priorities
   const preSleepQuestions = [
     {
-      field: "surahMulk",
+      field: "suraMulkAtNight",
       label: "রাতে সূরা মুলক তেলাওয়াত করেছি",
       point: 5,
       priority: "important",
@@ -439,109 +440,109 @@ const DailyTrackerProvider = ({ children }) => {
   // Additional questions with points and priorities
   const additionalQuestions = [
     {
-      field: "avoidMajorSins",
+      field: "avoidKabiraGunah",
       label: "কবিরা গুনাহ করিনি",
       point: 5,
       priority: "normal",
     },
     {
-      field: "halalFood",
+      field: "eatHalal",
       label: "হালাল খাওয়া খেয়েছি",
       point: 5,
       priority: "normal",
     },
     {
-      field: "avoidZina",
+      field: "safeFromZina",
       label: "জেনা থেকে বেঁচে থেকেছি",
       point: 3,
       priority: "normal",
     },
     {
-      field: "keepTrust",
+      field: "keepAmanatAndStatements",
       label: "আমানত ও অঙ্গীকার রক্ষা করেছি",
       point: 2,
       priority: "normal",
     },
     {
-      field: "seekForgiveness",
+      field: "apologizeForFullDaySins",
       label: "সারাদিনের কৃতকর্মের জন্য মাফ চেয়েছি",
       point: 2,
       priority: "normal",
     },
     {
-      field: "avoidBackbiting",
+      field: "safeFromGibot",
       label: "গিবত করিনি",
       point: 2,
       priority: "normal",
     },
     {
-      field: "avoidEnvy",
+      field: "safeFromHingsha",
       label: "হিংসা থেকে বেঁচে থেকেছি",
       point: 2,
       priority: "normal",
     },
     {
-      field: "avoidLying",
+      field: "safeFromLie",
       label: "মিথ্যা বলিনি",
       point: 2,
       priority: "normal",
     },
     {
-      field: "charity",
+      field: "giveSadaka",
       label: "দান সাদাকা করেছি",
       point: 2,
       priority: "normal",
     },
     {
-      field: "voluntaryFasting",
+      field: "naflSawm",
       label: "নফল রোজা রেখেছি",
       point: 2,
       priority: "normal",
     },
     {
-      field: "goodBehavior",
+      field: "goodAkhlakToEveryone",
       label: "কারোর সাথে বাজে আচরণ করিনি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "kalimaAfterWudu",
+      field: "kalimaShahadahAfterOju",
       label: "অজুর পর কালিমা শাহাদাত পড়েছি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "avoidUseless",
+      field: "avoidUselessWorks",
       label: "অহেতুক কাজ করিনি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "respondAdhan",
+      field: "answerToAzan",
       label: "আজানের উত্তর দিয়েছি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "coverAwrah",
+      field: "coverMyAwrahAlways",
       label: "সর্বদা সতর ঢেকে রেখেছি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "helpOthers",
+      field: "helpSomeone",
       label: "কাউকে সাহায্য করেছি/পানি পান করিয়েছি/মানসিক সাহায্য করেছি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "removeHarm",
+      field: "RemoveHarmsFromStreet",
       label: "রাস্তা থেকে ক্ষতিকর বস্তু সরিয়েছি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "goodAdvice",
+      field: "goodAdviceAndGoodTalks",
       label: "সৎ উপদেশ দিয়েছি/ভালো কথা বলেছি",
       point: 1,
       priority: "normal",
@@ -553,31 +554,31 @@ const DailyTrackerProvider = ({ children }) => {
       priority: "normal",
     },
     {
-      field: "rememberAkhirah",
+      field: "rememberAboutAkhiratAndDeath",
       label: "সর্বদা আখিরাতের কথা স্মরণ রেখেছি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "duaProphet",
+      field: "duaForGettingJannahWithProphet",
       label: "জান্নাতে রাসুলুল্লাহ (সাঃ) এর কাছাকাছি থাকার দোয়া করেছি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "constantWudu",
+      field: "alwaysStayWithOju",
       label: "সর্বদা অজুর সাথে থেকেছি / অজুর সলাত আদায় করেছি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "sleepWakeAmal",
+      field: "amalForSleepingAndWakeUp",
       label: "ঘুমাতে যাওয়ার আগের এবং ঘুম থেকে উঠে আমল করেছি",
       point: 1,
       priority: "normal",
     },
     {
-      field: "dawah",
+      field: "dawahSomeone",
       label: "দ্বীনের দাওয়াত দিয়েছি",
       point: 1,
       priority: "normal",
