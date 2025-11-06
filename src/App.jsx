@@ -10,6 +10,7 @@ import AuthProvider, { useAuth } from "./context/AuthProvider.jsx";
 import DailyTrackerProvider from "./context/DailyTrackerProvider.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { DateProvider } from "./context/DateContext.jsx";
+import Exercise from "./pages/Exercise/Exercise.jsx";
 
 // Create a QueryClient instance
 const queryClient = new QueryClient({
@@ -46,6 +47,9 @@ function AppContent() {
             <Route path="/" element={<Home />} />
             <Route path="/daily-tracker" element={<DailyTracker />} />
             <Route path="/tracker-status" element={<TrackerStatus />} />
+
+            <Route path="/exercise" element={<Exercise />} />
+
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Routes>

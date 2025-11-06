@@ -80,6 +80,12 @@ function Navbar() {
                 >
                   Tracker Status
                 </Link>
+                <Link
+                  to="/exercise"
+                  className="nav-link dark:text-white dark:hover:text-gray-300"
+                >
+                  Exercise
+                </Link>
               </>
             )}
           </div>
@@ -182,6 +188,13 @@ function Navbar() {
                   onClick={closeDrawer}
                 >
                   Tracker Status
+                </Link>
+                <Link
+                  to="/exercise"
+                  className="text-islamic dark:text-white hover:text-islamic-dark dark:hover:text-gray-300"
+                  onClick={closeDrawer}
+                >
+                  Exercise
                 </Link>
               </>
             )}
