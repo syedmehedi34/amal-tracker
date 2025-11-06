@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/no-unescaped-entities */
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, RotateCcw, Volume2, VolumeX } from "lucide-react";
@@ -15,12 +16,12 @@ const Exercise = () => {
   const intervalRef = useRef(null);
   const audioContext = useRef(null);
 
-  const HOLD_TIME = mode === "slow" ? 5 : 1;
-  const RELAX_TIME = mode === "slow" ? 5 : 1;
+  const HOLD_TIME = mode === "slow" ? 6 : 1;
+  const RELAX_TIME = mode === "slow" ? 6 : 1;
   const TOTAL_REPS = 10;
   const CIRCUMFERENCE = 879;
 
-  // Audio
+  // Audio Setup
   useEffect(() => {
     audioContext.current = new (window.AudioContext ||
       window.webkitAudioContext)();
@@ -62,7 +63,7 @@ const Exercise = () => {
     setSetComplete(false);
   };
 
-  // Timer + Rep Logic (FIXED)
+  // PERFECT TIMER: 5→0, Single Beep
   useEffect(() => {
     if (!isRunning || phase === "ready") return;
 
@@ -70,15 +71,16 @@ const Exercise = () => {
 
     const tick = () => {
       setSecondsLeft((prev) => {
-        if (prev <= 1) playBeep(phase === "hold" ? 900 : 700, 400);
+        // Play beep ONLY when 1 → 0
+        if (prev === 1) {
+          playBeep(phase === "hold" ? 900 : 700, 400);
+        }
 
         if (prev === 0) {
           if (phase === "hold") {
-            // End of Hold → Go to Relax
             setPhase("relax");
             return RELAX_TIME;
           } else {
-            // End of Relax → Count 1 Rep
             setRep((r) => {
               const nextRep = r + 1;
               if (nextRep >= TOTAL_REPS) {
@@ -86,7 +88,7 @@ const Exercise = () => {
                 setIsRunning(false);
                 setPhase("ready");
                 playBeep(1200, 800);
-                return TOTAL_REPS; // Show 10/10
+                return TOTAL_REPS;
               }
               return nextRep;
             });
@@ -224,7 +226,7 @@ const Exercise = () => {
           </div>
         </div>
 
-        {/* Rep Counter – NOW PERFECT */}
+        {/* Rep Counter */}
         <div className="text-center mb-10">
           <p className="text-2xl font-semibold text-gray-700">
             Rep {rep} / {TOTAL_REPS}
@@ -285,11 +287,11 @@ const Exercise = () => {
             </li>
             <li className="flex items-start gap-3">
               <span className="text-islamic font-bold">2.</span>
-              <span>Hold when timer says &quot;Hold&quot;</span>
+              <span>Hold when timer says "Hold"</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-islamic font-bold">3.</span>
-              <span>Relax fully when it says &quot;Relax&quot;</span>
+              <span>Relax fully when it says "Relax"</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-islamic font-bold">4.</span>
