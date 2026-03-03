@@ -20,6 +20,7 @@ const Exercise = () => {
   const RELAX_TIME = mode === "slow" ? 6 : 1;
   const TOTAL_REPS = 10;
   const CIRCUMFERENCE = 879;
+  //
 
   // Audio Setup
   useEffect(() => {
