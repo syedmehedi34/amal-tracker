@@ -15,7 +15,6 @@ const Exercise = () => {
 
   const intervalRef = useRef(null);
   const audioContext = useRef(null);
-  //
 
   const HOLD_TIME = mode === "slow" ? 6 : 1;
   const RELAX_TIME = mode === "slow" ? 6 : 1;
