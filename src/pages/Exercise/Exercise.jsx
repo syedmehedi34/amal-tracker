@@ -15,6 +15,7 @@ const Exercise = () => {
 
   const intervalRef = useRef(null);
   const audioContext = useRef(null);
+  //
 
   const HOLD_TIME = mode === "slow" ? 6 : 1;
   const RELAX_TIME = mode === "slow" ? 6 : 1;
@@ -23,8 +24,9 @@ const Exercise = () => {
 
   // Audio Setup
   useEffect(() => {
-    audioContext.current = new (window.AudioContext ||
-      window.webkitAudioContext)();
+    audioContext.current = new (
+      window.AudioContext || window.webkitAudioContext
+    )();
     return () => clearInterval(intervalRef.current);
   }, []);
 
